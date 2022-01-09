@@ -34,6 +34,14 @@ class Settings(
     }
 
     fun setTempoFromPercentage(percentage: Int) {
-        tempo = ((percentage.toDouble() / 100) * (MAX_TEMPO - MIN_TEMPO) + MIN_TEMPO).roundToInt()
+        tempo = calculateLevelFromPercentage(percentage, MAX_TEMPO, MIN_TEMPO)
+    }
+
+    fun setBeatsPerChordFromPercentage(percentage: Int) {
+        beatsPerChord = calculateLevelFromPercentage(percentage, MAX_BEATS_PER_CHORD, MIN_BEATS_PER_CHORD)
+    }
+
+    fun setChordDistanceFromPercentage(percentage: Int) {
+        chordDistance = calculateLevelFromPercentage(percentage, MAX_DISTANCE, MIN_DISTANCE)
     }
 }

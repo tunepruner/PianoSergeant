@@ -118,6 +118,7 @@ class MainFragment : Fragment() {
                     MAX_BEATS_PER_CHORD,
                     MIN_BEATS_PER_CHORD
                 )
+                settings.current.value.setBeatsPerChordFromPercentage(p1)
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {}
@@ -132,6 +133,7 @@ class MainFragment : Fragment() {
                     MAX_DISTANCE,
                     MIN_DISTANCE
                 )
+                settings.current.value.setChordDistanceFromPercentage(p1)
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {}
@@ -158,7 +160,7 @@ class MainFragment : Fragment() {
         _binding = null
     }
 
-    fun updateSettingsDisplay(settings: Settings) {
+    private fun updateSettingsDisplay(settings: Settings) {
         binding.tempoSelector.progress = ((settings.tempo.toDouble() / MAX_TEMPO) * 100).roundToInt()
         binding.chordDistanceSelector.progress =
             ((settings.chordDistance.toDouble() / MAX_DISTANCE) * 100).roundToInt()
