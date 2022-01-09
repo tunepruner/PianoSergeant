@@ -96,7 +96,7 @@ class MainFragment : Fragment() {
             metronomeViewModel.onPlayStopButtonPressed()
         }
 
-        val map = mapOf<CheckBox, View>(
+        val map: Map<CheckBox, View> = mapOf(
             binding.chordCheckBox to binding.chord,
             binding.modeCheckBox to binding.mode,
             binding.keySigCheckBox to binding.keySig,
