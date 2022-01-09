@@ -41,7 +41,12 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpHandlers()
 
-        metronomeViewModel.updateLevelReading(binding.tempo, binding.tempoSelector, MAX_TEMPO, MIN_TEMPO)
+        metronomeViewModel.updateLevelReading(
+            binding.tempo,
+            binding.tempoSelector,
+            MAX_TEMPO,
+            MIN_TEMPO
+        )
         metronomeViewModel.updateLevelReading(
             binding.chordDistanceView,
             binding.chordDistanceSelector,
@@ -56,7 +61,7 @@ class MainFragment : Fragment() {
         )
 
         metronomeViewModel.beatLiveData.observe(viewLifecycleOwner) {
-            binding.visualMetronome.text = it.toString()
+            binding.currentBeat.text = it.toString()
             if (it == 1) {
                 chordViewModel.triggerNextChord()
             }
@@ -90,24 +95,79 @@ class MainFragment : Fragment() {
             metronomeViewModel.onPlayStopButtonPressed()
         }
 
-        binding.chordCheckBox.setOnClickListener {
-            metronomeViewModel.onChordCheckBoxClicked()
+        with(binding.chordCheckBox) {
+            setOnClickListener {
+                binding.chord.visibility =
+                    if (this.isChecked) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+            }
         }
-        binding.modeCheckBox.setOnClickListener {
-            metronomeViewModel.onModeCheckBoxClicked()
+
+        with(binding.modeCheckBox) {
+            setOnClickListener {
+                binding.mode.visibility =
+                    if (this.isChecked) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+            }
         }
-        binding.keySigCheckBox.setOnClickListener {
-            metronomeViewModel.onKeySigCheckBoxClicked()
+
+        with(binding.chordCheckBox) {
+            setOnClickListener {
+                binding.chord.visibility =
+                    if (this.isChecked) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+            }
         }
-        binding.cueLineCheckBox.setOnClickListener {
-            metronomeViewModel.onCueLineCheckBoxClicked()
+
+        with(binding.keySigCheckBox) {
+            setOnClickListener {
+                binding.keySig.visibility =
+                    if (this.isChecked) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+            }
         }
-        binding.currentBeatCheckbox.setOnClickListener {
-            metronomeViewModel.onMetronomeCheckBoxClicked()
+
+        with(binding.cueLineCheckBox) {
+            setOnClickListener {
+                binding.cueLine.visibility =
+                    if (this.isChecked) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+            }
         }
-        binding.soundCheckBox.setOnClickListener {
-            metronomeViewModel.onSoundCheckBoxClicked()
+
+        with(binding.currentBeatCheckbox) {
+            setOnClickListener {
+                binding.currentBeat.visibility =
+                    if (this.isChecked) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+            }
         }
+
+
+        with(binding.soundCheckBox) {
+            setOnClickListener {
+                //TODO setup sound
+            }
+        }
+
 
         binding.beatsPerChordSelector.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
@@ -141,7 +201,12 @@ class MainFragment : Fragment() {
         })
         binding.tempoSelector.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                metronomeViewModel.updateLevelReading(binding.tempo, binding.tempoSelector, MAX_TEMPO, MIN_TEMPO)
+                metronomeViewModel.updateLevelReading(
+                    binding.tempo,
+                    binding.tempoSelector,
+                    MAX_TEMPO,
+                    MIN_TEMPO
+                )
                 settings.current.value.setTempoFromPercentage(p1)
             }
 
@@ -161,7 +226,8 @@ class MainFragment : Fragment() {
     }
 
     private fun updateSettingsDisplay(settings: Settings) {
-        binding.tempoSelector.progress = ((settings.tempo.toDouble() / MAX_TEMPO) * 100).roundToInt()
+        binding.tempoSelector.progress =
+            ((settings.tempo.toDouble() / MAX_TEMPO) * 100).roundToInt()
         binding.chordDistanceSelector.progress =
             ((settings.chordDistance.toDouble() / MAX_DISTANCE) * 100).roundToInt()
         binding.beatsPerChordSelector.progress =

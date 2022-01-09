@@ -48,32 +48,6 @@ class MetronomeViewModel(
         }
     }
 
-
-    fun onChordCheckBoxClicked() {
-        TODO("Not yet implemented")
-    }
-
-    fun onModeCheckBoxClicked() {
-        TODO("Not yet implemented")
-    }
-
-    fun onKeySigCheckBoxClicked() {
-        TODO("Not yet implemented")
-    }
-
-    fun onCueLineCheckBoxClicked() {
-        TODO("Not yet implemented")
-    }
-
-    fun onMetronomeCheckBoxClicked() {
-        TODO("Not yet implemented")
-    }
-
-    fun onSoundCheckBoxClicked() {
-        TODO("Not yet implemented")
-    }
-
-
     fun updateLevelReading(indicator: TextView, selector: SeekBar, max: Int, min: Int) {
         indicator.text = ((((max - min).toDouble() / 100) * selector.progress) + min).roundToInt().toString()
     }
