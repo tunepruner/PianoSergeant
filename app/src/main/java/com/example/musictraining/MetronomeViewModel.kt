@@ -16,7 +16,7 @@ import java.util.*
 import kotlin.math.roundToInt
 
 @ExperimentalCoroutinesApi
-class FirstViewModel(
+class MetronomeViewModel(
     private val settingsRepository: SettingsRepository,
 ) : ViewModel() {
 
@@ -34,9 +34,11 @@ class FirstViewModel(
     private val _barPercentage: MutableLiveData<Int> = MutableLiveData(0)
     val barPercentage: LiveData<Int> = _barPercentage
 
-
     private var barJob: Job? = null
     var metronomeJobs: MutableSet<Job>? = HashSet()
+
+    private val _newBar: MutableLiveData<Unit> = MutableLiveData(Unit)
+    val newBar: LiveData<Unit> = _newBar
 
     init {
         viewModelScope.launch {
@@ -72,8 +74,8 @@ class FirstViewModel(
     }
 
 
-    fun updateLevelReading(indicator: TextView, selector: SeekBar, max: Int) {
-        indicator.text = ((max.toDouble() / 100) * selector.progress).roundToInt().toString()
+    fun updateLevelReading(indicator: TextView, selector: SeekBar, max: Int, min: Int) {
+        indicator.text = ((((max - min).toDouble() / 100) * selector.progress) + min).roundToInt().toString()
     }
 
     fun onPlayStopButtonPressed() {
@@ -87,21 +89,27 @@ class FirstViewModel(
     private fun onPlayButtonPressed() {
         _playState.value = PlayState.PLAYING
         barJob = viewModelScope.launch {
-            metronomeJobs?.addAll(
-                setOf(
-                    launch {
-                        moveBeatsForward()
-                    },
-                    launch {
-                        _currentSettings.value?.let {
+            startNewBar()
+        }
+    }
+
+    private suspend fun startNewBar() {
+        metronomeJobs?.addAll(
+            setOf(
+                viewModelScope.launch {
+                    incrementBeat()
+                },
+                viewModelScope.launch {
+                    _currentSettings.value?.let {
+                        val barStartTime = Date()
+                        while (true) {
                             moveBarForward(
-                                Date(),
-                                it.barDuration
+                                barStartTime,
                             )
                         }
-                    })
-            )
-        }
+                    }
+                })
+        )
     }
 
     private fun onStopButtonPressed() {
@@ -113,27 +121,37 @@ class FirstViewModel(
         }
     }
 
-    private suspend fun moveBeatsForward() {
-        if (_beatLiveData.value == settingsRepository.current.value.beatsPerChord) {
-            _beatLiveData.value = 1
-        } else {
-            _beatLiveData.value = (_beatLiveData.value ?: 0) + 1
-        }
+    private suspend fun incrementBeat() {
+        _beatLiveData.value = (_beatLiveData.value ?: 0) + 1
 
         delay(settingsRepository.current.value.beatDuration)
 
-        moveBeatsForward()
+        if (_beatLiveData.value == settingsRepository.current.value.beatsPerChord) {
+            endBar()
+            startNewBar()
+        } else {
+            incrementBeat()
+        }
     }
 
-    private suspend fun moveBarForward(timeStarted: Date, barDuration: Long) {
+    private fun endBar() {
+        _beatLiveData.value = 0
+        barJob?.cancel()
+        metronomeJobs?.forEach { it.cancel() }
+    }
+
+    private suspend fun moveBarForward(timeStarted: Date) {
         delay(10)
+        val barDuration: Long =
+            _currentSettings.value?.barDuration
+                ?: settingsRepository.current.value.barDurationFromTempo(MIN_TEMPO)
+        Log.i("12345", "bar duration = ${_currentSettings.value?.barDuration}")
+        //TODO somewhere around here, weird progress bar problem
         val preCalc = ((Date().time - timeStarted.time).toDouble() / barDuration) * 100
         if (preCalc < 100) {
             _barPercentage.value = preCalc.toInt()
-            moveBarForward(timeStarted, barDuration)
-        }else{
+        } else {
             _barPercentage.value = 0
-            moveBarForward(Date(), barDuration)
         }
     }
 

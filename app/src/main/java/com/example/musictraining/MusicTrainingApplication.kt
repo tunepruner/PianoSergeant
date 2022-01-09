@@ -14,7 +14,7 @@ val repositoryModule = module {
 }
 
 val viewModelModule = module {
-    single { FirstViewModel(get()) }
+    single { MetronomeViewModel(get()) }
     single { ChordViewModel(get()) }
 }
 
