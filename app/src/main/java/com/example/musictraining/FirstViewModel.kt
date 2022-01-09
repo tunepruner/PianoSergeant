@@ -18,7 +18,6 @@ import kotlin.math.roundToInt
 @ExperimentalCoroutinesApi
 class FirstViewModel(
     private val settingsRepository: SettingsRepository,
-//    private val chordViewModel: ChordViewModel
 ) : ViewModel() {
 
     private var _currentSettings: MutableLiveData<Settings> =
@@ -36,6 +35,7 @@ class FirstViewModel(
     val barPercentage: LiveData<Int> = _barPercentage
 
 
+    private var barJob: Job? = null
     var metronomeJobs: MutableSet<Job>? = HashSet()
 
     init {
@@ -86,20 +86,22 @@ class FirstViewModel(
 
     private fun onPlayButtonPressed() {
         _playState.value = PlayState.PLAYING
-        metronomeJobs?.addAll(
-            setOf(
-                viewModelScope.launch {
-                    moveBeatsForward()
-                },
-                viewModelScope.launch {
-                    _currentSettings.value?.let {
-                        moveBarForward(
-                            Date(),
-                            it.beatDuration * it.beatsPerChord
-                        )
-                    }
-                })
-        )
+        barJob = viewModelScope.launch {
+            metronomeJobs?.addAll(
+                setOf(
+                    launch {
+                        moveBeatsForward()
+                    },
+                    launch {
+                        _currentSettings.value?.let {
+                            moveBarForward(
+                                Date(),
+                                it.barDuration
+                            )
+                        }
+                    })
+            )
+        }
     }
 
     private fun onStopButtonPressed() {

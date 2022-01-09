@@ -1,6 +1,7 @@
 package com.example.musictraining
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,8 +21,9 @@ const val maxBeatsPerChord = 13
 class FirstFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
-//    private val viewModel: FirstViewModel by inject(FirstViewModel::class.java)
-    private val viewModel = FirstViewModel(SettingsRepository())
+    private val firstViewModel: FirstViewModel by inject(FirstViewModel::class.java)
+    private val chordViewModel: ChordViewModel by inject(ChordViewModel::class.java)
+    private val settings: SettingsRepository by inject(SettingsRepository::class.java)
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -40,25 +42,28 @@ class FirstFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpHandlers()
 
-        viewModel.updateLevelReading(binding.tempo, binding.tempoSelector, maxTempo)
-        viewModel.updateLevelReading(
+        firstViewModel.updateLevelReading(binding.tempo, binding.tempoSelector, maxTempo)
+        firstViewModel.updateLevelReading(
             binding.chordDistanceView,
             binding.chordDistanceSelector,
             maxDistance
         )
-        viewModel.updateLevelReading(
+        firstViewModel.updateLevelReading(
             binding.beatsPerChordView,
             binding.beatsPerChordSelector,
             maxBeatsPerChord
         )
 
-        viewModel.beatLiveData.observe(viewLifecycleOwner) {
+        firstViewModel.beatLiveData.observe(viewLifecycleOwner) {
             binding.visualMetronome.text = it.toString()
+            if (it == 1) {
+                chordViewModel.triggerNextChord()
+            }
         }
 
         with(binding.playButton) {
             setImageResource(R.drawable.play_button);
-            viewModel.playState.observe(viewLifecycleOwner) {
+            firstViewModel.playState.observe(viewLifecycleOwner) {
                 when (it) {
                     PlayState.STOPPED -> setImageResource(R.drawable.play_button);
                     PlayState.PLAYING -> setImageResource(R.drawable.stop_button);
@@ -66,43 +71,47 @@ class FirstFragment : Fragment() {
             }
         }
 
-        viewModel.currentSettings.observe(viewLifecycleOwner) {
+        firstViewModel.currentSettings.observe(viewLifecycleOwner) {
             updateSettingsDisplay(it)
         }
 
-        viewModel.barPercentage.observe(viewLifecycleOwner) {
-            binding.cueLine.progress = viewModel.barPercentage.value ?: 0
+        firstViewModel.barPercentage.observe(viewLifecycleOwner) {
+            binding.cueLine.progress = firstViewModel.barPercentage.value ?: 0
+        }
+
+        chordViewModel.currentChord.observe(viewLifecycleOwner) {
+            binding.chord.text = it
         }
     }
 
     private fun setUpHandlers() {
         binding.playButton.setOnClickListener {
-            viewModel.onPlayStopButtonPressed()
+            firstViewModel.onPlayStopButtonPressed()
         }
 
         binding.chordCheckBox.setOnClickListener {
-            viewModel.onChordCheckBoxClicked()
+            firstViewModel.onChordCheckBoxClicked()
         }
         binding.modeCheckBox.setOnClickListener {
-            viewModel.onModeCheckBoxClicked()
+            firstViewModel.onModeCheckBoxClicked()
         }
         binding.keySigCheckBox.setOnClickListener {
-            viewModel.onKeySigCheckBoxClicked()
+            firstViewModel.onKeySigCheckBoxClicked()
         }
         binding.cueLineCheckBox.setOnClickListener {
-            viewModel.onCueLineCheckBoxClicked()
+            firstViewModel.onCueLineCheckBoxClicked()
         }
         binding.currentBeatCheckbox.setOnClickListener {
-            viewModel.onMetronomeCheckBoxClicked()
+            firstViewModel.onMetronomeCheckBoxClicked()
         }
         binding.soundCheckBox.setOnClickListener {
-            viewModel.onSoundCheckBoxClicked()
+            firstViewModel.onSoundCheckBoxClicked()
         }
 
         binding.beatsPerChordSelector.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                viewModel.updateLevelReading(
+                firstViewModel.updateLevelReading(
                     binding.beatsPerChordView,
                     binding.beatsPerChordSelector,
                     maxBeatsPerChord
@@ -115,7 +124,7 @@ class FirstFragment : Fragment() {
         binding.chordDistanceSelector.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                viewModel.updateLevelReading(
+                firstViewModel.updateLevelReading(
                     binding.chordDistanceView,
                     binding.chordDistanceSelector,
                     maxDistance
@@ -127,9 +136,10 @@ class FirstFragment : Fragment() {
         })
         binding.tempoSelector.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                viewModel.updateLevelReading(binding.tempo, binding.tempoSelector, maxTempo)
-                viewModel.updateSettings()
+                firstViewModel.updateLevelReading(binding.tempo, binding.tempoSelector, maxTempo)
+                settings.current.value.tempo = p1
             }
+
             override fun onStartTrackingTouch(p0: SeekBar?) {}
             override fun onStopTrackingTouch(p0: SeekBar?) {}
         })
@@ -137,7 +147,7 @@ class FirstFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        viewModel.forceStop()
+        firstViewModel.forceStop()
     }
 
     override fun onDestroyView() {
@@ -147,8 +157,10 @@ class FirstFragment : Fragment() {
 
     fun updateSettingsDisplay(settings: Settings) {
         binding.tempoSelector.progress = ((settings.tempo.toDouble() / maxTempo) * 100).roundToInt()
-        binding.chordDistanceSelector.progress = ((settings.chordDistance.toDouble() / maxDistance) * 100).roundToInt()
-        binding.beatsPerChordSelector.progress = ((settings.beatsPerChord.toDouble() / maxBeatsPerChord) * 100).roundToInt()
+        binding.chordDistanceSelector.progress =
+            ((settings.chordDistance.toDouble() / maxDistance) * 100).roundToInt()
+        binding.beatsPerChordSelector.progress =
+            ((settings.beatsPerChord.toDouble() / maxBeatsPerChord) * 100).roundToInt()
         binding.chordCheckBox.isChecked = settings.chordVisible
         binding.modeCheckBox.isChecked = settings.modeVisible
         binding.keySigCheckBox.isChecked = settings.keySigVisible
