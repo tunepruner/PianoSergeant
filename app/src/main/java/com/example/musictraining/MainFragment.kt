@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import com.example.musictraining.databinding.FragmentFirstBinding
@@ -95,72 +96,25 @@ class MainFragment : Fragment() {
             metronomeViewModel.onPlayStopButtonPressed()
         }
 
-        with(binding.chordCheckBox) {
-            setOnClickListener {
-                binding.chord.visibility =
-                    if (this.isChecked) {
+        val map = mapOf<CheckBox, View>(
+            binding.chordCheckBox to binding.chord,
+            binding.modeCheckBox to binding.mode,
+            binding.keySigCheckBox to binding.keySig,
+            binding.cueLineCheckBox to binding.cueLine,
+            binding.currentBeatCheckbox to binding.currentBeat
+        )
+
+        for (element in map) {
+            element.key.setOnClickListener {
+                it as CheckBox
+                element.value.visibility =
+                    if (it.isChecked) {
                         View.VISIBLE
                     } else {
                         View.GONE
                     }
             }
         }
-
-        with(binding.modeCheckBox) {
-            setOnClickListener {
-                binding.mode.visibility =
-                    if (this.isChecked) {
-                        View.VISIBLE
-                    } else {
-                        View.GONE
-                    }
-            }
-        }
-
-        with(binding.chordCheckBox) {
-            setOnClickListener {
-                binding.chord.visibility =
-                    if (this.isChecked) {
-                        View.VISIBLE
-                    } else {
-                        View.GONE
-                    }
-            }
-        }
-
-        with(binding.keySigCheckBox) {
-            setOnClickListener {
-                binding.keySig.visibility =
-                    if (this.isChecked) {
-                        View.VISIBLE
-                    } else {
-                        View.GONE
-                    }
-            }
-        }
-
-        with(binding.cueLineCheckBox) {
-            setOnClickListener {
-                binding.cueLine.visibility =
-                    if (this.isChecked) {
-                        View.VISIBLE
-                    } else {
-                        View.GONE
-                    }
-            }
-        }
-
-        with(binding.currentBeatCheckbox) {
-            setOnClickListener {
-                binding.currentBeat.visibility =
-                    if (this.isChecked) {
-                        View.VISIBLE
-                    } else {
-                        View.GONE
-                    }
-            }
-        }
-
 
         with(binding.soundCheckBox) {
             setOnClickListener {
