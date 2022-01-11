@@ -1,4 +1,4 @@
-package com.example.musictraining
+package com.tunepruner.musictraining
 
 import android.util.Log
 import kotlinx.coroutines.CoroutineScope
@@ -16,9 +16,9 @@ class SettingsRepository {
     val current: StateFlow<Settings> = _current
 
     init {
-        CoroutineScope(Dispatchers.IO).launch {
-            _current.value.change.collect { _current.value = _current.value }
-        }
+//        CoroutineScope(Dispatchers.IO).launch {
+//            _current.value.change.collect { _current.value = _current.value }
+//        }
 
         //TODO set up persistence
 

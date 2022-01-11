@@ -4,7 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainFragment">
+        tools:context="com.tunepruner.musictraining.MainFragment">
 
 
     <LinearLayout
@@ -69,8 +69,7 @@
                 android:id="@+id/current_beat"
                 tools:text="$beat"
                 android:textSize="50sp"
-                android:textColor="@color/white"
-                android:background="@color/black"
+                android:layout_margin="@dimen/fab_margin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:layout_editor_absoluteY="341dp"

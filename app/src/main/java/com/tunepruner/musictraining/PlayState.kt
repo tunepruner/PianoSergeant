@@ -1,4 +1,4 @@
-package com.example.musictraining
+package com.tunepruner.musictraining
 
 enum class PlayState {
     PLAYING,

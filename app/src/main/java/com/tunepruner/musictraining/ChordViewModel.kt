@@ -1,9 +1,10 @@
-package com.example.musictraining
+package com.tunepruner.musictraining
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import java.util.*
 
 typealias RelationOptions = Pair<Int, Int>
 typealias Spellings = Pair<String, String>
@@ -14,6 +15,7 @@ class ChordViewModel(
 
     private val _currentChord: MutableLiveData<String?> = MutableLiveData(null)
     val currentChord: LiveData<String?> = _currentChord
+//    val stack: Stack<String> = Stack<String>().apply { add("C") }
 
     val pitches = listOf(
         "A", "Bb", "B", "C", "Db", "D", "Eb", "E", "F", "F#", "G", "Ab"
@@ -28,9 +30,20 @@ class ChordViewModel(
         var climbedTo = current
         for (x in 1..desiredDistance) {
             climbedTo = climbOneLevel(climbedTo)
+            Log.i("12345", "$climbedTo")
         }
         return climbedTo
+//        return if (isNotRepetition(climbedTo)) {
+//            climbedTo.apply { stack.push(climbedTo) }
+//        } else {
+//            keys[(0..keys.size).random()]
+//        }
     }
+
+//    private fun isNotRepetition(checkForRepetition: String): Boolean {
+//        return checkForRepetition != stack.lastElement() &&
+//                checkForRepetition != stack.secondToLastElement()
+//    }
 
     private fun climbOneLevel(climbFrom: String): String {
         return when {

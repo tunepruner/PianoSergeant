@@ -1,6 +1,7 @@
-package com.example.musictraining
+package com.tunepruner.musictraining
 
 import android.app.Application
+import com.example.musictraining.R
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
@@ -13,8 +14,14 @@ val repositoryModule = module {
     single { SettingsRepository() }
 }
 
+val soundModule = module {
+    single {
+        MetronomeClicker(androidContext())
+    }
+}
+
 val viewModelModule = module {
-    single { MetronomeViewModel(get()) }
+    single { MetronomeViewModel(get(), get()) }
     single { ChordViewModel(get()) }
 }
 
@@ -23,11 +30,15 @@ class MusicTrainingApplication : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@MusicTrainingApplication)
-            modules(mutableListOf(
-                miscModule,
-                repositoryModule,
-                viewModelModule
-            ))
+            modules(
+                mutableListOf(
+                    soundModule,
+                    miscModule,
+                    repositoryModule,
+                    viewModelModule
+                )
+            )
         }
     }
+
 }

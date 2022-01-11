@@ -3,7 +3,7 @@
         package="com.example.musictraining">
 
     <application
-            android:name=".MusicTrainingApplication"
+            android:name="com.tunepruner.musictraining.MusicTrainingApplication"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
@@ -11,7 +11,7 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.MusicTraining">
         <activity
-                android:name=".MainActivity"
+                android:name="com.tunepruner.musictraining.MainActivity"
                 android:label="@string/app_name"
                 android:exported="true"
                 android:theme="@style/Theme.MusicTraining.NoActionBar">

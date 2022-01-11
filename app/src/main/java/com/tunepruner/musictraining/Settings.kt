@@ -1,4 +1,4 @@
-package com.example.musictraining
+package com.tunepruner.musictraining
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.math.roundToInt

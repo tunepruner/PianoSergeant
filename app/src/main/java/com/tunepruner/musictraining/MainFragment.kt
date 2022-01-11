@@ -1,4 +1,4 @@
-package com.example.musictraining
+package com.tunepruner.musictraining
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,8 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
-import com.example.musictraining.databinding.FragmentFirstBinding
+import com.example.musictraining.R
+import com.example.musictraining.databinding.FragmentMainBinding
 import org.koin.java.KoinJavaComponent.inject
 import kotlin.math.roundToInt
 
@@ -20,7 +21,7 @@ const val MIN_BEATS_PER_CHORD = 1
 
 class MainFragment : Fragment() {
 
-    private var _binding: FragmentFirstBinding? = null
+    private var _binding: FragmentMainBinding? = null
     private val metronomeViewModel: MetronomeViewModel by inject(MetronomeViewModel::class.java)
     private val chordViewModel: ChordViewModel by inject(ChordViewModel::class.java)
     private val settings: SettingsRepository by inject(SettingsRepository::class.java)
@@ -34,7 +35,7 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -61,7 +62,7 @@ class MainFragment : Fragment() {
             MIN_BEATS_PER_CHORD
         )
 
-        metronomeViewModel.beatLiveData.observe(viewLifecycleOwner) {
+        metronomeViewModel.publishedBeatNumber.observe(viewLifecycleOwner) {
             binding.currentBeat.text = it.toString()
             if (it == 1) {
                 chordViewModel.triggerNextChord()
@@ -118,7 +119,7 @@ class MainFragment : Fragment() {
 
         with(binding.soundCheckBox) {
             setOnClickListener {
-                //TODO setup sound
+                settings.current.value.soundOn = (it as CheckBox).isChecked
             }
         }
 
