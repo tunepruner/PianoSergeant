@@ -20,14 +20,16 @@ import android.media.midi.MidiDeviceInfo;
 import android.media.midi.MidiDeviceInfo.PortInfo;
 import android.os.Bundle;
 
+import com.tunepruner.musictraining.chords.Pitch;
+
 /**
  * Format a MIDI message for printing.
  */
 public class MidiPrinter {
 
-    public static final String[] CHANNEL_COMMAND_NAMES = { "NoteOff", "NoteOn",
-            "PolyTouch", "Control", "Program", "Pressure", "Bend" };
-    public static final String[] SYSTEM_COMMAND_NAMES = { "SysEx", // F0
+    public static final String[] CHANNEL_COMMAND_NAMES = {"NoteOff", "NoteOn",
+            "PolyTouch", "Control", "Program", "Pressure", "Bend"};
+    public static final String[] SYSTEM_COMMAND_NAMES = {"SysEx", // F0
             "TimeCode",    // F1
             "SongPos",     // F2
             "SongSel",     // F3
@@ -59,7 +61,7 @@ public class MidiPrinter {
 
     public static String formatBytes(byte[] data, int offset, int count) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < count; i++) {
+        for ( int i = 0; i < count; i++ ) {
             sb.append(String.format(" %02X", data[offset + i]));
         }
         return sb.toString();
@@ -92,11 +94,11 @@ public class MidiPrinter {
         StringBuilder sb = new StringBuilder();
         if (info != null) {
             Bundle properties = info.getProperties();
-            for (String key : properties.keySet()) {
+            for ( String key : properties.keySet() ) {
                 Object value = properties.get(key);
                 sb.append(key).append(" = ").append(value).append('\n');
             }
-            for (PortInfo port : info.getPorts()) {
+            for ( PortInfo port : info.getPorts() ) {
                 sb.append((port.getType() == PortInfo.TYPE_INPUT) ? "input"
                         : "output");
                 sb.append("[").append(port.getPortNumber()).append("] = \"").append(port.getName()

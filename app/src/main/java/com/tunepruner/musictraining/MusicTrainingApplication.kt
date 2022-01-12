@@ -2,12 +2,14 @@ package com.tunepruner.musictraining
 
 import android.app.Application
 import com.example.musictraining.R
+import com.tunepruner.musictraining.chords.AttemptProcessor
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 
 val miscModule = module {
     single { (ChordViewModel(get())) }
+    single { AttemptProcessor() }
 }
 
 val repositoryModule = module {

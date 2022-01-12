@@ -20,6 +20,7 @@
         <TextView
                 android:id="@+id/chord"
                 tools:text="$chord"
+                android:textSize="100sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:layout_editor_absoluteY="28dp"
@@ -31,6 +32,7 @@
                 android:layout_height="wrap_content"
                 tools:src="@tools:sample/avatars"
                 android:id="@+id/key_sig"
+                android:visibility="gone"
                 tools:layout_editor_absoluteY="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_margin="@dimen/fab_margin" />
@@ -40,6 +42,7 @@
                 android:id="@+id/mode"
                 tools:text="$mode"
                 android:layout_width="wrap_content"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toEndOf="@+id/key_sig"
                 android:layout_margin="@dimen/fab_margin" />
@@ -78,14 +81,14 @@
     </LinearLayout>
 
     <LinearLayout
+            android:id="@+id/checkbox_layout"
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="100dp"
+            android:layout_marginStart="@dimen/fab_margin"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_margin="@dimen/fab_margin"
-            android:id="@+id/checkbox_layout"
-            app:layout_constraintTop_toBottomOf="@+id/play_button">
+            app:layout_constraintBottom_toBottomOf="parent">
 
 
         <CheckBox
@@ -97,12 +100,16 @@
         <CheckBox
                 android:id="@+id/mode_checkBox"
                 android:text="Show mode"
+                android:visibility="gone"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
         <CheckBox
                 android:id="@+id/key_sig_checkBox"
                 android:text="Show key signature"
+                android:visibility="gone"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -130,11 +137,12 @@
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="100dp"
+            android:layout_marginEnd="@dimen/fab_margin"
             android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:id="@+id/selector_layout"
-            app:layout_constraintTop_toBottomOf="@+id/play_button">
+            android:id="@+id/selector_layout">
 
         <LinearLayout
                 android:orientation="horizontal"
@@ -181,6 +189,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp" />
+
         </LinearLayout>
 
         <SeekBar
