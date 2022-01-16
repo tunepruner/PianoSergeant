@@ -45,9 +45,6 @@ public class MidiFramer extends MidiReceiver {
         mReceiver = receiver;
     }
 
-    /*
-     * @see android.midi.MidiReceiver#onSend(byte[], int, int, long)
-     */
     @Override
     public void onSend(byte[] data, int offset, int count, long timestamp)
             throws IOException {

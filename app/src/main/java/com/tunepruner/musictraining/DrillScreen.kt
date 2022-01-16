@@ -29,7 +29,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.inject
 import java.io.IOException
-import kotlin.experimental.and
 import kotlin.math.roundToInt
 import kotlin.time.ExperimentalTime
 
@@ -42,8 +41,7 @@ const val MAX_BEATS_PER_CHORD = 13
 const val MIN_BEATS_PER_CHORD = 1
 
 @ExperimentalCoroutinesApi
-@RequiresApi(Build.VERSION_CODES.M)
-class MainFragment : Fragment() {
+class DrillScreen : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val metronomeViewModel: MetronomeViewModel by inject(MetronomeViewModel::class.java)
     private val chordViewModel: ChordViewModel by inject(ChordViewModel::class.java)
@@ -68,7 +66,7 @@ class MainFragment : Fragment() {
         if (this.context?.packageManager?.hasSystemFeature(PackageManager.FEATURE_MIDI) == true) {
 
 
-            val m = this@MainFragment.context?.getSystemService(Context.MIDI_SERVICE) as MidiManager
+            val m = this@DrillScreen.context?.getSystemService(Context.MIDI_SERVICE) as MidiManager
 
             //to do things when plugging in or unplugging
             m.registerDeviceCallback(object : DeviceCallback() {
