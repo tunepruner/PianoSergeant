@@ -26,24 +26,24 @@ import java.io.IOException;
  * Convert incoming MIDI messages to a string and write them to a ScopeLogger.
  * Assume that messages have been aligned using a MidiFramer.
  */
-public class LoggingReceiver extends MidiReceiver {
+public class NoteReceiver extends MidiReceiver {
     public static final String TAG = "MidiScope";
     private static final long NANOS_PER_MILLISECOND = 1000000L;
     private static final long NANOS_PER_SECOND = NANOS_PER_MILLISECOND * 1000L;
     private long mStartTime;
-    private ScopeLogger mLogger;
+    private NoteSender noteSender;
     private long mLastTimeStamp = 0;
 
-    public LoggingReceiver(ScopeLogger logger) {
+    public NoteReceiver(NoteSender noteSender) {
         mStartTime = System.nanoTime();
-        mLogger = logger;
+        this.noteSender = noteSender;
     }
 
     @Override
     public void onSend(byte[] data, int offset, int count, long timestamp)
             throws IOException {
         if (MidiParser.isNoteOn(data, offset, count)) {
-            mLogger.log(new Pitch(data[offset + 1], null).getPitchClass().getName());
+            noteSender.send(new Pitch(data[offset + 1], null).getPitchClass().getName());
         }
 
     }

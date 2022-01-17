@@ -1,19 +1,6 @@
 package com.tunepruner.musictraining.ui
 
-import android.content.Context
-import android.content.pm.PackageManager
-import android.media.midi.MidiDeviceInfo
-import android.media.midi.MidiDeviceStatus
-import android.media.midi.MidiInputPort
-import android.media.midi.MidiManager
-import android.media.midi.MidiManager.DeviceCallback
-import android.media.midi.MidiOutputPort
-import android.media.midi.MidiReceiver
-import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,22 +9,15 @@ import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import com.example.musictraining.R
 import com.example.musictraining.databinding.FragmentMainBinding
-import com.tunepruner.musictraining.midi.LoggingReceiver
-import com.tunepruner.musictraining.midi.MidiFramer
 import com.tunepruner.musictraining.model.PlayState
 import com.tunepruner.musictraining.repositories.Settings
 import com.tunepruner.musictraining.repositories.SettingsRepository
 import com.tunepruner.musictraining.viewmodel.ChordViewModel
 import com.tunepruner.musictraining.viewmodel.MetronomeViewModel
 import com.tunepruner.musictraining.viewmodel.NoteInputViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.inject
-import java.io.IOException
 import kotlin.math.roundToInt
-import kotlin.time.ExperimentalTime
 
 const val LOG_TAG = "12345"
 const val MAX_TEMPO = 270

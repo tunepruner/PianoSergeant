@@ -11,15 +11,13 @@ import android.media.midi.MidiReceiver
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import com.tunepruner.musictraining.midi.LoggingReceiver
+import com.tunepruner.musictraining.midi.NoteReceiver
 import com.tunepruner.musictraining.midi.MidiFramer
 import com.tunepruner.musictraining.ui.LOG_TAG
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import java.io.IOException
 
@@ -59,11 +57,12 @@ class IncomingMidiSource(context: Context) {
                                     data: ByteArray, offset: Int,
                                     count: Int, timestamp: Long
                                 ) {
-                                    val loggingReceiver = LoggingReceiver {
-                                        CoroutineScope(Dispatchers.Main).launch {
-                                            _flowOfNotes.value = it
+                                    val loggingReceiver =
+                                        NoteReceiver {
+                                            CoroutineScope(Dispatchers.Main).launch {
+                                                _flowOfNotes.value = it
+                                            }
                                         }
-                                    }
                                     val framer = MidiFramer(loggingReceiver)
                                     framer.send(data, offset, count, timestamp)
                                 }

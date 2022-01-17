@@ -15,10 +15,10 @@
  */
 package com.tunepruner.musictraining.midi;
 
-public interface ScopeLogger {
+public interface NoteSender {
     /**
      * Write the text string somewhere that the user can see it.
      * @param text
      */
-    void log(String text);
+    void send(String text);
 }
