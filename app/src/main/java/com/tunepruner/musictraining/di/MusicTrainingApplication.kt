@@ -5,7 +5,9 @@ import com.tunepruner.musictraining.viewmodel.ChordViewModel
 import com.tunepruner.musictraining.util.MetronomeClicker
 import com.tunepruner.musictraining.repositories.SettingsRepository
 import com.tunepruner.musictraining.chords.AttemptProcessor
+import com.tunepruner.musictraining.repositories.IncomingMidiSource
 import com.tunepruner.musictraining.viewmodel.MetronomeViewModel
+import com.tunepruner.musictraining.viewmodel.NoteInputViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
@@ -13,6 +15,7 @@ import org.koin.dsl.module
 val miscModule = module {
     single { (ChordViewModel(get())) }
     single { AttemptProcessor() }
+    single { IncomingMidiSource(androidContext()) }
 }
 
 val repositoryModule = module {
@@ -28,6 +31,7 @@ val soundModule = module {
 val viewModelModule = module {
     single { MetronomeViewModel(get(), get()) }
     single { ChordViewModel(get()) }
+    single { NoteInputViewModel(get()) }
 }
 
 class

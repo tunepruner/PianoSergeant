@@ -20,7 +20,17 @@
         <TextView
                 android:id="@+id/chord"
                 tools:text="$chord"
-                android:textSize="100sp"
+                android:textSize="90sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:layout_editor_absoluteY="28dp"
+                app:layout_constraintStart_toEndOf="@+id/mode"
+                android:layout_margin="@dimen/fab_margin" />
+
+        <TextView
+                android:id="@+id/note_input"
+                tools:text="$in"
+                android:textSize="50sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:layout_editor_absoluteY="28dp"

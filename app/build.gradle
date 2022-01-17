@@ -36,6 +36,8 @@ android {
 }
 
 dependencies {
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.0"
+
     //prefs datastore
     implementation "androidx.datastore:datastore-preferences:1.0.0"
     //proto datastore

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.tunepruner.musictraining.repositories.IncomingMidiSource
 import com.tunepruner.musictraining.repositories.SettingsRepository
 import java.util.*
 
@@ -25,7 +26,6 @@ class ChordViewModel(
     val keys = listOf(
         "Cb", "Gb", "Db", "Ab", "Eb", "Bb", "F", "C", "G", "D", "A", "E", "B", "F#", "C#"
     )
-
 
     private fun getChord(current: String, desiredDistance: Int): String {
         var climbedTo = current
