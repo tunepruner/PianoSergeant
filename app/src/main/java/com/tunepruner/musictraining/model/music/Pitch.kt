@@ -1,4 +1,4 @@
-package com.tunepruner.musictraining.chords
+package com.tunepruner.musictraining.model.music
 
 
 data class Pitch(val value: Int, val signBias: SignBias? = null) {

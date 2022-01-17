@@ -1,4 +1,4 @@
-package com.tunepruner.musictraining.chords
+package com.tunepruner.musictraining.model.music
 
 sealed class PitchClass(
     val lowestPitch: Pitch,

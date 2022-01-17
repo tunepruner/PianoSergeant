@@ -4,7 +4,7 @@ import android.app.Application
 import com.tunepruner.musictraining.viewmodel.ChordViewModel
 import com.tunepruner.musictraining.util.MetronomeClicker
 import com.tunepruner.musictraining.repositories.SettingsRepository
-import com.tunepruner.musictraining.chords.AttemptProcessor
+import com.tunepruner.musictraining.model.music.AttemptProcessor
 import com.tunepruner.musictraining.repositories.IncomingMidiSource
 import com.tunepruner.musictraining.viewmodel.MetronomeViewModel
 import com.tunepruner.musictraining.viewmodel.NoteInputViewModel

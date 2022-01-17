@@ -1,6 +1,4 @@
-package com.tunepruner.musictraining.chords
-
-import java.util.*
+package com.tunepruner.musictraining.model.music
 
 sealed class ChordDefinition(
     val intervals: List<Interval>,

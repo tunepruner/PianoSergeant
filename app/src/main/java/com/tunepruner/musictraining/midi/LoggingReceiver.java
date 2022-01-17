@@ -18,7 +18,7 @@ package com.tunepruner.musictraining.midi;
 
 import android.media.midi.MidiReceiver;
 
-import com.tunepruner.musictraining.chords.Pitch;
+import com.tunepruner.musictraining.model.music.Pitch;
 
 import java.io.IOException;
 
