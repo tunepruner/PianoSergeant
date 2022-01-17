@@ -1,4 +1,4 @@
-package com.tunepruner.musictraining
+package com.tunepruner.musictraining.model
 
 enum class PlayState {
     PLAYING,

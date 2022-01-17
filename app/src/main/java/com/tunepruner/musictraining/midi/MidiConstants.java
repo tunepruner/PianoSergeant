@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.tunepruner.musictraining;
+package com.tunepruner.musictraining.midi;
 
 /**
  * MIDI related constants and static methods.

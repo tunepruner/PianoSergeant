@@ -1,4 +1,4 @@
-package com.tunepruner.musictraining
+package com.tunepruner.musictraining.ui
 
 import android.content.Context
 import android.content.pm.PackageManager
@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
-    @ExperimentalTime
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.content_main)

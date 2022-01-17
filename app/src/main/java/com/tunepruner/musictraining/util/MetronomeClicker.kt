@@ -1,4 +1,4 @@
-package com.tunepruner.musictraining
+package com.tunepruner.musictraining.util
 
 import android.content.Context
 import android.media.AudioAttributes

@@ -1,7 +1,13 @@
-package com.tunepruner.musictraining
+package com.tunepruner.musictraining.repositories
 
+import com.tunepruner.musictraining.calculateLevelFromPercentage
+import com.tunepruner.musictraining.ui.MAX_BEATS_PER_CHORD
+import com.tunepruner.musictraining.ui.MAX_DISTANCE
+import com.tunepruner.musictraining.ui.MAX_TEMPO
+import com.tunepruner.musictraining.ui.MIN_BEATS_PER_CHORD
+import com.tunepruner.musictraining.ui.MIN_DISTANCE
+import com.tunepruner.musictraining.ui.MIN_TEMPO
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlin.math.roundToInt
 
 class Settings(
     var tempo: Int = 120,

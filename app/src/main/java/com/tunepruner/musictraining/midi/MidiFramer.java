@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package com.tunepruner.musictraining;
+package com.tunepruner.musictraining.midi;
 
 import android.media.midi.MidiReceiver;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
+
+import com.tunepruner.musictraining.midi.MidiConstants;
 
 import java.io.IOException;
 

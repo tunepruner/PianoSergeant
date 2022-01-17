@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.tunepruner.musictraining;
+package com.tunepruner.musictraining.midi;
 
 import android.media.midi.MidiReceiver;
-import android.util.Log;
 
 import com.tunepruner.musictraining.chords.Pitch;
 

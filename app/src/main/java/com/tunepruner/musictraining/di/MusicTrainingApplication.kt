@@ -1,8 +1,11 @@
-package com.tunepruner.musictraining
+package com.tunepruner.musictraining.di
 
 import android.app.Application
-import com.example.musictraining.R
+import com.tunepruner.musictraining.viewmodel.ChordViewModel
+import com.tunepruner.musictraining.util.MetronomeClicker
+import com.tunepruner.musictraining.repositories.SettingsRepository
 import com.tunepruner.musictraining.chords.AttemptProcessor
+import com.tunepruner.musictraining.viewmodel.MetronomeViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
@@ -27,7 +30,8 @@ val viewModelModule = module {
     single { ChordViewModel(get()) }
 }
 
-class MusicTrainingApplication : Application() {
+class
+MusicTrainingApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         startKoin {

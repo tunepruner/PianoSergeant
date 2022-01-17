@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.tunepruner.musictraining;
+package com.tunepruner.musictraining.midi;
 
 import android.media.midi.MidiDeviceInfo;
 import android.media.midi.MidiDeviceInfo.PortInfo;
 import android.os.Bundle;
 
-import com.tunepruner.musictraining.chords.Pitch;
+import com.tunepruner.musictraining.midi.MidiConstants;
 
 /**
  * Format a MIDI message for printing.

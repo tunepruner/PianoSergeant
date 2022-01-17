@@ -1,19 +1,16 @@
-package com.tunepruner.musictraining
+package com.tunepruner.musictraining.viewmodel
 
-import android.R
-import android.media.AudioAttributes
-import android.media.AudioManager
-import android.media.SoundPool
-import android.os.Build
-import android.os.Bundle
-import android.view.View
 import android.widget.SeekBar
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tunepruner.musictraining.util.MetronomeClicker
+import com.tunepruner.musictraining.model.PlayState
+import com.tunepruner.musictraining.repositories.Settings
+import com.tunepruner.musictraining.repositories.SettingsRepository
+import com.tunepruner.musictraining.ui.MIN_TEMPO
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

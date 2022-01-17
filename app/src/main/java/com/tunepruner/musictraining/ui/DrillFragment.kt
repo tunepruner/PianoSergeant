@@ -1,4 +1,4 @@
-package com.tunepruner.musictraining
+package com.tunepruner.musictraining.ui
 
 import android.content.Context
 import android.content.pm.PackageManager
@@ -19,10 +19,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.SeekBar
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.musictraining.R
 import com.example.musictraining.databinding.FragmentMainBinding
+import com.tunepruner.musictraining.midi.LoggingReceiver
+import com.tunepruner.musictraining.midi.MidiFramer
+import com.tunepruner.musictraining.model.PlayState
+import com.tunepruner.musictraining.repositories.Settings
+import com.tunepruner.musictraining.repositories.SettingsRepository
+import com.tunepruner.musictraining.viewmodel.ChordViewModel
+import com.tunepruner.musictraining.viewmodel.MetronomeViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -41,17 +47,17 @@ const val MAX_BEATS_PER_CHORD = 13
 const val MIN_BEATS_PER_CHORD = 1
 
 @ExperimentalCoroutinesApi
-class DrillScreen : Fragment() {
+class DrillFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val metronomeViewModel: MetronomeViewModel by inject(MetronomeViewModel::class.java)
     private val chordViewModel: ChordViewModel by inject(ChordViewModel::class.java)
     private val settings: SettingsRepository by inject(SettingsRepository::class.java)
 
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
-    @ExperimentalTime
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,7 +72,8 @@ class DrillScreen : Fragment() {
         if (this.context?.packageManager?.hasSystemFeature(PackageManager.FEATURE_MIDI) == true) {
 
 
-            val m = this@DrillScreen.context?.getSystemService(Context.MIDI_SERVICE) as MidiManager
+            val m =
+                this@DrillFragment.context?.getSystemService(Context.MIDI_SERVICE) as MidiManager
 
             //to do things when plugging in or unplugging
             m.registerDeviceCallback(object : DeviceCallback() {
@@ -112,10 +119,12 @@ class DrillScreen : Fragment() {
                                     val framer = MidiFramer(loggingReceiver)
                                     framer.send(data, offset, count, timestamp)
                                 }
+
                                 init {
                                     binding.chord.text = "my receiver created"
                                 }
                             }
+
                             val outputPort: MidiOutputPort = device.openOutputPort(/*index*/0)
                             outputPort.connect(MyReceiver())
                             Log.i(LOG_TAG, "openDevice: ")
@@ -124,6 +133,7 @@ class DrillScreen : Fragment() {
                     )
 
                 }
+
                 override fun onDeviceRemoved(info: MidiDeviceInfo) {
                     super.onDeviceRemoved(info)
                 }
@@ -139,12 +149,9 @@ class DrillScreen : Fragment() {
     }
 
 
-    @ExperimentalTime
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            doMidiStuff()
-        }
+        doMidiStuff()
         setUpHandlers()
 
         metronomeViewModel.updateLevelReading(

@@ -1,4 +1,4 @@
-package com.tunepruner.musictraining
+package com.tunepruner.musictraining.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
