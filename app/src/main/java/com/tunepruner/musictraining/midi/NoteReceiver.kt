@@ -13,39 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.tunepruner.musictraining.midi
 
-package com.tunepruner.musictraining.midi;
+import android.media.midi.MidiReceiver
+import com.tunepruner.musictraining.model.music.Pitch
+import java.io.IOException
 
-import android.media.midi.MidiReceiver;
+class NoteReceiver(noteSender: NoteSender) : MidiReceiver() {
+    private val noteSender: NoteSender = noteSender
+    @Throws(IOException::class)
 
-import com.tunepruner.musictraining.model.music.Pitch;
-
-import java.io.IOException;
-
-/**
- * Convert incoming MIDI messages to a string and write them to a ScopeLogger.
- * Assume that messages have been aligned using a MidiFramer.
- */
-public class NoteReceiver extends MidiReceiver {
-    public static final String TAG = "MidiScope";
-    private static final long NANOS_PER_MILLISECOND = 1000000L;
-    private static final long NANOS_PER_SECOND = NANOS_PER_MILLISECOND * 1000L;
-    private long mStartTime;
-    private NoteSender noteSender;
-    private long mLastTimeStamp = 0;
-
-    public NoteReceiver(NoteSender noteSender) {
-        mStartTime = System.nanoTime();
-        this.noteSender = noteSender;
-    }
-
-    @Override
-    public void onSend(byte[] data, int offset, int count, long timestamp)
-            throws IOException {
+    override fun onSend(data: ByteArray, offset: Int, count: Int, timestamp: Long) {
         if (MidiParser.isNoteOn(data, offset, count)) {
-            noteSender.send(new Pitch(data[offset + 1], null).getPitchClass().getName());
+            noteSender.send(Pitch(data[offset + 1].toInt(), null).pitchClass.name)
         }
-
     }
-
 }
