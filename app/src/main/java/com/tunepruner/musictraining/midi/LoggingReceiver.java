@@ -42,8 +42,10 @@ public class LoggingReceiver extends MidiReceiver {
     @Override
     public void onSend(byte[] data, int offset, int count, long timestamp)
             throws IOException {
+        if (MidiParser.isNoteOn(data, offset, count)) {
+            mLogger.log(new Pitch(data[offset + 1], null).getPitchClass().getName());
+        }
 
-        mLogger.log(new Pitch(data[offset + 1], null).getPitchClass().getName());
     }
 
 }

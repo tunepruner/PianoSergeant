@@ -18,14 +18,21 @@ package com.tunepruner.musictraining.midi;
 
 import android.media.midi.MidiDeviceInfo;
 import android.media.midi.MidiDeviceInfo.PortInfo;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
+
 import com.tunepruner.musictraining.midi.MidiConstants;
+
+import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Format a MIDI message for printing.
  */
-public class MidiPrinter {
+public class MidiParser {
 
     public static final String[] CHANNEL_COMMAND_NAMES = {"NoteOff", "NoteOn",
             "PolyTouch", "Control", "Program", "Pressure", "Bend"};
@@ -67,6 +74,12 @@ public class MidiPrinter {
         return sb.toString();
     }
 
+    public static boolean isNoteOn(byte[] data, int offset, int count) {
+        byte statusByte = data[offset++];
+        int status = statusByte & 0xFF;
+        return getName(status).equals("NoteOn");
+    }
+
     // This assumes the message has been aligned using a MidiFramer
     // so that the first byte is a status byte.
     public static String formatMessage(byte[] data, int offset, int count) {
@@ -80,7 +93,7 @@ public class MidiPrinter {
             // Add 1 for humans who think channels are numbered 1-16.
             sb.append((channel + 1)).append(", ");
         }
-        for (int i = 0; i < numData; i++) {
+        for ( int i = 0; i < numData; i++ ) {
             if (i > 0) {
                 sb.append(", ");
             }
