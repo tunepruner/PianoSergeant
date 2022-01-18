@@ -20,7 +20,7 @@
         <TextView
                 android:id="@+id/chord"
                 tools:text="$chord"
-                android:textSize="90sp"
+                android:textSize="60sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:layout_editor_absoluteY="28dp"
@@ -30,7 +30,7 @@
         <TextView
                 android:id="@+id/note_input"
                 tools:text="$in"
-                android:textSize="50sp"
+                android:textSize="30sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:layout_editor_absoluteY="28dp"
@@ -56,6 +56,13 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toEndOf="@+id/key_sig"
                 android:layout_margin="@dimen/fab_margin" />
+
+        <Button
+                android:id="@+id/resend_button"
+                android:text="Resend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
     </LinearLayout>
 
     <LinearLayout

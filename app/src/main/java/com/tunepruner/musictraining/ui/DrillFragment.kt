@@ -111,6 +111,10 @@ class DrillFragment : Fragment() {
             metronomeViewModel.onPlayStopButtonPressed()
         }
 
+        binding.resendButton.setOnClickListener {
+            inputViewModel.resendLastNote()
+        }
+
         val map: Map<CheckBox, View> = mapOf(
             binding.chordCheckBox to binding.chord,
             binding.modeCheckBox to binding.mode,

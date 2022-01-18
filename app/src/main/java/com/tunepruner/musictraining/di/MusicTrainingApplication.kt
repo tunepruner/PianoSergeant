@@ -1,11 +1,11 @@
 package com.tunepruner.musictraining.di
 
 import android.app.Application
-import com.tunepruner.musictraining.viewmodel.ChordViewModel
-import com.tunepruner.musictraining.util.MetronomeClicker
-import com.tunepruner.musictraining.repositories.SettingsRepository
 import com.tunepruner.musictraining.model.music.AttemptProcessor
 import com.tunepruner.musictraining.repositories.IncomingMidiSource
+import com.tunepruner.musictraining.repositories.SettingsRepository
+import com.tunepruner.musictraining.util.MetronomeClicker
+import com.tunepruner.musictraining.viewmodel.ChordViewModel
 import com.tunepruner.musictraining.viewmodel.MetronomeViewModel
 import com.tunepruner.musictraining.viewmodel.NoteInputViewModel
 import org.koin.android.ext.koin.androidContext
@@ -31,7 +31,7 @@ val soundModule = module {
 val viewModelModule = module {
     single { MetronomeViewModel(get(), get()) }
     single { ChordViewModel(get()) }
-    single { NoteInputViewModel(get()) }
+    single { NoteInputViewModel(get(), androidContext()) }
 }
 
 class
@@ -45,7 +45,7 @@ MusicTrainingApplication : Application() {
                     soundModule,
                     miscModule,
                     repositoryModule,
-                    viewModelModule
+                    viewModelModule,
                 )
             )
         }
