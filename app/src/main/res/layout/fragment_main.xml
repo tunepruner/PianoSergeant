@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 tools:layout_editor_absoluteY="28dp"
                 app:layout_constraintStart_toEndOf="@+id/mode"
-                android:layout_margin="@dimen/fab_margin" />
+                android:layout_margin="@dimen/default_margin" />
 
         <TextView
                 android:id="@+id/note_input"
@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 tools:layout_editor_absoluteY="28dp"
                 app:layout_constraintStart_toEndOf="@+id/mode"
-                android:layout_margin="@dimen/fab_margin" />
+                android:layout_margin="@dimen/default_margin" />
 
         <ImageView
                 android:layout_width="wrap_content"
@@ -45,7 +45,7 @@
                 android:visibility="gone"
                 tools:layout_editor_absoluteY="16dp"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_margin="@dimen/fab_margin" />
+                android:layout_margin="@dimen/default_margin" />
 
 
         <TextView
@@ -55,7 +55,7 @@
                 android:visibility="gone"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toEndOf="@+id/key_sig"
-                android:layout_margin="@dimen/fab_margin" />
+                android:layout_margin="@dimen/default_margin" />
 
         <Button
                 android:id="@+id/resend_button"
@@ -73,7 +73,7 @@
             app:layout_constraintTop_toBottomOf="@id/content_layout"
             android:gravity="center"
             app:layout_constraintStart_toStartOf="parent"
-            android:padding="@dimen/fab_margin"
+            android:padding="@dimen/default_margin"
             app:layout_constraintEnd_toEndOf="parent">
 
         <ProgressBar
@@ -89,7 +89,7 @@
                 android:id="@+id/current_beat"
                 tools:text="$beat"
                 android:textSize="50sp"
-                android:layout_margin="@dimen/fab_margin"
+                android:layout_margin="@dimen/default_margin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:layout_editor_absoluteY="341dp"
@@ -103,7 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="100dp"
-            android:layout_marginStart="@dimen/fab_margin"
+            android:layout_marginStart="@dimen/default_margin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent">
 
@@ -155,7 +155,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="100dp"
-            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginEnd="@dimen/default_margin"
             android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -186,7 +186,7 @@
                 android:id="@+id/tempo_selector"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin" />
+                android:layout_margin="@dimen/default_margin" />
 
         <LinearLayout
                 android:orientation="horizontal"
@@ -213,7 +213,7 @@
                 android:id="@+id/chord_distance_selector"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin" />
+                android:layout_margin="@dimen/default_margin" />
 
         <LinearLayout
                 android:orientation="horizontal"
@@ -241,7 +241,7 @@
                 android:id="@+id/beats_per_chord_selector"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin" />
+                android:layout_margin="@dimen/default_margin" />
     </LinearLayout>
 
     <ImageView

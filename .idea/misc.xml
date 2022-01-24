@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/settings_category_background.xml" value="0.15197368421052632" />
         <entry key="app/src/main/res/layout-v26/fragment_settings.xml" value="0.20923913043478262" />
         <entry key="app/src/main/res/layout/add_doubling_requirement_layout.xml" value="0.14046052631578948" />
         <entry key="app/src/main/res/layout/add_interval_requirements_layout.xml" value="0.25" />
