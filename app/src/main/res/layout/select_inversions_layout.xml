@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <TextView
+            android:text="@string/select_inversions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/title" />
+
+    <com.google.android.material.chip.ChipGroup
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/inversions_chipgroup">
+
+        <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/root_position_chip"
+                android:text="@string/root_position" />
+
+        <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/first_inverison_chip"
+                android:text="@string/first_inversion" />
+
+        <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/second_inversion_chip"
+                android:text="@string/second_inversion" />
+
+        <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/third_inversion_chip"
+                android:text="@string/third_inversion" />
+    </com.google.android.material.chip.ChipGroup>
+</LinearLayout>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    <TextView
+            android:text="@string/select_chord_qualities"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/title" />
+
+    <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chord_qualities_chipgroup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/major_triad"
+                android:id="@+id/major_triad"/>
+
+        <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/minor_triad"
+                android:id="@+id/minor_triad" />
+
+        <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/diminished_triad"
+                android:id="@+id/diminished_triad" />
+
+        <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/augmented_triad"
+                android:id="@+id/augmented_triad" />
+
+        <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sus_2_triad"
+                android:id="@+id/sus_2_triad" />
+
+        <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sus_4_triad"
+                android:id="@+id/sus_4_triad" />
+
+        <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dominant_7th"
+                android:id="@+id/dominant_seventh" />
+
+        <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/major_7th"
+                android:id="@+id/major_seventh" />
+
+        <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/minor_7th"
+                android:id="@+id/minor_seventh" />
+
+        <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/minor_major_7th"
+                android:id="@+id/minor_major_seventh" />
+
+        <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/half_diminished_7th"
+                android:id="@+id/half_diminished_seventh" />
+
+        <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/full_diminished_7th"
+                android:id="@+id/full_diminished_seventh" />
+
+        <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/augmented_7th"
+                android:id="@+id/augmented_seventh" />
+
+        <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/augmented_major_7th"
+                android:id="@+id/augmented_major_seventh" />
+
+        <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dominant_7th_sus_4th"
+                android:id="@+id/dominant_seventh_sus_4" />
+    </com.google.android.material.chip.ChipGroup>
+</LinearLayout>

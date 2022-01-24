@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/add_register_requirements"
+            android:id="@+id/title" />
+
+
+    <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+        <RadioButton
+                android:text="@string/require_voice_leading"
+                android:tooltipText="@string/voice_leading_explanation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioButton" />
+
+        <RadioButton
+                android:text="@string/require_common_top_note"
+                android:tooltipText="@string/will_limit_chord_set"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioButton2" />
+
+        <RadioButton
+                android:text="@string/require_common_bottom_note"
+                android:tooltipText="@string/will_limit_chord_set"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioButton3" />
+
+        <RadioButton
+                android:text="@string/require_leap_p5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioButton4" />
+    </RadioGroup>
+</LinearLayout>

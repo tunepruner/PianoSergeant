@@ -1,0 +1,53 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.tunepruner.musictraining.ui.SettingsFragment">
+
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings" />
+
+        <include layout="@layout/time_constraint_layout"
+                android:id="@+id/time_constraint_layout"/>
+
+        <include layout="@layout/choose_mode_layout"
+                android:id="@+id/choose_mode_layout"/>
+
+        <include layout="@layout/select_notes_per_bar_layout"
+                android:id="@+id/select_notes_per_bar_layout"/>
+
+        <include layout="@layout/add_interval_requirements_layout"
+                android:id="@+id/add_interval_requirements_layout"/>
+
+        <include layout="@layout/select_inversions_layout"
+                android:id="@+id/select_inversions_layout"/>
+
+        <include
+                layout="@layout/select_chord_qualities_layout"
+                android:id="@+id/select_chord_qualities_layout" />
+
+        <include
+                layout="@layout/constrain_permitted_voicings_layout"
+                android:id="@+id/constrain_permitted_voicings_layout" />
+
+        <include
+                layout="@layout/select_keys_layout"
+                android:id="@+id/select_keys_layout" />
+
+        <include
+                layout="@layout/algorithm_for_prompts_layout"
+                android:id="@+id/algorithm_for_prompts_layout" />
+
+    </LinearLayout>
+
+</ScrollView>
