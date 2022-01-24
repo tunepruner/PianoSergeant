@@ -9,7 +9,7 @@
     <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/choose_mode"
+            android:text="@string/mode"
             android:id="@+id/choose_mode_title" />
 
     <RadioGroup
@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:tooltipText="@string/chord_mode_explanation"
-                android:id="@+id/rapid_fire_radio_button" />
+                android:id="@+id/chord_mode_radio_button" />
     </RadioGroup>
 
 </LinearLayout>

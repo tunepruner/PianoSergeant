@@ -4,6 +4,7 @@ import android.app.Application
 import com.tunepruner.musictraining.model.music.AttemptProcessor
 import com.tunepruner.musictraining.repositories.IncomingMidiSource
 import com.tunepruner.musictraining.repositories.SettingsRepository
+import com.tunepruner.musictraining.repositories.dataStore
 import com.tunepruner.musictraining.util.MetronomeClicker
 import com.tunepruner.musictraining.viewmodel.ChordViewModel
 import com.tunepruner.musictraining.viewmodel.MetronomeViewModel
@@ -19,7 +20,7 @@ val miscModule = module {
 }
 
 val repositoryModule = module {
-    single { SettingsRepository() }
+    single { SettingsRepository(androidContext().dataStore) }
 }
 
 val soundModule = module {

@@ -7,13 +7,13 @@
         android:layout_height="wrap_content">
 
     <TextView
-            android:text="@string/notes_per_bar"
+            android:text="@string/notes_per_beat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/title" />
 
     <include layout="@layout/number_selector"
-            android:id="@+id/select_notes_per_bar_layout"/>
+            android:id="@+id/select_notes_per_beat_layout"/>
 
 </LinearLayout>

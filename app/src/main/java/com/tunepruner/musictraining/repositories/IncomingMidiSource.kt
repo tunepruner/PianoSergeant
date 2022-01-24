@@ -37,6 +37,7 @@ data class LastNote(
 )
 
 val LAST_NOTE = stringPreferencesKey("last_note")
+val SETTINGS = stringPreferencesKey("settings")
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "music_training")
 
 class IncomingMidiSource(context: Context) {

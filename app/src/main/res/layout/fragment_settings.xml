@@ -24,8 +24,8 @@
         <include layout="@layout/choose_mode_layout"
                 android:id="@+id/choose_mode_layout"/>
 
-        <include layout="@layout/select_notes_per_bar_layout"
-                android:id="@+id/select_notes_per_bar_layout"/>
+        <include layout="@layout/select_notes_per_beat_layout"
+                android:id="@+id/select_notes_per_beat_layout"/>
 
         <include layout="@layout/add_interval_requirements_layout"
                 android:id="@+id/add_interval_requirements_layout"/>

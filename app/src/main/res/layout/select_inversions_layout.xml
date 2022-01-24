@@ -8,7 +8,7 @@
         android:layout_height="match_parent">
 
     <TextView
-            android:text="@string/select_inversions"
+            android:text="@string/inversions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/title" />
@@ -19,25 +19,35 @@
             android:id="@+id/inversions_chipgroup">
 
         <com.google.android.material.chip.Chip
-                android:layout_width="wrap_content"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:checked="true"
+                android:layout_width="@dimen/inversion_chip_width"
                 android:layout_height="wrap_content"
                 android:id="@+id/root_position_chip"
                 android:text="@string/root_position" />
 
         <com.google.android.material.chip.Chip
-                android:layout_width="wrap_content"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:checked="true"
+                android:layout_width="@dimen/inversion_chip_width"
                 android:layout_height="wrap_content"
                 android:id="@+id/first_inverison_chip"
                 android:text="@string/first_inversion" />
 
         <com.google.android.material.chip.Chip
-                android:layout_width="wrap_content"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:checkable="true"
+                android:checked="true"
+                android:layout_width="@dimen/inversion_chip_width"
                 android:layout_height="wrap_content"
                 android:id="@+id/second_inversion_chip"
                 android:text="@string/second_inversion" />
 
         <com.google.android.material.chip.Chip
-                android:layout_width="wrap_content"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:checkable="true"
+                android:checked="true"
+                android:layout_width="@dimen/inversion_chip_width"
                 android:layout_height="wrap_content"
                 android:id="@+id/third_inversion_chip"
                 android:text="@string/third_inversion" />
