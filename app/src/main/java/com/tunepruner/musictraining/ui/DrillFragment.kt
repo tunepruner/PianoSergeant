@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.musictraining.R
 import com.example.musictraining.databinding.FragmentMainBinding
 import com.tunepruner.musictraining.model.PlayState
@@ -107,6 +108,10 @@ class DrillFragment : Fragment() {
     }
 
     private fun setUpHandlers() {
+        binding.settingsButton.setOnClickListener {
+            findNavController().navigate(R.id.settings_fragment)
+        }
+
         binding.playButton.setOnClickListener {
             metronomeViewModel.onPlayStopButtonPressed()
         }
