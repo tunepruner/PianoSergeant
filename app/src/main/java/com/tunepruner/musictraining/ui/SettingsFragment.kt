@@ -1,21 +1,38 @@
 package com.tunepruner.musictraining.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.musictraining.R
 import com.example.musictraining.databinding.FragmentSettingsBinding
+import com.tunepruner.musictraining.repositories.AlgorithmSetting
 import com.tunepruner.musictraining.repositories.ChordQuality
 import com.tunepruner.musictraining.repositories.IntervalRequirements
 import com.tunepruner.musictraining.repositories.Inversion
+import com.tunepruner.musictraining.repositories.Key
+import com.tunepruner.musictraining.repositories.MAX_DOUBLING_AMOUNT
+import com.tunepruner.musictraining.repositories.MAX_NOTES_PER_BEAT
+import com.tunepruner.musictraining.repositories.MIN_DOUBLING_AMOUNT
+import com.tunepruner.musictraining.repositories.MIN_NOTES_PER_BEAT
 import com.tunepruner.musictraining.repositories.Mode
+import com.tunepruner.musictraining.repositories.NoteDoublingRequirement
+import com.tunepruner.musictraining.repositories.PatternSubSetting
+import com.tunepruner.musictraining.repositories.RegisterRequirement
 import com.tunepruner.musictraining.repositories.SettingsRepository
+import com.tunepruner.musictraining.repositories.SpacingRequirement
 import com.tunepruner.musictraining.repositories.TimeConstraint
+import com.tunepruner.musictraining.repositories.allIntervals
 import kotlinx.android.synthetic.main.add_interval_requirements_layout.view.*
+import kotlinx.android.synthetic.main.algorithm_for_prompts_layout.view.*
+import kotlinx.android.synthetic.main.choose_mode_layout.*
+import kotlinx.android.synthetic.main.constrain_permitted_voicings_layout.*
 import kotlinx.android.synthetic.main.fragment_settings.*
+import kotlinx.android.synthetic.main.number_selector.view.*
+import kotlinx.android.synthetic.main.select_inversions_layout.*
+import kotlinx.android.synthetic.main.time_constraint_layout.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.java.KoinJavaComponent
 
@@ -58,87 +75,351 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.timeConstraintLayout.rapidFireRadioButton.setOnClickListener {
-
-            if (it.isEnabled) {
-                settings.current.value.timeConstraint = TimeConstraint.RapidFire
-            }
-        }
         initializeViews()
     }
 
     private fun initializeViews() {
         settings.current.value.let { settings ->
             with(binding) {
-                with(timeConstraintLayout) {
-                    rapidFireRadioButton.isChecked =
-                        settings.timeConstraint is TimeConstraint.RapidFire
-                    metronomeRadioButton.isChecked =
-                        settings.timeConstraint is TimeConstraint.Metronome
+                with(time_constraint_radio_group) {
+                    check(
+                        when (settings.timeConstraint) {
+                            TimeConstraint.RAPID_FIRE -> R.id.rapid_fire_radio_button
+                            TimeConstraint.METRONOME -> R.id.metronome_radio_button
+                        }
+                    )
+                    setOnCheckedChangeListener { _, button ->
+                        when (button) {
+                            R.id.rapid_fire_radio_button -> settings.timeConstraint =
+                                TimeConstraint.RAPID_FIRE
+                            R.id.metronome_radio_button -> settings.timeConstraint =
+                                TimeConstraint.METRONOME
+                        }
+                        persistSettings()
+                    }
                 }
-                with(chooseModeLayout) {
-                    scaleModeRadioButton.isChecked =
-                        settings.mode is Mode.ScaleMode
-                    chordModeRadioButton.isChecked =
-                        settings.mode is Mode.ChordMode
+                with(choose_mode_radio_group) {
+                    check(
+                        when (settings.mode) {
+                            Mode.CHORD -> R.id.chord_mode_radio_button
+                            Mode.SCALE -> R.id.scale_mode_radio_button
+                        }
+                    )
+                    setOnCheckedChangeListener { _, button ->
+                        when (button) {
+                            R.id.chord_mode_radio_button -> settings.mode = Mode.CHORD
+                            R.id.scale_mode_radio_button -> settings.mode = Mode.SCALE
+                        }
+                        persistSettings()
+                    }
+                }
+                with(select_notes_per_beat_layout) {
+                    current_value.text =
+                        settings.notesPerBeat.toString()
+                    up_button.setOnClickListener {
+                        if (settings.notesPerBeat < MAX_NOTES_PER_BEAT) {
+                            settings.notesPerBeat++
+                            current_value.text = settings.notesPerBeat.toString()
+                            persistSettings()
+                        }
+                    }
+                    down_button.setOnClickListener {
+                        if (settings.notesPerBeat > MIN_NOTES_PER_BEAT) {
+                            settings.notesPerBeat--
+                            current_value.text = settings.notesPerBeat.toString()
+                            persistSettings()
+                        }
+                    }
                 }
                 with(add_interval_requirements_layout) {
-                    none_button.isChecked =
-                        settings.intervalRequirements is IntervalRequirements.None
-                    less_than_button.isChecked =
-                        settings.intervalRequirements is IntervalRequirements.LessThan
-                    greater_than_button.isChecked =
-                        settings.intervalRequirements is IntervalRequirements.GreaterThan
+                    //Initialize the radio button state and related ui states
+                    radio_group.check(
+                        when (settings.intervalRequirements) {
+                            IntervalRequirements.NONE -> {
+                                current_value.text = "-"
+                                R.id.none_button
+                            }
+                            IntervalRequirements.LESS_THAN -> {
+                                current_value.text = settings.intervalLessThanValue.uiName
+                                R.id.less_than_button
+                            }
+                            IntervalRequirements.GREATER_THAN -> {
+                                current_value.text = settings.intervalGreaterThanValue.uiName
+                                R.id.greater_than_button
+                            }
+                        }
+                    )
+
+                    radio_group.setOnCheckedChangeListener { _, button ->
+                        when (button) {
+                            R.id.none_button -> {
+                                settings.intervalRequirements = IntervalRequirements.NONE
+                                current_value.text = "-"
+                            }
+                            R.id.less_than_button -> {
+                                settings.intervalRequirements = IntervalRequirements.LESS_THAN
+                                current_value.text = settings.intervalLessThanValue.uiName
+                            }
+                            R.id.greater_than_button -> {
+                                settings.intervalRequirements =
+                                    IntervalRequirements.GREATER_THAN
+                                current_value.text = settings.intervalGreaterThanValue.uiName
+                            }
+                        }
+                        persistSettings()
+                    }
+                    up_button.setOnClickListener {
+                        if (settings.intervalRequirements == IntervalRequirements.LESS_THAN) {
+                            val currentIndex: Int =
+                                allIntervals.indexOf(settings.intervalLessThanValue)
+                            if (currentIndex < allIntervals.size - 1) {
+                                settings.intervalLessThanValue = allIntervals[currentIndex + 1]
+                                current_value.text = settings.intervalLessThanValue.uiName
+                            }
+                        } else {
+                            val currentIndex: Int =
+                                allIntervals.indexOf(settings.intervalGreaterThanValue)
+                            if (currentIndex < allIntervals.size - 1) {
+                                settings.intervalGreaterThanValue = allIntervals[currentIndex + 1]
+                                current_value.text = settings.intervalGreaterThanValue.uiName
+                            }
+                        }
+                        persistSettings()
+                    }
+                    down_button.setOnClickListener {
+                        if (settings.intervalRequirements == IntervalRequirements.LESS_THAN) {
+                            val currentIndex: Int =
+                                allIntervals.indexOf(settings.intervalLessThanValue)
+                            if (currentIndex > 1) {
+                                settings.intervalLessThanValue = allIntervals[currentIndex - 1]
+                                current_value.text = settings.intervalLessThanValue.uiName
+                            }
+                        } else {
+                            Log.i(LOG_TAG, "index of: ${settings.intervalGreaterThanValue}")
+                            val currentIndex: Int =
+                                allIntervals.indexOf(settings.intervalGreaterThanValue)
+                            if (currentIndex > 1) {
+                                settings.intervalGreaterThanValue = allIntervals[(currentIndex - 1)]
+                                current_value.text = settings.intervalGreaterThanValue.uiName
+                            }
+                        }
+                        persistSettings()
+                    }
                 }
-                activity?.findViewById<TextView>(R.id.current_value)?.text =
-                    settings.notesPerBeat.toString()
                 with(selectInversionsLayout) {
-                    rootPositionChip.isChecked =
-                        settings.inversions.contains(Inversion.RootPosition)
-                    firstInverisonChip.isChecked =
-                        settings.inversions.contains(Inversion.FirstInversion)
-                    secondInversionChip.isChecked =
-                        settings.inversions.contains(Inversion.SecondInversion)
-                    thirdInversionChip.isChecked =
-                        settings.inversions.contains(Inversion.ThirdInversion)
+                    val inversionsMap = mapOf(
+                        Inversion.ROOT_POSITION to rootPositionChip,
+                        Inversion.FIRST_INVERSION to firstInverisonChip,
+                        Inversion.SECOND_INVERSION to secondInversionChip,
+                        Inversion.THIRD_INVERSION to thirdInversionChip,
+                    )
+                    for (element in inversionsMap) {
+                        element.value.isChecked = settings.inversions.contains(element.key)
+                        element.value.setOnCheckedChangeListener { compoundButton, b ->
+                            if (compoundButton.isChecked) {
+                                settings.inversions.add(element.key)
+                            } else {
+                                settings.inversions.remove(element.key)
+                            }
+                            persistSettings()
+                        }
+                    }
                 }
+
+
                 with(selectChordQualitiesLayout) {
-                    majorTriad.isChecked =
-                        settings.chordQualities.contains(ChordQuality.MajorTriad)
-                    minorTriad.isChecked =
-                        settings.chordQualities.contains(ChordQuality.MinorTriad)
-                    diminishedTriad.isChecked =
-                        settings.chordQualities.contains(ChordQuality.DiminishedTriad)
-                    augmentedTriad.isChecked =
-                        settings.chordQualities.contains(ChordQuality.AugmentedTriad)
-                    sus2Triad.isChecked =
-                        settings.chordQualities.contains(ChordQuality.Sus2Triad)
-                    sus4Triad.isChecked =
-                        settings.chordQualities.contains(ChordQuality.Sus4Triad)
-                    dominantSeventh.isChecked =
-                        settings.chordQualities.contains(ChordQuality.DominantSeventh)
-                    minorSeventh.isChecked =
-                        settings.chordQualities.contains(ChordQuality.MinorSeventh)
-                    minorMajorSeventh.isChecked =
-                        settings.chordQualities.contains(ChordQuality.MinorMajorSeventh)
-                    halfDiminishedSeventh.isChecked =
-                        settings.chordQualities.contains(ChordQuality.HalfDiminishedSeventh)
-                    fullDiminishedSeventh.isChecked =
-                        settings.chordQualities.contains(ChordQuality.FullDiminishedSeventh)
-                    augmentedSeventh.isChecked =
-                        settings.chordQualities.contains(ChordQuality.AugmentedSeventh)
-                    augmentedMajorSeventh.isChecked =
-                        settings.chordQualities.contains(ChordQuality.AugmentedMajorSeventh)
-                    dominantSeventhSus4.isChecked =
-                        settings.chordQualities.contains(ChordQuality.DominantSeventhSus4)
+                    val chordQualitiesMap = mapOf(
+                        ChordQuality.MAJOR_TRIAD to majorTriad,
+                        ChordQuality.MINOR_TRIAD to minorTriad,
+                        ChordQuality.DIMINISHED_TRIAD to diminishedTriad,
+                        ChordQuality.AUGMENTED_TRIAD to augmentedTriad,
+                        ChordQuality.SUS_2_TRIAD to sus2Triad,
+                        ChordQuality.SUS_4_TRIAD to sus4Triad,
+                        ChordQuality.MAJOR_SEVENTH to majorSeventh,
+                        ChordQuality.DOMINANT_SEVENTH to dominantSeventh,
+                        ChordQuality.MINOR_SEVENTH to minorSeventh,
+                        ChordQuality.MINOR_MAJOR_SEVENTH to minorMajorSeventh,
+                        ChordQuality.HALF_DIMINISHED_SEVENTH to halfDiminishedSeventh,
+                        ChordQuality.FULL_DIMINISHED_SEVENTH to fullDiminishedSeventh,
+                        ChordQuality.AUGMENTED_SEVENTH to augmentedSeventh,
+                        ChordQuality.AUGMENTED_MAJOR_SEVENTH to augmentedMajorSeventh,
+                        ChordQuality.DOMINANT_SEVENTH_SUS_4 to dominantSeventhSus4,
+                    )
+
+                    for (element in chordQualitiesMap) {
+                        element.value.isChecked = settings.chordQualities.contains(element.key)
+                        element.value.setOnCheckedChangeListener { compoundButton, b ->
+                            if (compoundButton.isChecked) {
+                                settings.chordQualities.add(element.key)
+                            } else {
+                                settings.chordQualities.remove(element.key)
+                            }
+                            persistSettings()
+                        }
+                    }
+                }
+
+                with(note_doubling_requirement_layout) {
+                    radio_group.apply {
+                        check(
+                            when (settings.noteDoublingRequirement) {
+                                NoteDoublingRequirement.NONE -> R.id.scale_mode_radio_button
+                                NoteDoublingRequirement.SPECIFIC_AMOUNT -> R.id.specific_amount_button
+                            }
+                        )
+                        setOnCheckedChangeListener { _, button ->
+                            Log.i(LOG_TAG, "clicked: ")
+                            settings.noteDoublingRequirement =
+                                when (button) {
+                                    R.id.specific_amount_button -> NoteDoublingRequirement.SPECIFIC_AMOUNT
+                                    else -> NoteDoublingRequirement.NONE
+                                }
+                            persistSettings()
+                        }
+                    }
+
+                    current_value.text = settings.noteDoublingAmount.toString()
+
+                    up_button.setOnClickListener {
+                        if (settings.noteDoublingRequirement == NoteDoublingRequirement.SPECIFIC_AMOUNT) {
+                            if (settings.noteDoublingAmount < MAX_DOUBLING_AMOUNT) {
+                                settings.noteDoublingAmount++
+                            }
+                            current_value.text = settings.noteDoublingAmount.toString()
+                            persistSettings()
+                        }
+                    }
+                    down_button.setOnClickListener {
+                        if (settings.noteDoublingRequirement == NoteDoublingRequirement.SPECIFIC_AMOUNT) {
+                            if (settings.noteDoublingAmount > MIN_DOUBLING_AMOUNT) {
+                                settings.noteDoublingAmount--
+                            }
+                            current_value.text = settings.noteDoublingAmount.toString()
+                            persistSettings()
+                        }
+                    }
+                }
+
+                with(voicing_spacing_requirement_layout.radio_group) {
+                    check(
+                        when (settings.spacingRequirement) {
+                            SpacingRequirement.NONE -> R.id.none
+                            SpacingRequirement.OPEN_VOICING -> R.id.closed_voicing
+                            SpacingRequirement.CLOSED_VOICING -> R.id.open_voicing
+                        }
+                    )
+                    setOnCheckedChangeListener { _, button ->
+                        settings.spacingRequirement = when (button) {
+                            R.id.closed_voicing -> SpacingRequirement.CLOSED_VOICING
+                            R.id.open_voicing -> SpacingRequirement.OPEN_VOICING
+                            else -> SpacingRequirement.NONE
+                        }
+                        persistSettings()
+                    }
+                }
+
+                with(register_requirement_layout.radio_group) {
+                    check(
+                        when (settings.registerRequirement) {
+                            RegisterRequirement.NONE -> R.id.none
+                            RegisterRequirement.REQUIRE_VOICE_LEADING -> R.id.voice_leading
+                            RegisterRequirement.REQUIRE_COMMON_TOP_NOTE -> R.id.common_top_note
+                            RegisterRequirement.REQUIRE_COMMON_BOTTOM_NOTE -> R.id.common_bottom_note
+                            RegisterRequirement.REQUIRE_LEAP_GREATER_THAN_5TH -> R.id.leap_greater_than
+                        }
+                    )
+                    setOnCheckedChangeListener { _, button ->
+                        settings.registerRequirement = when (button) {
+                            R.id.voice_leading -> RegisterRequirement.REQUIRE_VOICE_LEADING
+                            R.id.common_top_note -> RegisterRequirement.REQUIRE_COMMON_TOP_NOTE
+                            R.id.common_bottom_note -> RegisterRequirement.REQUIRE_COMMON_BOTTOM_NOTE
+                            R.id.leap_greater_than -> RegisterRequirement.REQUIRE_LEAP_GREATER_THAN_5TH
+                            else -> RegisterRequirement.NONE
+                        }
+                        persistSettings()
+                    }
+                }
+
+                with(selectKeysLayout) {
+                    val keysMap = mapOf(
+                        Key.A_MAJOR to aMajor,
+                        Key.Bb_MAJOR to bbMajor,
+                        Key.B_MAJOR to bMajor,
+                        Key.C_MAJOR to cMajor,
+                        Key.Db_MAJOR to dbMajor,
+                        Key.D_MAJOR to dMajor,
+                        Key.Eb_MAJOR to ebMajor,
+                        Key.E_MAJOR to eMajor,
+                        Key.F_MAJOR to fMajor,
+                        Key.Fsharp_MAJOR to fsMajor,
+                        Key.G_MAJOR to gMajor,
+                        Key.Ab_MAJOR to abMajor,
+                        Key.A_MINOR to aMinor,
+                        Key.Bb_MINOR to bbMinor,
+                        Key.B_MINOR to bMinor,
+                        Key.C_MINOR to cMinor,
+                        Key.Db_MINOR to dbMinor,
+                        Key.D_MINOR to dMinor,
+                        Key.Eb_MINOR to ebMinor,
+                        Key.E_MINOR to eMinor,
+                        Key.F_MINOR to fMinor,
+                        Key.Fsharp_MINOR to fsMinor,
+                        Key.G_MINOR to gMinor,
+                        Key.Ab_MINOR to abMinor,
+                    )
+
+                    for (element in keysMap) {
+                        element.value.isChecked = settings.keys.contains(element.key)
+                        element.value.setOnCheckedChangeListener { compoundButton, b ->
+                            if (compoundButton.isChecked) {
+                                settings.keys.add(element.key)
+                            } else {
+                                settings.keys.remove(element.key)
+                            }
+                            persistSettings()
+                        }
+                    }
+                }
+
+                with(algorithm_for_prompts_layout.algorithm_radio_group) {
+                    check(
+                        when (settings.algorithmForPrompts) {
+                            AlgorithmSetting.RANDOM -> R.id.random_button
+                            AlgorithmSetting.PATTERN -> R.id.pattern_button
+                        }
+                    )
+                    setOnCheckedChangeListener { _, button ->
+                        settings.algorithmForPrompts = when (button) {
+                            R.id.pattern_button -> AlgorithmSetting.PATTERN
+                            else -> AlgorithmSetting.RANDOM
+                        }
+                        persistSettings()
+                    }
+                }
+
+                with(algorithm_for_prompts_layout.pattern_radio_group) {
+                    check(
+                        when (settings.patternSubSetting) {
+                            PatternSubSetting.CHROMATIC -> R.id.chromatically_button
+                            PatternSubSetting.IN_FIFTHS -> R.id.fifths_button
+                            PatternSubSetting.IN_FOURTHS -> R.id.fourths_button
+                        }
+                    )
+                    setOnCheckedChangeListener { _, button ->
+                        settings.patternSubSetting = when (button) {
+                            R.id.fifths_button -> PatternSubSetting.IN_FIFTHS
+                            R.id.fourths_button -> PatternSubSetting.IN_FOURTHS
+                            else -> PatternSubSetting.CHROMATIC
+                        }
+                        persistSettings()
+                    }
                 }
             }
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        settings.persist()
+    private fun persistSettings() {
+        this@SettingsFragment.settings.persist()
     }
 
     companion object {

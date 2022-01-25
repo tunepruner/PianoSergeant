@@ -1,5 +1,6 @@
 package com.tunepruner.musictraining.repositories
 
+import com.google.gson.annotations.SerializedName
 import com.tunepruner.musictraining.calculateLevelFromPercentage
 import com.tunepruner.musictraining.ui.MAX_BEATS_PER_CHORD
 import com.tunepruner.musictraining.ui.MAX_DISTANCE
@@ -9,7 +10,7 @@ import com.tunepruner.musictraining.ui.MIN_DISTANCE
 import com.tunepruner.musictraining.ui.MIN_TEMPO
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class Settings(
+data class Settings(
     var tempo: Int = 120,
     var chordDistance: Int = 3,
     var beatsPerChord: Int = 4,
@@ -19,55 +20,77 @@ class Settings(
     var cueLineVisible: Boolean = true,
     var currentBeatVisible: Boolean = true,
     var soundOn: Boolean = true,
-    var timeConstraint: TimeConstraint = TimeConstraint.Metronome,
-    var mode: Mode = Mode.ChordMode,
+    @SerializedName("time_constraint")
+    var timeConstraint: TimeConstraint = TimeConstraint.METRONOME,
+    @SerializedName("mode")
+    var mode: Mode = Mode.CHORD,
     var notesPerBeat: Int = 2,
-    var intervalRequirements: IntervalRequirements = IntervalRequirements.None,
-    var inversions: List<Inversion> = listOf(
-        Inversion.RootPosition,
-        Inversion.FirstInversion,
-        Inversion.SecondInversion,
-        Inversion.ThirdInversion,
+    var intervalRequirements: IntervalRequirements = IntervalRequirements.NONE,
+    @SerializedName("interval_less_than_value")
+    var intervalLessThanValue: Interval = Interval.PERFECT_FIFTH,
+    @SerializedName("interval_greater_than_value")
+    var intervalGreaterThanValue: Interval = Interval.MAJOR_SECOND,
+    @SerializedName("inversion")
+    var inversions: MutableSet<Inversion> = mutableSetOf(
+        Inversion.ROOT_POSITION,
+        Inversion.FIRST_INVERSION,
+        Inversion.SECOND_INVERSION,
+        Inversion.THIRD_INVERSION,
     ),
-    var chordQualities: List<ChordQuality> = listOf(
-        ChordQuality.MajorTriad,
-        ChordQuality.MinorTriad,
-        ChordQuality.DiminishedTriad,
-        ChordQuality.AugmentedTriad,
-        ChordQuality.Sus2Triad,
-        ChordQuality.Sus4Triad,
-        ChordQuality.DominantSeventh,
-        ChordQuality.MajorSeventh,
-        ChordQuality.MinorSeventh,
-        ChordQuality.MinorMajorSeventh,
-        ChordQuality.HalfDiminishedSeventh,
-        ChordQuality.FullDiminishedSeventh,
-        ChordQuality.AugmentedSeventh,
-        ChordQuality.AugmentedMajorSeventh,
-        ChordQuality.DominantSeventhSus4,
+    @SerializedName("chord_qualities")
+    var chordQualities: MutableSet<ChordQuality> = mutableSetOf(
+        ChordQuality.MAJOR_TRIAD,
+        ChordQuality.MINOR_TRIAD,
+        ChordQuality.DIMINISHED_TRIAD,
+        ChordQuality.AUGMENTED_TRIAD,
+        ChordQuality.SUS_2_TRIAD,
+        ChordQuality.SUS_4_TRIAD,
+        ChordQuality.MAJOR_SEVENTH,
+        ChordQuality.DOMINANT_SEVENTH,
+        ChordQuality.MINOR_SEVENTH,
+        ChordQuality.MINOR_MAJOR_SEVENTH,
+        ChordQuality.HALF_DIMINISHED_SEVENTH,
+        ChordQuality.FULL_DIMINISHED_SEVENTH,
+        ChordQuality.AUGMENTED_SEVENTH,
+        ChordQuality.AUGMENTED_MAJOR_SEVENTH,
+        ChordQuality.DOMINANT_SEVENTH_SUS_4,
     ),
-    var noteDoublingRequirement: NoteDoublingRequirement = NoteDoublingRequirement.None,
-    var spacingRequirement: SpacingRequirement = SpacingRequirement.None,
-    var registerRequirement: RegisterRequirement = RegisterRequirement.None,
-    var keys: List<Key> = listOf(
-        Key.A,
-        Key.Bb,
-        Key.B,
-        Key.C,
-        Key.Db,
-        Key.D,
-        Key.Eb,
-        Key.E,
-        Key.F,
-        Key.Fsharp,
-        Key.G,
-        Key.Ab,
+    @SerializedName("note_doubling_requirement")
+    var noteDoublingRequirement: NoteDoublingRequirement = NoteDoublingRequirement.NONE,
+    @SerializedName("note_doubling_amount")
+    var noteDoublingAmount: Int = 0,
+    var spacingRequirement: SpacingRequirement = SpacingRequirement.NONE,
+    var registerRequirement: RegisterRequirement = RegisterRequirement.NONE,
+    var keys: MutableSet<Key> = mutableSetOf(
+        Key.A_MAJOR,
+        Key.Bb_MAJOR,
+        Key.B_MAJOR,
+        Key.C_MAJOR,
+        Key.Db_MAJOR,
+        Key.D_MAJOR,
+        Key.Eb_MAJOR,
+        Key.E_MAJOR,
+        Key.F_MAJOR,
+        Key.Fsharp_MAJOR,
+        Key.G_MAJOR,
+        Key.Ab_MAJOR,
+        Key.A_MINOR,
+        Key.Bb_MINOR,
+        Key.B_MINOR,
+        Key.C_MINOR,
+        Key.Db_MINOR,
+        Key.D_MINOR,
+        Key.Eb_MINOR,
+        Key.E_MINOR,
+        Key.F_MINOR,
+        Key.Fsharp_MINOR,
+        Key.G_MINOR,
+        Key.Ab_MINOR,
     ),
-    var algorithmForPrompts: AlgorithmSetting = AlgorithmSetting.Random,
-    var randomSubSetting: RandomSubSetting = RandomSubSetting.TwelveToneRow,
-    var patternSubSetting: PatternSubSetting = PatternSubSetting.Chromatic
+    var algorithmForPrompts: AlgorithmSetting = AlgorithmSetting.RANDOM,
+    var patternSubSetting: PatternSubSetting = PatternSubSetting.CHROMATIC,
 ) {
-    val change = MutableStateFlow(Unit)
+    //    val change = MutableStateFlow(Unit)
     val beatDuration: Long
         get() {
             return beatDurationFromTempo(tempo)
@@ -98,96 +121,135 @@ class Settings(
     fun setChordDistanceFromPercentage(percentage: Int) {
         chordDistance = calculateLevelFromPercentage(percentage, MAX_DISTANCE, MIN_DISTANCE)
     }
-
 }
 
-sealed class PatternSubSetting {
-    object Chromatic : PatternSubSetting()
-    object InFifths : PatternSubSetting()
-    object InFourths : PatternSubSetting()
+const val MAX_DOUBLING_AMOUNT = 4
+const val MIN_DOUBLING_AMOUNT = 1
+const val MAX_NOTES_PER_BEAT = 4
+const val MIN_NOTES_PER_BEAT = 1
+
+enum class Interval(val uiName: String){
+    MINOR_SECOND("minor 2nd"),
+    MAJOR_SECOND("major 2nd"),
+    MINOR_THIRD("minor 3rd"),
+    MAJOR_THIRD("major 3rd"),
+    PERFECT_FOURTH("perfect 4th"),
+    TRITONE("tritone"),
+    PERFECT_FIFTH("perfect 5th"),
+    MINOR_SIXTH("minor 6th"),
+    MAJOR_SIXTH("major 6th"),
+    MINOR_SEVENTH("minor 7th"),
+    MAJOR_SEVENTH("major 7th"),
 }
 
-sealed class RandomSubSetting {
-    object TwelveToneRow : RandomSubSetting()
-    object PreferMostDifficult : RandomSubSetting()
+val allIntervals: List<Interval> = listOf(
+    Interval.MINOR_SECOND,
+    Interval.MAJOR_SECOND,
+    Interval.MINOR_THIRD,
+    Interval.MAJOR_THIRD,
+    Interval.PERFECT_FOURTH,
+    Interval.TRITONE,
+    Interval.PERFECT_FIFTH,
+    Interval.MINOR_SIXTH,
+    Interval.MAJOR_SIXTH,
+    Interval.MINOR_SEVENTH,
+    Interval.MAJOR_SEVENTH,
+)
+
+enum class PatternSubSetting {
+    CHROMATIC,
+    IN_FIFTHS,
+    IN_FOURTHS,
 }
 
-sealed class AlgorithmSetting {
-    object Random : AlgorithmSetting()
-    object Pattern : AlgorithmSetting()
+enum class AlgorithmSetting {
+    RANDOM,
+    PATTERN
 }
 
-sealed class Key {
-    object A : Key()
-    object Bb : Key()
-    object B : Key()
-    object C : Key()
-    object Db : Key()
-    object D : Key()
-    object Eb : Key()
-    object E : Key()
-    object F : Key()
-    object Fsharp : Key()
-    object G : Key()
-    object Ab : Key()
+enum class Key {
+    A_MAJOR,
+    Bb_MAJOR,
+    B_MAJOR,
+    C_MAJOR,
+    Db_MAJOR,
+    D_MAJOR,
+    Eb_MAJOR,
+    E_MAJOR,
+    F_MAJOR,
+    Fsharp_MAJOR,
+    G_MAJOR,
+    Ab_MAJOR,
+    A_MINOR,
+    Bb_MINOR,
+    B_MINOR,
+    C_MINOR,
+    Db_MINOR,
+    D_MINOR,
+    Eb_MINOR,
+    E_MINOR,
+    F_MINOR,
+    Fsharp_MINOR,
+    G_MINOR,
+    Ab_MINOR,
 }
 
-sealed class RegisterRequirement {
-    object None : RegisterRequirement()
-    object RequireVoiceLeading : RegisterRequirement()
-    object RequireCommonTopNote : RegisterRequirement()
-    object RequireCommonBottomNote : RegisterRequirement()
-    object RequireLeapGreaterThan5th : RegisterRequirement()
+enum class RegisterRequirement {
+    NONE,
+    REQUIRE_VOICE_LEADING,
+    REQUIRE_COMMON_TOP_NOTE,
+    REQUIRE_COMMON_BOTTOM_NOTE,
+    REQUIRE_LEAP_GREATER_THAN_5TH,
 }
 
-sealed class SpacingRequirement {
-    object None : SpacingRequirement()
-    object ClosedVoicing : SpacingRequirement()
-    object OpenVoicing : SpacingRequirement()
+enum class SpacingRequirement {
+    NONE,
+    CLOSED_VOICING,
+    OPEN_VOICING,
 }
 
-sealed class NoteDoublingRequirement {
-    object None : NoteDoublingRequirement()
-    object SpecificAmount : NoteDoublingRequirement()
+enum class NoteDoublingRequirement {
+    NONE,
+    SPECIFIC_AMOUNT,
 }
 
-sealed class ChordQuality {
-    object MajorTriad : ChordQuality()
-    object MinorTriad : ChordQuality()
-    object DiminishedTriad : ChordQuality()
-    object AugmentedTriad : ChordQuality()
-    object Sus2Triad : ChordQuality()
-    object Sus4Triad : ChordQuality()
-    object DominantSeventh : ChordQuality()
-    object MajorSeventh : ChordQuality()
-    object MinorSeventh : ChordQuality()
-    object MinorMajorSeventh : ChordQuality()
-    object HalfDiminishedSeventh : ChordQuality()
-    object FullDiminishedSeventh : ChordQuality()
-    object AugmentedSeventh : ChordQuality()
-    object AugmentedMajorSeventh : ChordQuality()
-    object DominantSeventhSus4 : ChordQuality()
+enum class ChordQuality {
+    MAJOR_TRIAD,
+    MINOR_TRIAD,
+    DIMINISHED_TRIAD,
+    AUGMENTED_TRIAD,
+    SUS_2_TRIAD,
+    SUS_4_TRIAD,
+    DOMINANT_SEVENTH,
+    MAJOR_SEVENTH,
+    MINOR_SEVENTH,
+    MINOR_MAJOR_SEVENTH,
+    HALF_DIMINISHED_SEVENTH,
+    FULL_DIMINISHED_SEVENTH,
+    AUGMENTED_SEVENTH,
+    AUGMENTED_MAJOR_SEVENTH,
+    DOMINANT_SEVENTH_SUS_4,
 }
 
-sealed class Inversion {
-    object RootPosition : Inversion()
-    object FirstInversion : Inversion()
-    object SecondInversion : Inversion()
-    object ThirdInversion : Inversion()
+enum class Inversion {
+    ROOT_POSITION,
+    FIRST_INVERSION,
+    SECOND_INVERSION,
+    THIRD_INVERSION,
 }
 
-sealed class IntervalRequirements {
-    object None : IntervalRequirements()
-    object LessThan : IntervalRequirements()
-    object GreaterThan : IntervalRequirements()
+enum class IntervalRequirements {
+    NONE,
+    LESS_THAN,
+    GREATER_THAN,
 }
 
-sealed class Mode {
-    object ChordMode : Mode()
-    object ScaleMode : Mode()
+enum class Mode {
+    CHORD,
+    SCALE
 }
 
-sealed class TimeConstraint {
-    object Metronome : TimeConstraint()
-    object RapidFire : TimeConstraint()
+enum class TimeConstraint {
+    METRONOME,
+    RAPID_FIRE
 }

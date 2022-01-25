@@ -22,6 +22,7 @@
 
 
         <RadioGroup
+                android:id="@+id/algorithm_radio_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -39,24 +40,9 @@
 
         </RadioGroup>
 
-        <RadioGroup
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            <RadioButton
-                    android:text="@string/_12_tone_row"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/twelve_tone_row_button" />
-
-            <RadioButton
-                    android:text="@string/prefer_most_difficult"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/prefer_most_difficult_button" />
-        </RadioGroup>
 
         <RadioGroup
+                android:id="@+id/pattern_radio_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 

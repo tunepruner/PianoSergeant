@@ -32,8 +32,10 @@ import java.io.IOException
 
 
 data class LastNote(
-    val data: ByteArray, val offset: Int,
-    val count: Int, val timestamp: Long
+    val data: ByteArray,
+    val offset: Int,
+    val count: Int,
+    val timestamp: Long
 )
 
 val LAST_NOTE = stringPreferencesKey("last_note")

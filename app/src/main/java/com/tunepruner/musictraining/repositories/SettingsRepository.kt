@@ -1,5 +1,6 @@
 package com.tunepruner.musictraining.repositories
 
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -10,8 +11,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+
+const val LOG_TAG = "12345"
 
 @ExperimentalCoroutinesApi
 class SettingsRepository(val dataStore: DataStore<Preferences>) {
@@ -26,18 +30,18 @@ class SettingsRepository(val dataStore: DataStore<Preferences>) {
         CoroutineScope(Dispatchers.IO).launch {
             dataStore.edit {
                 it[SETTINGS] = GsonBuilder().create().toJson(current.value)
+                Log.i(LOG_TAG, "persist: ${GsonBuilder().create().toJson(current.value)}")
             }
-
-
         }
     }
 
     init {
-//        CoroutineScope(Dispatchers.IO).launch {
-//            savedSettingsFlow.collect {
-//                _current.value =
-//                    GsonBuilder().create().fromJson(it, Settings::class.java) ?: Settings()
-//            }
-//        }
+        CoroutineScope(Dispatchers.IO).launch {
+            savedSettingsFlow.collect {
+                _current.value =
+                    GsonBuilder().create().fromJson(it, Settings::class.java) ?: Settings()
+                Log.i(LOG_TAG, "current value = ${current.value}")
+            }
+        }
     }
 }

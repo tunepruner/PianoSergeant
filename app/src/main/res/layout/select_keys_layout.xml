@@ -51,6 +51,16 @@
                     android:text="@string/bb_major"
                     android:id="@+id/bb_major" />
 
+
+            <com.google.android.material.chip.Chip
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:layout_width="@dimen/key_chip_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bb_major"
+                    android:id="@+id/b_major" />
+
             <com.google.android.material.chip.Chip
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
@@ -184,8 +194,8 @@
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"
                     android:layout_height="wrap_content"
-                    android:text="@string/e_minor"
-                    android:id="@+id/e_minor" />
+                    android:text="@string/b_minor"
+                    android:id="@+id/b_minor" />
 
             <com.google.android.material.chip.Chip
                     style="@style/Widget.MaterialComponents.Chip.Choice"
@@ -195,6 +205,54 @@
                     android:layout_height="wrap_content"
                     android:text="@string/c_minor"
                     android:id="@+id/c_minor" />
+
+            <com.google.android.material.chip.Chip
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:layout_width="@dimen/key_chip_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/db_minor"
+                    android:id="@+id/db_minor" />
+
+
+            <com.google.android.material.chip.Chip
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:layout_width="@dimen/key_chip_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/d_minor"
+                    android:id="@+id/d_minor" />
+
+            <com.google.android.material.chip.Chip
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:layout_width="@dimen/key_chip_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/eb_minor"
+                    android:id="@+id/eb_minor" />
+
+
+            <com.google.android.material.chip.Chip
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:layout_width="@dimen/key_chip_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/e_minor"
+                    android:id="@+id/e_minor" />
+
+
+            <com.google.android.material.chip.Chip
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:layout_width="@dimen/key_chip_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/f_minor"
+                    android:id="@+id/f_minor" />
 
             <com.google.android.material.chip.Chip
                     style="@style/Widget.MaterialComponents.Chip.Choice"
@@ -223,41 +281,6 @@
                     android:text="@string/ab_minor"
                     android:id="@+id/ab_minor" />
 
-            <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:checkable="true"
-                    android:checked="true"
-                    android:layout_width="@dimen/key_chip_width"
-                    android:layout_height="wrap_content"
-                    android:text="@string/f_minor"
-                    android:id="@+id/f_minor" />
-
-            <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:checkable="true"
-                    android:checked="true"
-                    android:layout_width="@dimen/key_chip_width"
-                    android:layout_height="wrap_content"
-                    android:text="@string/db_minor"
-                    android:id="@+id/db_minor" />
-
-            <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:checkable="true"
-                    android:checked="true"
-                    android:layout_width="@dimen/key_chip_width"
-                    android:layout_height="wrap_content"
-                    android:text="@string/eb_minor"
-                    android:id="@+id/eb_minor" />
-
-            <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:checkable="true"
-                    android:checked="true"
-                    android:layout_width="@dimen/key_chip_width"
-                    android:layout_height="wrap_content"
-                    android:text="@string/d_minor"
-                    android:id="@+id/d_minor" />
         </com.google.android.material.chip.ChipGroup>
     </LinearLayout>
 

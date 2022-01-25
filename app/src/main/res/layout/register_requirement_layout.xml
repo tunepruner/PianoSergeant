@@ -15,6 +15,7 @@
 
 
     <RadioGroup
+            android:id="@+id/radio_group"
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
@@ -29,26 +30,26 @@
                 android:tooltipText="@string/voice_leading_explanation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/radioButton" />
+                android:id="@+id/voice_leading" />
 
         <RadioButton
                 android:text="@string/require_common_top_note"
                 android:tooltipText="@string/will_limit_chord_set"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/radioButton2" />
+                android:id="@+id/common_top_note" />
 
         <RadioButton
                 android:text="@string/require_common_bottom_note"
                 android:tooltipText="@string/will_limit_chord_set"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/radioButton3" />
+                android:id="@+id/common_bottom_note" />
 
         <RadioButton
                 android:text="@string/require_leap_p5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/radioButton4" />
+                android:id="@+id/leap_greater_than" />
     </RadioGroup>
 </LinearLayout>

@@ -16,7 +16,7 @@
     <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/choose_mode_radio_group">
+            android:id="@+id/radio_group">
 
         <RadioButton
                 android:text="@string/none"
