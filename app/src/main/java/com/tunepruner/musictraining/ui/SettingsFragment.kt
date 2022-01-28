@@ -25,6 +25,7 @@ import com.tunepruner.musictraining.repositories.SettingsRepository
 import com.tunepruner.musictraining.repositories.SpacingRequirement
 import com.tunepruner.musictraining.repositories.TimeConstraint
 import com.tunepruner.musictraining.repositories.allIntervals
+import com.tunepruner.musictraining.viewmodel.SettingsViewModel
 import kotlinx.android.synthetic.main.add_interval_requirements_layout.view.*
 import kotlinx.android.synthetic.main.algorithm_for_prompts_layout.view.*
 import kotlinx.android.synthetic.main.choose_mode_layout.*
@@ -34,6 +35,7 @@ import kotlinx.android.synthetic.main.number_selector.view.*
 import kotlinx.android.synthetic.main.select_inversions_layout.*
 import kotlinx.android.synthetic.main.time_constraint_layout.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.java.KoinJavaComponent
 
 // TODO: Rename parameter arguments, choose names that match
@@ -48,6 +50,7 @@ private const val ARG_PARAM2 = "param2"
  */
 @ExperimentalCoroutinesApi
 class SettingsFragment : Fragment() {
+    private val settingsViewModel: SettingsViewModel by viewModel()
     private val settings: SettingsRepository by KoinJavaComponent.inject(SettingsRepository::class.java)
     private var _binding: FragmentSettingsBinding? = null
     private val binding: FragmentSettingsBinding get() = _binding!!
@@ -99,12 +102,15 @@ class SettingsFragment : Fragment() {
                     }
                 }
                 with(choose_mode_radio_group) {
-                    check(
-                        when (settings.mode) {
-                            Mode.CHORD -> R.id.chord_mode_radio_button
-                            Mode.SCALE -> R.id.scale_mode_radio_button
-                        }
-                    )
+                    settingsViewModel.mode.observe(viewLifecycleOwner) {
+                        check(
+                            when (settings.mode) {
+                                Mode.CHORD -> R.id.chord_mode_radio_button
+                                Mode.SCALE -> R.id.scale_mode_radio_button
+                            }
+                        )
+                    }
+
                     setOnCheckedChangeListener { _, button ->
                         when (button) {
                             R.id.chord_mode_radio_button -> settings.mode = Mode.CHORD
@@ -176,7 +182,7 @@ class SettingsFragment : Fragment() {
                                 settings.intervalLessThanValue = allIntervals[currentIndex + 1]
                                 current_value.text = settings.intervalLessThanValue.uiName
                             }
-                        } else {
+                        } else if (settings.intervalRequirements == IntervalRequirements.GREATER_THAN) {
                             val currentIndex: Int =
                                 allIntervals.indexOf(settings.intervalGreaterThanValue)
                             if (currentIndex < allIntervals.size - 1) {
@@ -194,7 +200,7 @@ class SettingsFragment : Fragment() {
                                 settings.intervalLessThanValue = allIntervals[currentIndex - 1]
                                 current_value.text = settings.intervalLessThanValue.uiName
                             }
-                        } else {
+                        } else if (settings.intervalRequirements == IntervalRequirements.GREATER_THAN) {
                             Log.i(LOG_TAG, "index of: ${settings.intervalGreaterThanValue}")
                             val currentIndex: Int =
                                 allIntervals.indexOf(settings.intervalGreaterThanValue)

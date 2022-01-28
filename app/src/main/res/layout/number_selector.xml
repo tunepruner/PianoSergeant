@@ -1,38 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:background="@drawable/settings_category_background"
+        android:background="@drawable/settings_secondary_background"
         android:layout_margin="@dimen/half_default_margin"
         android:padding="@dimen/half_default_margin"
+        android:gravity="end|center_vertical"
+        android:layout_gravity="end"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="wrap_content"
-        android:orientation="horizontal"
-        android:layout_height="wrap_content">
-
-    <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/half_default_margin"
-            app:srcCompat="@android:drawable/arrow_up_float"
-            android:id="@+id/up_button"
-            android:layout_weight="1" />
-
-    <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/half_default_margin"
-            android:layout_gravity="center"
-            app:srcCompat="@android:drawable/arrow_down_float"
-            android:id="@+id/down_button"
-            android:layout_weight="1" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
     <TextView
             android:text="-"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:padding="@dimen/half_default_margin"
+            android:layout_marginRight="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:id="@+id/current_value"
-            android:layout_weight="1" />
+            android:id="@+id/current_value" />
+
+    <ImageButton
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="@dimen/half_default_margin"
+            android:layout_gravity="center"
+            android:background="@drawable/ripple"
+            app:srcCompat="@drawable/down_button"
+            android:id="@+id/down_button"/>
+
+    <ImageButton
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/half_default_margin"
+            android:background="@drawable/ripple"
+            android:id="@+id/up_button"
+            android:src="@drawable/up_button" />
+
 </LinearLayout>

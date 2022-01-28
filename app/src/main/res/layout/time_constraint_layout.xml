@@ -1,17 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:background="@drawable/settings_category_background"
         android:layout_margin="@dimen/half_default_margin"
-        android:padding="@dimen/half_default_margin"
+        android:padding="@dimen/default_margin"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <TextView
+    <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/time_constraint"
-            android:id="@+id/time_constraint_title" />
+            android:layout_height="match_parent">
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                app:srcCompat="@drawable/metronome"
+                android:id="@+id/imageView" />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/time_constraint"
+                android:textSize="@dimen/card_heading"
+                android:id="@+id/time_constraint_title" />
+    </LinearLayout>
 
     <RadioGroup
             android:layout_width="match_parent"

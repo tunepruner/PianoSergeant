@@ -3,4 +3,9 @@
     <dimen name="half_default_margin">8dp</dimen>
     <dimen name="key_chip_width">100dp</dimen>
     <dimen name="inversion_chip_width">150dp</dimen>
+
+    //text
+    <dimen name="screen_heading">40sp</dimen>
+    <dimen name="card_heading">20sp</dimen>
+
 </resources>

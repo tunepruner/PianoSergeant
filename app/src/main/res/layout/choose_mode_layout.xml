@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:background="@drawable/settings_category_background"
         android:layout_margin="@dimen/half_default_margin"
-        android:padding="@dimen/half_default_margin"
+        android:padding="@dimen/default_margin"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -10,6 +10,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/mode"
+            android:textSize="@dimen/card_heading"
             android:id="@+id/choose_mode_title" />
 
     <RadioGroup
