@@ -85,26 +85,25 @@ class SettingsFragment : Fragment() {
         settings.current.value.let { settings ->
             with(binding) {
                 with(time_constraint_radio_group) {
-                    check(
-                        when (settings.timeConstraint) {
-                            TimeConstraint.RAPID_FIRE -> R.id.rapid_fire_radio_button
-                            TimeConstraint.METRONOME -> R.id.metronome_radio_button
-                        }
-                    )
+                    settingsViewModel.timeConstraint.observe(viewLifecycleOwner) {
+                        check(
+                            when (it) {
+                                TimeConstraint.RAPID_FIRE -> R.id.rapid_fire_radio_button
+                                TimeConstraint.METRONOME -> R.id.metronome_radio_button
+                            }
+                        )
+                    }
                     setOnCheckedChangeListener { _, button ->
                         when (button) {
-                            R.id.rapid_fire_radio_button -> settings.timeConstraint =
-                                TimeConstraint.RAPID_FIRE
-                            R.id.metronome_radio_button -> settings.timeConstraint =
-                                TimeConstraint.METRONOME
+                            R.id.metronome_radio_button -> settingsViewModel.enableMetronome()
+                            R.id.rapid_fire_radio_button -> settingsViewModel.enableRapidFire()
                         }
-                        persistSettings()
                     }
                 }
                 with(choose_mode_radio_group) {
                     settingsViewModel.mode.observe(viewLifecycleOwner) {
                         check(
-                            when (settings.mode) {
+                            when (it) {
                                 Mode.CHORD -> R.id.chord_mode_radio_button
                                 Mode.SCALE -> R.id.scale_mode_radio_button
                             }
