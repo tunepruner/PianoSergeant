@@ -21,8 +21,6 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.tunepruner.musictraining.midi.MidiConstants;
-
 import java.io.IOException;
 
 /**

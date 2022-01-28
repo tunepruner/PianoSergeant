@@ -18,16 +18,7 @@ package com.tunepruner.musictraining.midi;
 
 import android.media.midi.MidiDeviceInfo;
 import android.media.midi.MidiDeviceInfo.PortInfo;
-import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.RequiresApi;
-
-import com.tunepruner.musictraining.midi.MidiConstants;
-
-import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Format a MIDI message for printing.

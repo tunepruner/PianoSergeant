@@ -8,7 +8,6 @@ import com.tunepruner.musictraining.ui.MAX_TEMPO
 import com.tunepruner.musictraining.ui.MIN_BEATS_PER_CHORD
 import com.tunepruner.musictraining.ui.MIN_DISTANCE
 import com.tunepruner.musictraining.ui.MIN_TEMPO
-import kotlinx.coroutines.flow.MutableStateFlow
 
 data class Settings(
     var tempo: Int = 120,
@@ -110,16 +109,16 @@ data class Settings(
     }
 
     fun setTempoFromPercentage(percentage: Int) {
-        tempo = calculateLevelFromPercentage(percentage, MAX_TEMPO, MIN_TEMPO)
+        tempo = percentage.calculateLevelFromPercentage(MAX_TEMPO, MIN_TEMPO)
     }
 
     fun setBeatsPerChordFromPercentage(percentage: Int) {
         beatsPerChord =
-            calculateLevelFromPercentage(percentage, MAX_BEATS_PER_CHORD, MIN_BEATS_PER_CHORD)
+            percentage.calculateLevelFromPercentage(MAX_BEATS_PER_CHORD, MIN_BEATS_PER_CHORD)
     }
 
     fun setChordDistanceFromPercentage(percentage: Int) {
-        chordDistance = calculateLevelFromPercentage(percentage, MAX_DISTANCE, MIN_DISTANCE)
+        chordDistance = percentage.calculateLevelFromPercentage(MAX_DISTANCE, MIN_DISTANCE)
     }
 }
 

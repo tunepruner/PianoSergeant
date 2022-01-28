@@ -1,7 +1,5 @@
 package com.tunepruner.musictraining.model.music
 
-import com.google.gson.annotations.SerializedName
-
 
 sealed class Interval(val halfStepsUp: Int) {
     object MinorSecond : Interval(1)
