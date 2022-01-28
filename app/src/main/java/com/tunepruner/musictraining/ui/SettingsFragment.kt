@@ -113,8 +113,8 @@ class SettingsFragment : Fragment() {
 
                     setOnCheckedChangeListener { _, button ->
                         when (button) {
-                            R.id.chord_mode_radio_button -> settings.mode = Mode.CHORD
-                            R.id.scale_mode_radio_button -> settings.mode = Mode.SCALE
+                            R.id.chord_mode_radio_button -> settingsViewModel.enableChordMode()
+                            R.id.scale_mode_radio_button -> settingsViewModel.enableScaleMode()
                         }
                         persistSettings()
                     }

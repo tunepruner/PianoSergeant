@@ -34,7 +34,7 @@ val viewModelModule = module {
     single { MetronomeViewModel(get(), get()) }
     single { ChordViewModel(get()) }
     single { NoteInputViewModel(get(), androidContext()) }
-    single { SettingsViewModel() }
+    single { SettingsViewModel(get()) }
 }
 
 class
