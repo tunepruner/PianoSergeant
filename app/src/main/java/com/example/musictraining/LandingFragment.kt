@@ -32,11 +32,16 @@ class LandingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.startNewDrillsButton.setOnClickListener {
-            findNavController().navigate(R.id.action_launchScreenFragment_to_settings_fragment)
+        binding.startChordDrillButton.setOnClickListener {
+            findNavController().navigate(R.id.action_launchscreen_to_chord_drill_settings)
         }
+
+        binding.startScaleDrillButton.setOnClickListener {
+            findNavController().navigate(R.id.action_launchscreen_to_chord_drill_settings)
+        }
+
         binding.savedDrillsButton.setOnClickListener {
-            findNavController().navigate(R.id.action_launchScreenFragment_to_savedDrillsFragment)
+            findNavController().navigate(R.id.action_launchscreen_to_saved_drills)
         }
     }
 

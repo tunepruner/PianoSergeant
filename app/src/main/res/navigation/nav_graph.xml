@@ -12,15 +12,23 @@
             tools:layout="@layout/fragment_landing_screen" >
 
         <action
-                android:id="@+id/action_launchScreenFragment_to_settings_fragment"
-                app:destination="@id/settings_fragment"
+                android:id="@+id/action_launchscreen_to_chord_drill_settings"
+                app:destination="@id/chord_drill_settings_fragment"
                 app:exitAnim="@android:anim/fade_out"
                 app:enterAnim="@android:anim/fade_in"
                 app:popExitAnim="@android:anim/fade_out"
                 app:popEnterAnim="@android:anim/fade_in" />
         <action
-                android:id="@+id/action_launchScreenFragment_to_savedDrillsFragment"
+                android:id="@+id/action_launchscreen_to_saved_drills"
                 app:destination="@id/savedDrillsFragment"
+                app:exitAnim="@android:anim/fade_out"
+                app:enterAnim="@android:anim/fade_in"
+                app:popExitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/fade_in" />
+
+        <action
+                android:id="@+id/action_launchscreen_to_scale_drill_settings"
+                app:destination="@id/scale_drill_settings_fragment"
                 app:exitAnim="@android:anim/fade_out"
                 app:enterAnim="@android:anim/fade_in"
                 app:popExitAnim="@android:anim/fade_out"
@@ -33,8 +41,15 @@
             android:label="Drill Fragment"
             tools:layout="@layout/fragment_main">
         <action
-                android:id="@+id/action_drill_fragment_to_settings_fragment"
-                app:destination="@id/settings_fragment"
+                android:id="@+id/action_drill_to_chord_drill_settings"
+                app:destination="@id/chord_drill_settings_fragment"
+                app:exitAnim="@android:anim/fade_out"
+                app:enterAnim="@android:anim/fade_in"
+                app:popExitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/fade_in" />
+        <action
+                android:id="@+id/action_drill_to_scale_drill_settings"
+                app:destination="@id/scale_drill_settings_fragment"
                 app:exitAnim="@android:anim/fade_out"
                 app:enterAnim="@android:anim/fade_in"
                 app:popExitAnim="@android:anim/fade_out"
@@ -43,12 +58,26 @@
 
 
     <fragment
-            android:id="@+id/settings_fragment"
+            android:id="@+id/chord_drill_settings_fragment"
             android:name="com.tunepruner.musictraining.ui.ChordDrillSettingsFragment"
-            android:label="Settings Fragment"
+            android:label="Chord drill settings fragment"
             tools:layout="@layout/fragment_chord_drill_settings">
         <action
-                android:id="@+id/action_settings_fragment_to_drill_fragment"
+                android:id="@+id/action_chord_drill_settings_to_drill"
+                app:destination="@id/drill_fragment"
+                app:enterAnim="@android:anim/fade_in"
+                app:exitAnim="@android:anim/fade_out"
+                app:popExitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/fade_in" />
+    </fragment>
+
+    <fragment
+            android:id="@+id/scale_drill_settings_fragment"
+            android:name="com.tunepruner.musictraining.ui.ScaleDrillSettingsFragment"
+            android:label="Scale drill settings fragment"
+            tools:layout="@layout/fragment_scale_drill_settings">
+        <action
+                android:id="@+id/action_scale_drill_settings_to_drill"
                 app:destination="@id/drill_fragment"
                 app:enterAnim="@android:anim/fade_in"
                 app:exitAnim="@android:anim/fade_out"
@@ -68,5 +97,6 @@
                 app:popExitAnim="@android:anim/fade_out"
                 app:popEnterAnim="@android:anim/fade_in" />
     </fragment>
+
 
 </navigation>

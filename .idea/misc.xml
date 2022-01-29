@@ -24,6 +24,7 @@
         <entry key="app/src/main/res/layout/fragment_launch_screen.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_main.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_saved_drills.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_scale_drill_settings.xml" value="0.12960526315789472" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.15" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.1586582048957389" />
         <entry key="app/src/main/res/layout/note_doubling_requirement_layout.xml" value="0.1417763157894737" />
