@@ -11,7 +11,7 @@
         android:orientation="horizontal">
 
     <TextView
-            android:text="-"
+            android:text="@string/empty_edit_text"
             android:textSize="15sp"
             android:padding="@dimen/half_default_margin"
             android:layout_marginRight="20dp"

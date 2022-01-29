@@ -17,6 +17,7 @@
         <item name="android:textViewStyle">@style/ArciformTextViewStyle</item>
         <item name="android:buttonStyle">@style/ArciformButtonStyle</item>
         <item name="radioButtonStyle">@style/ArciformRadioButtonStyle</item>
+        <item name="checkboxStyle">@style/ArciformCheckboxStyle</item>
 
         <item name="colorOnSurface">@color/white</item>
         <item name="chipStyle">@style/Widget.App.Chip</item>
@@ -37,11 +38,11 @@
         <item name="colorPrimary">@color/white</item>
     </style>
 
-
-    <style name="MyRadioButtonStyle" parent="Widget.Material3.CompoundButton.RadioButton">
-        <item name="android:textColor">@color/yellow</item>
-        <item name="buttonTint">@color/yellow</item>
+    <style name="ArciformCheckboxStyle" parent="android:Widget.Holo.CompoundButton.CheckBox">
+        <item name="android:fontFamily">@font/arciform</item>
         <item name="colorPrimary">@color/white</item>
     </style>
+
+
 
 </resources>

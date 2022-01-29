@@ -94,4 +94,5 @@
     <string name="chord_qualities">Chord qualities</string>
     <string name="major_keys">Major keys</string>
     <string name="minor_keys">Minor keys</string>
+    <string name="empty_edit_text">-</string>
 </resources>
