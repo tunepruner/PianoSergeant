@@ -23,7 +23,7 @@
             android:layout_height="wrap_content">
 
         <TextView
-                android:text="Major keys"
+                android:text="@string/major_keys"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView2" />
@@ -34,7 +34,6 @@
                 android:layout_height="wrap_content">
 
             <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"
@@ -44,7 +43,6 @@
 
 
             <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"
@@ -54,7 +52,6 @@
 
 
             <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"
@@ -63,7 +60,6 @@
                     android:id="@+id/b_major" />
 
             <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"
@@ -72,7 +68,6 @@
                     android:id="@+id/c_major" />
 
             <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"
@@ -81,7 +76,6 @@
                     android:id="@+id/db_major" />
 
             <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"
@@ -90,7 +84,6 @@
                     android:id="@+id/d_major" />
 
             <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"
@@ -100,7 +93,6 @@
 
 
             <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"
@@ -110,7 +102,6 @@
 
 
             <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"
@@ -120,7 +111,6 @@
 
 
             <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"
@@ -130,7 +120,6 @@
 
 
             <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"
@@ -140,7 +129,6 @@
 
 
             <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"
@@ -161,7 +149,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-                android:text="Minor keys"
+                android:text="@string/minor_keys"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView5" />
@@ -172,7 +160,6 @@
                 android:id="@+id/minor_keys_chipgroup">
 
             <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"
@@ -181,7 +168,6 @@
                     android:id="@+id/a_minor" />
 
             <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"
@@ -190,7 +176,6 @@
                     android:id="@+id/bb_minor" />
 
             <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"
@@ -199,7 +184,6 @@
                     android:id="@+id/b_minor" />
 
             <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"
@@ -208,7 +192,6 @@
                     android:id="@+id/c_minor" />
 
             <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"
@@ -218,7 +201,6 @@
 
 
             <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"
@@ -227,7 +209,6 @@
                     android:id="@+id/d_minor" />
 
             <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"
@@ -237,7 +218,6 @@
 
 
             <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"
@@ -247,7 +227,6 @@
 
 
             <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"
@@ -256,7 +235,6 @@
                     android:id="@+id/f_minor" />
 
             <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"
@@ -265,7 +243,6 @@
                     android:id="@+id/fs_minor" />
 
             <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"
@@ -274,7 +251,6 @@
                     android:id="@+id/g_minor" />
 
             <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checkable="true"
                     android:checked="true"
                     android:layout_width="@dimen/key_chip_width"

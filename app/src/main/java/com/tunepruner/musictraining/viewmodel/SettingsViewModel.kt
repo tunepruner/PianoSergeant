@@ -30,6 +30,19 @@ class SettingsViewModel(private val settingsRepo: SettingsRepository) : ViewMode
         }
     }
 
+    val mapOfSettings = mapOf(
+        settings.mode to Mode.CHORD,
+        settings.mode to Mode.SCALE,
+    )
+
+//    fun changeSetting(enable: Boolean){
+//        for ((setting, type) in mapOfSettings) {
+//            setting = if (enable) {
+//
+//            }
+//        }
+//    }
+
     fun enableChordMode() {
         updateSettings {
             settings.mode = Mode.CHORD

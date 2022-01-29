@@ -92,4 +92,6 @@
     <string name="algorithm_for_prompts">Algorithm for prompts</string>
     <string name="keys">Keys</string>
     <string name="chord_qualities">Chord qualities</string>
+    <string name="major_keys">Major keys</string>
+    <string name="minor_keys">Minor keys</string>
 </resources>

@@ -20,7 +20,6 @@
             android:id="@+id/inversions_chipgroup">
 
         <com.google.android.material.chip.Chip
-                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:checked="true"
                 android:layout_width="@dimen/inversion_chip_width"
                 android:layout_height="wrap_content"
@@ -28,7 +27,6 @@
                 android:text="@string/root_position" />
 
         <com.google.android.material.chip.Chip
-                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:checked="true"
                 android:layout_width="@dimen/inversion_chip_width"
                 android:layout_height="wrap_content"
@@ -36,7 +34,6 @@
                 android:text="@string/first_inversion" />
 
         <com.google.android.material.chip.Chip
-                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:checkable="true"
                 android:checked="true"
                 android:layout_width="@dimen/inversion_chip_width"
@@ -45,7 +42,6 @@
                 android:text="@string/second_inversion" />
 
         <com.google.android.material.chip.Chip
-                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:checkable="true"
                 android:checked="true"
                 android:layout_width="@dimen/inversion_chip_width"
