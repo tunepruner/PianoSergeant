@@ -84,7 +84,7 @@ class SettingsFragment : Fragment() {
 
     private fun initializeViews() {
         binding.startDrillButton.setOnClickListener {
-            findNavController().navigate(R.id.drill_fragment)
+            findNavController().navigate(R.id.action_settings_fragment_to_drill_fragment)
         }
         settings.current.value.let { settings ->
             with(binding) {

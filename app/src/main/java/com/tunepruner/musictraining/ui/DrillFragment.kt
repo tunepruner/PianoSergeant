@@ -109,7 +109,7 @@ class DrillFragment : Fragment() {
 
     private fun setUpHandlers() {
         binding.settingsButton.setOnClickListener {
-            findNavController().navigate(R.id.settings_fragment)
+            findNavController().navigate(R.id.action_drill_fragment_to_settings_fragment)
         }
 
         binding.playButton.setOnClickListener {

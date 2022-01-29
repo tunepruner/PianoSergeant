@@ -13,10 +13,18 @@
 
         <action
                 android:id="@+id/action_launchScreenFragment_to_settings_fragment"
-                app:destination="@id/settings_fragment" />
+                app:destination="@id/settings_fragment"
+                app:exitAnim="@android:anim/fade_out"
+                app:enterAnim="@android:anim/fade_in"
+                app:popExitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/fade_in" />
         <action
                 android:id="@+id/action_launchScreenFragment_to_savedDrillsFragment"
-                app:destination="@id/savedDrillsFragment" />
+                app:destination="@id/savedDrillsFragment"
+                app:exitAnim="@android:anim/fade_out"
+                app:enterAnim="@android:anim/fade_in"
+                app:popExitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/fade_in" />
     </fragment>
 
     <fragment
@@ -26,7 +34,11 @@
             tools:layout="@layout/fragment_main">
         <action
                 android:id="@+id/action_drill_fragment_to_settings_fragment"
-                app:destination="@id/settings_fragment" />
+                app:destination="@id/settings_fragment"
+                app:exitAnim="@android:anim/fade_out"
+                app:enterAnim="@android:anim/fade_in"
+                app:popExitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/fade_in" />
     </fragment>
 
 
@@ -34,7 +46,15 @@
             android:id="@+id/settings_fragment"
             android:name="com.tunepruner.musictraining.ui.SettingsFragment"
             android:label="Settings Fragment"
-            tools:layout="@layout/fragment_settings"/>
+            tools:layout="@layout/fragment_settings">
+        <action
+                android:id="@+id/action_settings_fragment_to_drill_fragment"
+                app:destination="@id/drill_fragment"
+                app:enterAnim="@android:anim/fade_in"
+                app:exitAnim="@android:anim/fade_out"
+                app:popExitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/fade_in" />
+    </fragment>
     <fragment
             android:id="@+id/savedDrillsFragment"
             android:name="com.example.musictraining.SavedDrillsFragment"
@@ -42,7 +62,11 @@
             tools:layout="@layout/fragment_saved_drills" >
         <action
                 android:id="@+id/action_savedDrillsFragment_to_drill_fragment"
-                app:destination="@id/drill_fragment" />
+                app:destination="@id/drill_fragment"
+                app:enterAnim="@android:anim/fade_in"
+                app:exitAnim="@android:anim/fade_out"
+                app:popExitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/fade_in" />
     </fragment>
 
 </navigation>
