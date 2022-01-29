@@ -99,4 +99,8 @@
     <string name="saved_drills">Saved drills</string>
     <string name="start_chord_drill">Start new chord drill</string>
     <string name="start_scale_drill">Start new scale drill</string>
+    <string name="scale_settings">Configure scale drill</string>
+    <string name="save_drill">Save drill</string>
+    <string name="re_configure">Re-configure drill</string>
+    <string name="chord_settings">Configure chord drill</string>
 </resources>

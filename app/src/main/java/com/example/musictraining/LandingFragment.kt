@@ -37,7 +37,7 @@ class LandingFragment : Fragment() {
         }
 
         binding.startScaleDrillButton.setOnClickListener {
-            findNavController().navigate(R.id.action_launchscreen_to_chord_drill_settings)
+            findNavController().navigate(R.id.action_launchscreen_to_scale_drill_settings)
         }
 
         binding.savedDrillsButton.setOnClickListener {

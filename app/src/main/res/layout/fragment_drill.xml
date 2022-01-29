@@ -256,7 +256,7 @@
 
     <android.widget.Button
             android:id="@+id/settings_button"
-            android:text="@string/settings"
+            android:text="@string/re_configure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/play_button"

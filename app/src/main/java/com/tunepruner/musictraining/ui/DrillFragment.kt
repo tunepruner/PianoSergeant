@@ -9,7 +9,7 @@ import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.musictraining.R
-import com.example.musictraining.databinding.FragmentMainBinding
+import com.example.musictraining.databinding.FragmentDrillBinding
 import com.tunepruner.musictraining.model.PlayState
 import com.tunepruner.musictraining.repositories.Settings
 import com.tunepruner.musictraining.repositories.SettingsRepository
@@ -30,7 +30,7 @@ const val MIN_BEATS_PER_CHORD = 1
 
 @ExperimentalCoroutinesApi
 class DrillFragment : Fragment() {
-    private var _binding: FragmentMainBinding? = null
+    private var _binding: FragmentDrillBinding? = null
     private val metronomeViewModel: MetronomeViewModel by inject(MetronomeViewModel::class.java)
     private val chordViewModel: ChordViewModel by inject(ChordViewModel::class.java)
     private val inputViewModel: NoteInputViewModel by inject(NoteInputViewModel::class.java)
@@ -45,7 +45,7 @@ class DrillFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
+        _binding = FragmentDrillBinding.inflate(inflater, container, false)
         return binding.root
     }
 

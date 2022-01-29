@@ -20,6 +20,7 @@
         <entry key="app/src/main/res/layout/choose_mode_layout.xml" value="0.335" />
         <entry key="app/src/main/res/layout/constrain_permitted_voicings_layout.xml" value="0.25" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_chord_drill_settings.xml" value="0.1118421052631579" />
         <entry key="app/src/main/res/layout/fragment_landing_screen.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_launch_screen.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_main.xml" value="0.335" />

@@ -84,7 +84,7 @@ class ScaleDrillSettingsFragment : Fragment() {
 
     private fun initializeViews() {
         binding.startDrillButton.setOnClickListener {
-            findNavController().navigate(R.id.action_chord_drill_settings_to_drill)
+            findNavController().navigate(R.id.action_scale_drill_settings_to_drill)
         }
         settings.current.value.let { settings ->
             with(binding) {

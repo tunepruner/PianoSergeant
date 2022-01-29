@@ -39,7 +39,7 @@
             android:id="@+id/drill_fragment"
             android:name="com.tunepruner.musictraining.ui.DrillFragment"
             android:label="Drill Fragment"
-            tools:layout="@layout/fragment_main">
+            tools:layout="@layout/fragment_drill">
         <action
                 android:id="@+id/action_drill_to_chord_drill_settings"
                 app:destination="@id/chord_drill_settings_fragment"
