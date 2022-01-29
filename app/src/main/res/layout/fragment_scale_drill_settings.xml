@@ -50,9 +50,6 @@
                 layout="@layout/time_constraint_layout"
                 android:id="@+id/time_constraint_layout" />
 
-        <include
-                layout="@layout/choose_mode_layout"
-                android:id="@+id/choose_mode_layout" />
 
         <include
                 layout="@layout/select_notes_per_beat_layout"
@@ -61,18 +58,6 @@
         <include
                 layout="@layout/add_interval_requirements_layout"
                 android:id="@+id/add_interval_requirements_layout" />
-
-        <include
-                layout="@layout/select_inversions_layout"
-                android:id="@+id/select_inversions_layout" />
-
-        <include
-                layout="@layout/select_chord_qualities_layout"
-                android:id="@+id/select_chord_qualities_layout" />
-
-        <include
-                layout="@layout/constrain_permitted_voicings_layout"
-                android:id="@+id/constrain_permitted_voicings_layout" />
 
         <include
                 layout="@layout/select_keys_layout"

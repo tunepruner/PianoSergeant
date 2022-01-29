@@ -10,9 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.musictraining.R
 import com.example.musictraining.databinding.FragmentScaleDrillSettingsBinding
 import com.tunepruner.musictraining.repositories.AlgorithmSetting
-import com.tunepruner.musictraining.repositories.ChordQuality
 import com.tunepruner.musictraining.repositories.IntervalRequirements
-import com.tunepruner.musictraining.repositories.Inversion
 import com.tunepruner.musictraining.repositories.Key
 import com.tunepruner.musictraining.repositories.MAX_DOUBLING_AMOUNT
 import com.tunepruner.musictraining.repositories.MAX_NOTES_PER_BEAT
@@ -104,24 +102,6 @@ class ScaleDrillSettingsFragment : Fragment() {
                         }
                     }
                 }
-                with(choose_mode_radio_group) {
-                    settingsViewModel.mode.observe(viewLifecycleOwner) {
-                        check(
-                            when (it) {
-                                Mode.CHORD -> R.id.chord_mode_radio_button
-                                Mode.SCALE -> R.id.scale_mode_radio_button
-                            }
-                        )
-                    }
-
-                    setOnCheckedChangeListener { _, button ->
-                        when (button) {
-                            R.id.chord_mode_radio_button -> settingsViewModel.enableChordMode()
-                            R.id.scale_mode_radio_button -> settingsViewModel.enableScaleMode()
-                        }
-                        persistSettings()
-                    }
-                }
                 with(select_notes_per_beat_layout) {
                     current_value.text =
                         settings.notesPerBeat.toString()
@@ -211,139 +191,6 @@ class ScaleDrillSettingsFragment : Fragment() {
                                 settings.intervalGreaterThanValue = allIntervals[(currentIndex - 1)]
                                 current_value.text = settings.intervalGreaterThanValue.uiName
                             }
-                        }
-                        persistSettings()
-                    }
-                }
-                with(selectInversionsLayout) {
-                    val inversionsMap = mapOf(
-                        Inversion.ROOT_POSITION to rootPositionChip,
-                        Inversion.FIRST_INVERSION to firstInverisonChip,
-                        Inversion.SECOND_INVERSION to secondInversionChip,
-                        Inversion.THIRD_INVERSION to thirdInversionChip,
-                    )
-                    for (element in inversionsMap) {
-                        element.value.isChecked = settings.inversions.contains(element.key)
-                        element.value.setOnCheckedChangeListener { compoundButton, b ->
-                            if (compoundButton.isChecked) {
-                                settings.inversions.add(element.key)
-                            } else {
-                                settings.inversions.remove(element.key)
-                            }
-                            persistSettings()
-                        }
-                    }
-                }
-
-
-                with(selectChordQualitiesLayout) {
-                    val chordQualitiesMap = mapOf(
-                        ChordQuality.MAJOR_TRIAD to majorTriad,
-                        ChordQuality.MINOR_TRIAD to minorTriad,
-                        ChordQuality.DIMINISHED_TRIAD to diminishedTriad,
-                        ChordQuality.AUGMENTED_TRIAD to augmentedTriad,
-                        ChordQuality.SUS_2_TRIAD to sus2Triad,
-                        ChordQuality.SUS_4_TRIAD to sus4Triad,
-                        ChordQuality.MAJOR_SEVENTH to majorSeventh,
-                        ChordQuality.DOMINANT_SEVENTH to dominantSeventh,
-                        ChordQuality.MINOR_SEVENTH to minorSeventh,
-                        ChordQuality.MINOR_MAJOR_SEVENTH to minorMajorSeventh,
-                        ChordQuality.HALF_DIMINISHED_SEVENTH to halfDiminishedSeventh,
-                        ChordQuality.FULL_DIMINISHED_SEVENTH to fullDiminishedSeventh,
-                        ChordQuality.AUGMENTED_SEVENTH to augmentedSeventh,
-                        ChordQuality.AUGMENTED_MAJOR_SEVENTH to augmentedMajorSeventh,
-                        ChordQuality.DOMINANT_SEVENTH_SUS_4 to dominantSeventhSus4,
-                    )
-
-                    for (element in chordQualitiesMap) {
-                        element.value.isChecked = settings.chordQualities.contains(element.key)
-                        element.value.setOnCheckedChangeListener { compoundButton, b ->
-                            if (compoundButton.isChecked) {
-                                settings.chordQualities.add(element.key)
-                            } else {
-                                settings.chordQualities.remove(element.key)
-                            }
-                            persistSettings()
-                        }
-                    }
-                }
-
-                with(note_doubling_requirement_layout) {
-                    radio_group.apply {
-                        check(
-                            when (settings.noteDoublingRequirement) {
-                                NoteDoublingRequirement.NONE -> R.id.scale_mode_radio_button
-                                NoteDoublingRequirement.SPECIFIC_AMOUNT -> R.id.specific_amount_button
-                            }
-                        )
-                        setOnCheckedChangeListener { _, button ->
-                            Log.i(LOG_TAG, "clicked: ")
-                            settings.noteDoublingRequirement =
-                                when (button) {
-                                    R.id.specific_amount_button -> NoteDoublingRequirement.SPECIFIC_AMOUNT
-                                    else -> NoteDoublingRequirement.NONE
-                                }
-                            persistSettings()
-                        }
-                    }
-
-                    current_value.text = settings.noteDoublingAmount.toString()
-
-                    up_button.setOnClickListener {
-                        if (settings.noteDoublingRequirement == NoteDoublingRequirement.SPECIFIC_AMOUNT) {
-                            if (settings.noteDoublingAmount < MAX_DOUBLING_AMOUNT) {
-                                settings.noteDoublingAmount++
-                            }
-                            current_value.text = settings.noteDoublingAmount.toString()
-                            persistSettings()
-                        }
-                    }
-                    down_button.setOnClickListener {
-                        if (settings.noteDoublingRequirement == NoteDoublingRequirement.SPECIFIC_AMOUNT) {
-                            if (settings.noteDoublingAmount > MIN_DOUBLING_AMOUNT) {
-                                settings.noteDoublingAmount--
-                            }
-                            current_value.text = settings.noteDoublingAmount.toString()
-                            persistSettings()
-                        }
-                    }
-                }
-
-                with(voicing_spacing_requirement_layout.radio_group) {
-                    check(
-                        when (settings.spacingRequirement) {
-                            SpacingRequirement.NONE -> R.id.none
-                            SpacingRequirement.OPEN_VOICING -> R.id.closed_voicing
-                            SpacingRequirement.CLOSED_VOICING -> R.id.open_voicing
-                        }
-                    )
-                    setOnCheckedChangeListener { _, button ->
-                        settings.spacingRequirement = when (button) {
-                            R.id.closed_voicing -> SpacingRequirement.CLOSED_VOICING
-                            R.id.open_voicing -> SpacingRequirement.OPEN_VOICING
-                            else -> SpacingRequirement.NONE
-                        }
-                        persistSettings()
-                    }
-                }
-
-                with(register_requirement_layout.radio_group) {
-                    check(
-                        when (settings.registerRequirement) {
-                            RegisterRequirement.NONE -> R.id.none
-                            RegisterRequirement.REQUIRE_VOICE_LEADING -> R.id.voice_leading
-                            RegisterRequirement.REQUIRE_COMMON_TOP_NOTE -> R.id.common_top_note
-                            RegisterRequirement.REQUIRE_COMMON_BOTTOM_NOTE -> R.id.common_bottom_note
-                            RegisterRequirement.REQUIRE_LEAP_GREATER_THAN_5TH -> R.id.leap_greater_than
-                        }
-                    )
-                    setOnCheckedChangeListener { _, button ->
-                        settings.registerRequirement = when (button) {
-                            R.id.voice_leading -> RegisterRequirement.REQUIRE_VOICE_LEADING
-                            R.id.common_top_note -> RegisterRequirement.REQUIRE_COMMON_TOP_NOTE
-                            R.id.common_bottom_note -> RegisterRequirement.REQUIRE_COMMON_BOTTOM_NOTE
-                            R.id.leap_greater_than -> RegisterRequirement.REQUIRE_LEAP_GREATER_THAN_5TH
-                            else -> RegisterRequirement.NONE
                         }
                         persistSettings()
                     }
