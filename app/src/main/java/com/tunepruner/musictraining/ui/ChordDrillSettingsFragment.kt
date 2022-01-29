@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.musictraining.R
-import com.example.musictraining.databinding.FragmentSettingsBinding
+import com.example.musictraining.databinding.FragmentChordDrillSettingsBinding
 import com.tunepruner.musictraining.repositories.AlgorithmSetting
 import com.tunepruner.musictraining.repositories.ChordQuality
 import com.tunepruner.musictraining.repositories.IntervalRequirements
@@ -31,7 +31,7 @@ import kotlinx.android.synthetic.main.add_interval_requirements_layout.view.*
 import kotlinx.android.synthetic.main.algorithm_for_prompts_layout.view.*
 import kotlinx.android.synthetic.main.choose_mode_layout.*
 import kotlinx.android.synthetic.main.constrain_permitted_voicings_layout.*
-import kotlinx.android.synthetic.main.fragment_settings.*
+import kotlinx.android.synthetic.main.fragment_chord_drill_settings.*
 import kotlinx.android.synthetic.main.number_selector.view.*
 import kotlinx.android.synthetic.main.select_inversions_layout.*
 import kotlinx.android.synthetic.main.time_constraint_layout.*
@@ -46,15 +46,15 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [SettingsFragment.newInstance] factory method to
+ * Use the [ChordDrillSettingsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
 @ExperimentalCoroutinesApi
-class SettingsFragment : Fragment() {
+class ChordDrillSettingsFragment : Fragment() {
     private val settingsViewModel: SettingsViewModel by viewModel()
     private val settings: SettingsRepository by KoinJavaComponent.inject(SettingsRepository::class.java)
-    private var _binding: FragmentSettingsBinding? = null
-    private val binding: FragmentSettingsBinding get() = _binding!!
+    private var _binding: FragmentChordDrillSettingsBinding? = null
+    private val binding: FragmentChordDrillSettingsBinding get() = _binding!!
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -73,7 +73,7 @@ class SettingsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        _binding = FragmentSettingsBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentChordDrillSettingsBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -428,7 +428,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun persistSettings() {
-        this@SettingsFragment.settings.persist()
+        this@ChordDrillSettingsFragment.settings.persist()
     }
 
     companion object {
@@ -438,12 +438,12 @@ class SettingsFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment SettingsFragment.
+         * @return A new instance of fragment ChordDrillSettingsFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            SettingsFragment().apply {
+            ChordDrillSettingsFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
