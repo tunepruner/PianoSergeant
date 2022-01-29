@@ -15,10 +15,7 @@ import com.tunepruner.musictraining.repositories.IntervalRequirements
 import com.tunepruner.musictraining.repositories.Inversion
 import com.tunepruner.musictraining.repositories.Key
 import com.tunepruner.musictraining.repositories.MAX_DOUBLING_AMOUNT
-import com.tunepruner.musictraining.repositories.MAX_NOTES_PER_BEAT
 import com.tunepruner.musictraining.repositories.MIN_DOUBLING_AMOUNT
-import com.tunepruner.musictraining.repositories.MIN_NOTES_PER_BEAT
-import com.tunepruner.musictraining.repositories.Mode
 import com.tunepruner.musictraining.repositories.NoteDoublingRequirement
 import com.tunepruner.musictraining.repositories.PatternSubSetting
 import com.tunepruner.musictraining.repositories.RegisterRequirement
@@ -101,42 +98,6 @@ class ChordDrillSettingsFragment : Fragment() {
                         when (button) {
                             R.id.metronome_radio_button -> settingsViewModel.enableMetronome()
                             R.id.rapid_fire_radio_button -> settingsViewModel.enableRapidFire()
-                        }
-                    }
-                }
-                with(choose_mode_radio_group) {
-                    settingsViewModel.mode.observe(viewLifecycleOwner) {
-                        check(
-                            when (it) {
-                                Mode.CHORD -> R.id.chord_mode_radio_button
-                                Mode.SCALE -> R.id.scale_mode_radio_button
-                            }
-                        )
-                    }
-
-                    setOnCheckedChangeListener { _, button ->
-                        when (button) {
-                            R.id.chord_mode_radio_button -> settingsViewModel.enableChordMode()
-                            R.id.scale_mode_radio_button -> settingsViewModel.enableScaleMode()
-                        }
-                        persistSettings()
-                    }
-                }
-                with(select_notes_per_beat_layout) {
-                    current_value.text =
-                        settings.notesPerBeat.toString()
-                    up_button.setOnClickListener {
-                        if (settings.notesPerBeat < MAX_NOTES_PER_BEAT) {
-                            settings.notesPerBeat++
-                            current_value.text = settings.notesPerBeat.toString()
-                            persistSettings()
-                        }
-                    }
-                    down_button.setOnClickListener {
-                        if (settings.notesPerBeat > MIN_NOTES_PER_BEAT) {
-                            settings.notesPerBeat--
-                            current_value.text = settings.notesPerBeat.toString()
-                            persistSettings()
                         }
                     }
                 }

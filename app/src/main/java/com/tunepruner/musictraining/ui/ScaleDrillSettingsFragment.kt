@@ -102,24 +102,6 @@ class ScaleDrillSettingsFragment : Fragment() {
                         }
                     }
                 }
-                with(select_notes_per_beat_layout) {
-                    current_value.text =
-                        settings.notesPerBeat.toString()
-                    up_button.setOnClickListener {
-                        if (settings.notesPerBeat < MAX_NOTES_PER_BEAT) {
-                            settings.notesPerBeat++
-                            current_value.text = settings.notesPerBeat.toString()
-                            persistSettings()
-                        }
-                    }
-                    down_button.setOnClickListener {
-                        if (settings.notesPerBeat > MIN_NOTES_PER_BEAT) {
-                            settings.notesPerBeat--
-                            current_value.text = settings.notesPerBeat.toString()
-                            persistSettings()
-                        }
-                    }
-                }
                 with(add_interval_requirements_layout) {
                     //Initialize the radio button state and related ui states
                     radio_group.check(
