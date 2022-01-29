@@ -96,4 +96,5 @@
     <string name="minor_keys">Minor keys</string>
     <string name="empty_edit_text">-</string>
     <string name="start_drill">Start drill</string>
+    <string name="saved_drills">Saved drills</string>
 </resources>

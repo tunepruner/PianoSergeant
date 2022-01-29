@@ -14,6 +14,9 @@
         <action
                 android:id="@+id/action_launchScreenFragment_to_settings_fragment"
                 app:destination="@id/settings_fragment" />
+        <action
+                android:id="@+id/action_launchScreenFragment_to_savedDrillsFragment"
+                app:destination="@id/savedDrillsFragment" />
     </fragment>
 
     <fragment
@@ -32,5 +35,14 @@
             android:name="com.tunepruner.musictraining.ui.SettingsFragment"
             android:label="Settings Fragment"
             tools:layout="@layout/fragment_settings"/>
+    <fragment
+            android:id="@+id/savedDrillsFragment"
+            android:name="com.example.musictraining.SavedDrillsFragment"
+            android:label="fragment_saved_drills"
+            tools:layout="@layout/fragment_saved_drills" >
+        <action
+                android:id="@+id/action_savedDrillsFragment_to_drill_fragment"
+                app:destination="@id/drill_fragment" />
+    </fragment>
 
 </navigation>

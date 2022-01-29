@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import com.example.musictraining.databinding.FragmentLandingScreenBinding
+import com.example.musictraining.databinding.FragmentSavedDrillsBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -15,29 +15,22 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [LandingFragment.newInstance] factory method to
+ * Use the [SavedDrillsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class LandingFragment : Fragment() {
-    private var _binding: FragmentLandingScreenBinding? = null
+class SavedDrillsFragment : Fragment() {
+    private var _binding: FragmentSavedDrillsBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentLandingScreenBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentSavedDrillsBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.button.setOnClickListener {
-            findNavController().navigate(R.id.settings_fragment)
-        }
-        binding.button2.setOnClickListener {
-            findNavController().navigate(R.id.savedDrillsFragment)
-        }
     }
-
 }
