@@ -6,6 +6,7 @@
         <entry key="app/src/main/res/drawable-anydpi/down_button.xml" value="0.14046052631578948" />
         <entry key="app/src/main/res/drawable-anydpi/metronome.xml" value="0.14046052631578948" />
         <entry key="app/src/main/res/drawable-anydpi/up_button.xml" value="0.14046052631578948" />
+        <entry key="app/src/main/res/drawable/button_background.xml" value="0.1388157894736842" />
         <entry key="app/src/main/res/drawable/ripple.xml" value="0.21973684210526315" />
         <entry key="app/src/main/res/drawable/ripple2.xml" value="0.14046052631578948" />
         <entry key="app/src/main/res/drawable/settings_category_background.xml" value="0.15197368421052632" />
@@ -19,7 +20,7 @@
         <entry key="app/src/main/res/layout/choose_mode_layout.xml" value="0.335" />
         <entry key="app/src/main/res/layout/constrain_permitted_voicings_layout.xml" value="0.25" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_landing_screen.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_landing_screen.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_launch_screen.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_main.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_saved_drills.xml" value="0.1" />

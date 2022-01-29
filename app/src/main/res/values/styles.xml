@@ -15,4 +15,27 @@
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/arciform</item>
     </style>
+
+    <style name="ArciformTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/arciform</item>
+        <item name="colorPrimary">@color/white</item>
+    </style>
+
+    <style name="ArciformButtonStyle" parent="android:Widget.Holo.Button">
+        <item name="android:fontFamily">@font/arciform</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="android:background">@drawable/ripple</item>
+        <item name="android:padding">@dimen/half_default_margin</item>
+    </style>
+
+    <style name="ArciformRadioButtonStyle" parent="android:Widget.Holo.CompoundButton.RadioButton">
+        <item name="android:fontFamily">@font/arciform</item>
+        <item name="colorPrimary">@color/white</item>
+    </style>
+
+    <style name="ArciformCheckboxStyle" parent="android:Widget.Holo.CompoundButton.CheckBox">
+        <item name="android:fontFamily">@font/arciform</item>
+        <item name="colorPrimary">@color/white</item>
+    </style>
 </resources>
