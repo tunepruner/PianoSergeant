@@ -8,32 +8,47 @@
 
 
     <LinearLayout
-            android:background="@color/primary_background"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/screen_heading"
-                android:text="@string/settings" />
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/screen_heading"
+                    android:text="@string/settings" />
 
-        <include layout="@layout/time_constraint_layout"
-                android:id="@+id/time_constraint_layout"/>
+            <Button
+                    android:id="@+id/start_drill_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/start_drill" />
+        </LinearLayout>
 
-        <include layout="@layout/choose_mode_layout"
-                android:id="@+id/choose_mode_layout"/>
+        <include
+                layout="@layout/time_constraint_layout"
+                android:id="@+id/time_constraint_layout" />
 
-        <include layout="@layout/select_notes_per_beat_layout"
-                android:id="@+id/select_notes_per_beat_layout"/>
+        <include
+                layout="@layout/choose_mode_layout"
+                android:id="@+id/choose_mode_layout" />
 
-        <include layout="@layout/add_interval_requirements_layout"
-                android:id="@+id/add_interval_requirements_layout"/>
+        <include
+                layout="@layout/select_notes_per_beat_layout"
+                android:id="@+id/select_notes_per_beat_layout" />
 
-        <include layout="@layout/select_inversions_layout"
-                android:id="@+id/select_inversions_layout"/>
+        <include
+                layout="@layout/add_interval_requirements_layout"
+                android:id="@+id/add_interval_requirements_layout" />
+
+        <include
+                layout="@layout/select_inversions_layout"
+                android:id="@+id/select_inversions_layout" />
 
         <include
                 layout="@layout/select_chord_qualities_layout"

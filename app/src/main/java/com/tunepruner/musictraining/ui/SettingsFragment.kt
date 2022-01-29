@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.musictraining.R
 import com.example.musictraining.databinding.FragmentSettingsBinding
 import com.tunepruner.musictraining.repositories.AlgorithmSetting
@@ -82,6 +83,9 @@ class SettingsFragment : Fragment() {
     }
 
     private fun initializeViews() {
+        binding.startDrillButton.setOnClickListener {
+            findNavController().navigate(R.id.drill_fragment)
+        }
         settings.current.value.let { settings ->
             with(binding) {
                 with(time_constraint_radio_group) {

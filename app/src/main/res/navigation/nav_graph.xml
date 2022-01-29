@@ -3,7 +3,18 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/nav_graph"
-        app:startDestination="@id/drill_fragment">
+        app:startDestination="@id/launchScreenFragment">
+
+    <fragment
+            android:id="@+id/launchScreenFragment"
+            android:name="com.example.musictraining.LandingFragment"
+            android:label="fragment_launch_screen"
+            tools:layout="@layout/fragment_landing_screen" >
+
+        <action
+                android:id="@+id/action_launchScreenFragment_to_settings_fragment"
+                app:destination="@id/settings_fragment" />
+    </fragment>
 
     <fragment
             android:id="@+id/drill_fragment"
@@ -21,4 +32,5 @@
             android:name="com.tunepruner.musictraining.ui.SettingsFragment"
             android:label="Settings Fragment"
             tools:layout="@layout/fragment_settings"/>
+
 </navigation>
