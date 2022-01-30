@@ -4,19 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tunepruner.musictraining.repositories.Mode
+import com.tunepruner.musictraining.model.music.drill.items.TimeConstraint
 import com.tunepruner.musictraining.repositories.SettingsRepository
-import com.tunepruner.musictraining.repositories.TimeConstraint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class SettingsViewModel(private val settingsRepo: SettingsRepository) : ViewModel() {
     val settings = settingsRepo.current.value
-
-    private var _mode = MutableLiveData<Mode>()
-    var mode: LiveData<Mode> = _mode
 
     private var _timeConstraint = MutableLiveData<TimeConstraint>()
     var timeConstraint: LiveData<TimeConstraint> = _timeConstraint
@@ -24,36 +22,8 @@ class SettingsViewModel(private val settingsRepo: SettingsRepository) : ViewMode
     init {
         viewModelScope.launch {
             settingsRepo.current.collect {
-                _mode.value = it.mode
                 _timeConstraint.value = it.timeConstraint
             }
-        }
-    }
-
-    val mapOfSettings = mapOf(
-        settings.mode to Mode.CHORD,
-        settings.mode to Mode.SCALE,
-    )
-
-//    fun changeSetting(enable: Boolean){
-//        for ((setting, type) in mapOfSettings) {
-//            setting = if (enable) {
-//
-//            }
-//        }
-//    }
-
-    fun enableChordMode() {
-        updateSettings {
-            settings.mode = Mode.CHORD
-            _mode.value = Mode.CHORD
-        }
-    }
-
-    fun enableScaleMode() {
-        updateSettings {
-            settings.mode = Mode.SCALE
-            _mode.value = Mode.SCALE
         }
     }
 

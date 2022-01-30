@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.musictraining.R
 import com.example.musictraining.databinding.FragmentDrillBinding
 import com.tunepruner.musictraining.model.PlayState
-import com.tunepruner.musictraining.repositories.Settings
+import com.tunepruner.musictraining.model.music.drill.Settings
 import com.tunepruner.musictraining.repositories.SettingsRepository
 import com.tunepruner.musictraining.viewmodel.ChordViewModel
 import com.tunepruner.musictraining.viewmodel.MetronomeViewModel

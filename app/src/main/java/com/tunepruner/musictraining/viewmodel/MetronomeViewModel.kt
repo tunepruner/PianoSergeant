@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tunepruner.musictraining.model.PlayState
-import com.tunepruner.musictraining.repositories.Settings
+import com.tunepruner.musictraining.model.music.drill.Settings
 import com.tunepruner.musictraining.repositories.SettingsRepository
 import com.tunepruner.musictraining.ui.MIN_TEMPO
 import com.tunepruner.musictraining.util.MetronomeClicker

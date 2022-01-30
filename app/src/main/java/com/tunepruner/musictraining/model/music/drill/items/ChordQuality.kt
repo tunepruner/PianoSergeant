@@ -1,0 +1,19 @@
+package com.tunepruner.musictraining.model.music.drill.items
+
+enum class ChordQuality {
+    MAJOR_TRIAD,
+    MINOR_TRIAD,
+    DIMINISHED_TRIAD,
+    AUGMENTED_TRIAD,
+    SUS_2_TRIAD,
+    SUS_4_TRIAD,
+    DOMINANT_SEVENTH,
+    MAJOR_SEVENTH,
+    MINOR_SEVENTH,
+    MINOR_MAJOR_SEVENTH,
+    HALF_DIMINISHED_SEVENTH,
+    FULL_DIMINISHED_SEVENTH,
+    AUGMENTED_SEVENTH,
+    AUGMENTED_MAJOR_SEVENTH,
+    DOMINANT_SEVENTH_SUS_4,
+}

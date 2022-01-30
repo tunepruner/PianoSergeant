@@ -1,0 +1,28 @@
+package com.tunepruner.musictraining.model.music.drill.items
+
+enum class Key {
+    A_MAJOR,
+    Bb_MAJOR,
+    B_MAJOR,
+    C_MAJOR,
+    Db_MAJOR,
+    D_MAJOR,
+    Eb_MAJOR,
+    E_MAJOR,
+    F_MAJOR,
+    Fsharp_MAJOR,
+    G_MAJOR,
+    Ab_MAJOR,
+    A_MINOR,
+    Bb_MINOR,
+    B_MINOR,
+    C_MINOR,
+    Db_MINOR,
+    D_MINOR,
+    Eb_MINOR,
+    E_MINOR,
+    F_MINOR,
+    Fsharp_MINOR,
+    G_MINOR,
+    Ab_MINOR,
+}

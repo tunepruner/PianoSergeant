@@ -1,4 +1,4 @@
-package com.tunepruner.musictraining.repositories
+package com.tunepruner.musictraining.model.constants
 
 class PreferencesKeys {
     companion object {

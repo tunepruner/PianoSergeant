@@ -9,20 +9,20 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.musictraining.R
 import com.example.musictraining.databinding.FragmentChordDrillSettingsBinding
-import com.tunepruner.musictraining.repositories.AlgorithmSetting
-import com.tunepruner.musictraining.repositories.ChordQuality
-import com.tunepruner.musictraining.repositories.IntervalRequirements
-import com.tunepruner.musictraining.repositories.Inversion
-import com.tunepruner.musictraining.repositories.Key
-import com.tunepruner.musictraining.repositories.MAX_DOUBLING_AMOUNT
-import com.tunepruner.musictraining.repositories.MIN_DOUBLING_AMOUNT
-import com.tunepruner.musictraining.repositories.NoteDoublingRequirement
-import com.tunepruner.musictraining.repositories.PatternSubSetting
-import com.tunepruner.musictraining.repositories.RegisterRequirement
+import com.tunepruner.musictraining.model.music.drill.items.AlgorithmSetting
+import com.tunepruner.musictraining.model.music.drill.items.ChordQuality
+import com.tunepruner.musictraining.model.music.drill.items.IntervalRequirements
+import com.tunepruner.musictraining.model.music.drill.items.Inversion
+import com.tunepruner.musictraining.model.music.drill.items.Key
+import com.tunepruner.musictraining.model.music.drill.items.MAX_DOUBLING_AMOUNT
+import com.tunepruner.musictraining.model.music.drill.items.MIN_DOUBLING_AMOUNT
+import com.tunepruner.musictraining.model.music.drill.items.NoteDoublingRequirement
+import com.tunepruner.musictraining.model.music.drill.items.PatternSubSetting
+import com.tunepruner.musictraining.model.music.drill.items.RegisterRequirement
+import com.tunepruner.musictraining.model.music.drill.items.SpacingRequirement
+import com.tunepruner.musictraining.model.music.drill.items.TimeConstraint
+import com.tunepruner.musictraining.model.music.drill.items.allIntervals
 import com.tunepruner.musictraining.repositories.SettingsRepository
-import com.tunepruner.musictraining.repositories.SpacingRequirement
-import com.tunepruner.musictraining.repositories.TimeConstraint
-import com.tunepruner.musictraining.repositories.allIntervals
 import com.tunepruner.musictraining.viewmodel.SettingsViewModel
 import kotlinx.android.synthetic.main.add_interval_requirements_layout.view.*
 import kotlinx.android.synthetic.main.algorithm_for_prompts_layout.view.*
@@ -33,6 +33,7 @@ import kotlinx.android.synthetic.main.number_selector.view.*
 import kotlinx.android.synthetic.main.select_inversions_layout.*
 import kotlinx.android.synthetic.main.time_constraint_layout.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.java.KoinJavaComponent
 
@@ -47,7 +48,9 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 @ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class ChordDrillSettingsFragment : Fragment() {
+    @InternalCoroutinesApi
     private val settingsViewModel: SettingsViewModel by viewModel()
     private val settings: SettingsRepository by KoinJavaComponent.inject(SettingsRepository::class.java)
     private var _binding: FragmentChordDrillSettingsBinding? = null
@@ -79,6 +82,7 @@ class ChordDrillSettingsFragment : Fragment() {
         initializeViews()
     }
 
+    @InternalCoroutinesApi
     private fun initializeViews() {
         binding.startDrillButton.setOnClickListener {
             findNavController().navigate(R.id.action_chord_drill_settings_to_drill)
@@ -101,6 +105,7 @@ class ChordDrillSettingsFragment : Fragment() {
                         }
                     }
                 }
+
                 with(add_interval_requirements_layout) {
                     //Initialize the radio button state and related ui states
                     radio_group.check(
