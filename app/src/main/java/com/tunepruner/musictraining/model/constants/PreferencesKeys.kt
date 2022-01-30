@@ -5,3 +5,4 @@ class PreferencesKeys {
         const val SETTINGS_KEY = "settings_key"
     }
 }
+
