@@ -4,13 +4,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.tunepruner.musictraining.repositories.SettingsRepository
+import com.tunepruner.musictraining.repositories.DrillSettingsRepository
 
 typealias RelationOptions = Pair<Int, Int>
 typealias Spellings = Pair<String, String>
 
 class ChordViewModel(
-    private val settingsRepository: SettingsRepository,
+    private val drillSettingsRepository: DrillSettingsRepository,
 ) : ViewModel() {
 
     private val _currentChord: MutableLiveData<String?> = MutableLiveData(null)
@@ -61,7 +61,7 @@ class ChordViewModel(
     fun triggerNextChord() {
         _currentChord.value = getChord(
             _currentChord.value ?: "C",
-            settingsRepository.current.value.chordDistance)
+            drillSettingsRepository.current.value.chordDistance)
     }
 
 }

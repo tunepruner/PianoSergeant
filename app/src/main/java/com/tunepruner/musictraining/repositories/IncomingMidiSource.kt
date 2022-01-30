@@ -19,6 +19,8 @@ import com.google.gson.GsonBuilder
 import com.tunepruner.musictraining.midi.MidiFramer
 import com.tunepruner.musictraining.midi.MidiParser
 import com.tunepruner.musictraining.midi.NoteReceiver
+import com.tunepruner.musictraining.model.constants.LAST_NOTE
+import com.tunepruner.musictraining.model.constants.dataStore
 import com.tunepruner.musictraining.ui.LOG_TAG
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,10 +39,6 @@ data class LastNote(
     val count: Int,
     val timestamp: Long
 )
-
-val LAST_NOTE = stringPreferencesKey("last_note")
-val SETTINGS = stringPreferencesKey("settings")
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "music_training")
 
 class IncomingMidiSource(context: Context) {
     val dataStore = context.dataStore

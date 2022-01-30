@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tunepruner.musictraining.model.PlayState
 import com.tunepruner.musictraining.model.music.drill.Settings
-import com.tunepruner.musictraining.repositories.SettingsRepository
+import com.tunepruner.musictraining.repositories.DrillSettingsRepository
 import com.tunepruner.musictraining.ui.MIN_TEMPO
 import com.tunepruner.musictraining.util.MetronomeClicker
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -22,12 +22,12 @@ import kotlin.math.roundToInt
 
 @ExperimentalCoroutinesApi
 class MetronomeViewModel(
-    private val settingsRepository: SettingsRepository,
+    private val drillSettingsRepository: DrillSettingsRepository,
     private val clicker: MetronomeClicker,
 ) : ViewModel() {
 
     private var _currentSettings: MutableLiveData<Settings> =
-        MutableLiveData<Settings>(settingsRepository.current.value)
+        MutableLiveData<Settings>(drillSettingsRepository.current.value)
     var currentSettings: LiveData<Settings> = _currentSettings
 
     private val _playState: MutableLiveData<PlayState> =
@@ -45,7 +45,7 @@ class MetronomeViewModel(
 
     init {
         viewModelScope.launch {
-            settingsRepository.current.collect {
+            drillSettingsRepository.current.collect {
                 _currentSettings.value = it
             }
         }
@@ -108,9 +108,9 @@ class MetronomeViewModel(
             }
         }
 
-        delay(settingsRepository.current.value.beatDuration)
+        delay(drillSettingsRepository.current.value.beatDuration)
 
-        if (_publishedBeatNumber.value == settingsRepository.current.value.beatsPerChord) {
+        if (_publishedBeatNumber.value == drillSettingsRepository.current.value.beatsPerChord) {
             endBar()
             startNewBar()
         } else {
@@ -128,7 +128,7 @@ class MetronomeViewModel(
         delay(10)
         val barDuration: Long =
             _currentSettings.value?.barDuration
-                ?: settingsRepository.current.value.barDurationFromTempo(MIN_TEMPO)
+                ?: drillSettingsRepository.current.value.barDurationFromTempo(MIN_TEMPO)
         //TODO somewhere around here, weird progress bar problem
         val preCalc = ((Date().time - timeStarted.time).toDouble() / barDuration) * 100
         if (preCalc < 100) {

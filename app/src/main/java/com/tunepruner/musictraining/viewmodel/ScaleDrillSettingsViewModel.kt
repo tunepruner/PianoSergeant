@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tunepruner.musictraining.model.music.drill.items.TimeConstraint
-import com.tunepruner.musictraining.repositories.SettingsRepository
+import com.tunepruner.musictraining.repositories.DrillSettingsRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -13,15 +13,15 @@ import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
-class ScaleDrillSettingsViewModel(private val settingsRepo: SettingsRepository) : ViewModel() {
-    val settings = settingsRepo.current.value
+class ScaleDrillSettingsViewModel(private val drillSettingsRepo: DrillSettingsRepository) : ViewModel() {
+    val settings = drillSettingsRepo.current.value
 
     private var _timeConstraint = MutableLiveData<TimeConstraint>()
     var timeConstraint: LiveData<TimeConstraint> = _timeConstraint
 
     init {
         viewModelScope.launch {
-            settingsRepo.current.collect {
+            drillSettingsRepo.current.collect {
                 _timeConstraint.value = it.timeConstraint
             }
         }
@@ -43,7 +43,7 @@ class ScaleDrillSettingsViewModel(private val settingsRepo: SettingsRepository) 
 
     private fun updateSettings(action: () -> Unit) {
         action.invoke()
-        settingsRepo.persist()
+        drillSettingsRepo.persist()
     }
 }
 

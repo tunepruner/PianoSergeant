@@ -15,7 +15,7 @@ import com.tunepruner.musictraining.model.music.drill.items.Key
 import com.tunepruner.musictraining.model.music.drill.items.PatternSubSetting
 import com.tunepruner.musictraining.model.music.drill.items.TimeConstraint
 import com.tunepruner.musictraining.model.music.drill.items.allIntervals
-import com.tunepruner.musictraining.repositories.SettingsRepository
+import com.tunepruner.musictraining.repositories.DrillSettingsRepository
 import com.tunepruner.musictraining.viewmodel.ScaleDrillSettingsViewModel
 import kotlinx.android.synthetic.main.add_interval_requirements_layout.view.*
 import kotlinx.android.synthetic.main.algorithm_for_prompts_layout.view.*
@@ -44,7 +44,7 @@ private const val ARG_PARAM2 = "param2"
 @InternalCoroutinesApi
 class ScaleDrillSettingsFragment : Fragment() {
     private val settingsViewModel: ScaleDrillSettingsViewModel by viewModel()
-    private val settings: SettingsRepository by KoinJavaComponent.inject(SettingsRepository::class.java)
+    private val drillSettings: DrillSettingsRepository by KoinJavaComponent.inject(DrillSettingsRepository::class.java)
     private var _binding: FragmentScaleDrillSettingsBinding? = null
     private val binding: FragmentScaleDrillSettingsBinding get() = _binding!!
 
@@ -78,7 +78,7 @@ class ScaleDrillSettingsFragment : Fragment() {
         binding.startDrillButton.setOnClickListener {
             findNavController().navigate(R.id.action_scale_drill_settings_to_drill)
         }
-        settings.current.value.let { settings ->
+        drillSettings.current.value.let { settings ->
             with(binding) {
                 with(time_constraint_radio_group) {
                     settingsViewModel.timeConstraint.observe(viewLifecycleOwner) {
@@ -251,7 +251,7 @@ class ScaleDrillSettingsFragment : Fragment() {
     }
 
     private fun persistSettings() {
-        this@ScaleDrillSettingsFragment.settings.persist()
+        this@ScaleDrillSettingsFragment.drillSettings.persist()
     }
 
     companion object {

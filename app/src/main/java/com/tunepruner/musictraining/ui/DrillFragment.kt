@@ -12,7 +12,7 @@ import com.example.musictraining.R
 import com.example.musictraining.databinding.FragmentDrillBinding
 import com.tunepruner.musictraining.model.PlayState
 import com.tunepruner.musictraining.model.music.drill.Settings
-import com.tunepruner.musictraining.repositories.SettingsRepository
+import com.tunepruner.musictraining.repositories.DrillSettingsRepository
 import com.tunepruner.musictraining.viewmodel.ChordViewModel
 import com.tunepruner.musictraining.viewmodel.MetronomeViewModel
 import com.tunepruner.musictraining.viewmodel.NoteInputViewModel
@@ -34,7 +34,7 @@ class DrillFragment : Fragment() {
     private val metronomeViewModel: MetronomeViewModel by inject(MetronomeViewModel::class.java)
     private val chordViewModel: ChordViewModel by inject(ChordViewModel::class.java)
     private val inputViewModel: NoteInputViewModel by inject(NoteInputViewModel::class.java)
-    private val settings: SettingsRepository by inject(SettingsRepository::class.java)
+    private val drillSettings: DrillSettingsRepository by inject(DrillSettingsRepository::class.java)
 
 
     // This property is only valid between onCreateView and
@@ -142,7 +142,7 @@ class DrillFragment : Fragment() {
 
         with(binding.soundCheckBox) {
             setOnClickListener {
-                settings.current.value.soundOn = (it as CheckBox).isChecked
+                drillSettings.current.value.soundOn = (it as CheckBox).isChecked
             }
         }
 
@@ -156,7 +156,7 @@ class DrillFragment : Fragment() {
                     MAX_BEATS_PER_CHORD,
                     MIN_BEATS_PER_CHORD
                 )
-                settings.current.value.setBeatsPerChordFromPercentage(p1)
+                drillSettings.current.value.setBeatsPerChordFromPercentage(p1)
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {}
@@ -171,7 +171,7 @@ class DrillFragment : Fragment() {
                     MAX_DISTANCE,
                     MIN_DISTANCE
                 )
-                settings.current.value.setChordDistanceFromPercentage(p1)
+                drillSettings.current.value.setChordDistanceFromPercentage(p1)
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {}
@@ -185,7 +185,7 @@ class DrillFragment : Fragment() {
                     MAX_TEMPO,
                     MIN_TEMPO
                 )
-                settings.current.value.setTempoFromPercentage(p1)
+                drillSettings.current.value.setTempoFromPercentage(p1)
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {}

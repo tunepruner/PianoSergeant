@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.google.gson.GsonBuilder
+import com.tunepruner.musictraining.model.constants.SETTINGS
 import com.tunepruner.musictraining.model.music.drill.Settings
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +20,7 @@ import kotlinx.coroutines.launch
 const val LOG_TAG = "12345"
 
 @ExperimentalCoroutinesApi
-class SettingsRepository(val dataStore: DataStore<Preferences>) {
+class DrillSettingsRepository(val dataStore: DataStore<Preferences>) {
 
     var savedSettingsFlow: Flow<String> = dataStore.data.map { preferences ->
         preferences[SETTINGS] ?: ""

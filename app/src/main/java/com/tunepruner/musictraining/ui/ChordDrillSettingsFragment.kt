@@ -22,7 +22,7 @@ import com.tunepruner.musictraining.model.music.drill.items.RegisterRequirement
 import com.tunepruner.musictraining.model.music.drill.items.SpacingRequirement
 import com.tunepruner.musictraining.model.music.drill.items.TimeConstraint
 import com.tunepruner.musictraining.model.music.drill.items.allIntervals
-import com.tunepruner.musictraining.repositories.SettingsRepository
+import com.tunepruner.musictraining.repositories.DrillSettingsRepository
 import com.tunepruner.musictraining.viewmodel.ChordDrillSettingsViewModel
 import kotlinx.android.synthetic.main.add_interval_requirements_layout.view.*
 import kotlinx.android.synthetic.main.algorithm_for_prompts_layout.view.*
@@ -52,7 +52,7 @@ private const val ARG_PARAM2 = "param2"
 class ChordDrillSettingsFragment : Fragment() {
     @InternalCoroutinesApi
     private val settingsViewModel: ChordDrillSettingsViewModel by viewModel()
-    private val settings: SettingsRepository by KoinJavaComponent.inject(SettingsRepository::class.java)
+    private val drillSettings: DrillSettingsRepository by KoinJavaComponent.inject(DrillSettingsRepository::class.java)
     private var _binding: FragmentChordDrillSettingsBinding? = null
     private val binding: FragmentChordDrillSettingsBinding get() = _binding!!
 
@@ -87,7 +87,7 @@ class ChordDrillSettingsFragment : Fragment() {
         binding.startDrillButton.setOnClickListener {
             findNavController().navigate(R.id.action_chord_drill_settings_to_drill)
         }
-        settings.current.value.let { settings ->
+        drillSettings.current.value.let { settings ->
             with(binding) {
                 with(time_constraint_radio_group) {
                     settingsViewModel.timeConstraint.observe(viewLifecycleOwner) {
@@ -394,7 +394,7 @@ class ChordDrillSettingsFragment : Fragment() {
     }
 
     private fun persistSettings() {
-        this@ChordDrillSettingsFragment.settings.persist()
+        this@ChordDrillSettingsFragment.drillSettings.persist()
     }
 
     companion object {
