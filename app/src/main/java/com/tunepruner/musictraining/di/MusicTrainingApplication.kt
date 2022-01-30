@@ -6,10 +6,12 @@ import com.tunepruner.musictraining.repositories.IncomingMidiSource
 import com.tunepruner.musictraining.repositories.SettingsRepository
 import com.tunepruner.musictraining.repositories.dataStore
 import com.tunepruner.musictraining.util.MetronomeClicker
+import com.tunepruner.musictraining.viewmodel.ChordDrillSettingsViewModel
 import com.tunepruner.musictraining.viewmodel.ChordViewModel
 import com.tunepruner.musictraining.viewmodel.MetronomeViewModel
 import com.tunepruner.musictraining.viewmodel.NoteInputViewModel
-import com.tunepruner.musictraining.viewmodel.SettingsViewModel
+import com.tunepruner.musictraining.viewmodel.ScaleDrillSettingsViewModel
+import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
@@ -30,15 +32,17 @@ val soundModule = module {
     }
 }
 
+@InternalCoroutinesApi
 val viewModelModule = module {
     single { MetronomeViewModel(get(), get()) }
     single { ChordViewModel(get()) }
     single { NoteInputViewModel(get(), androidContext()) }
-    single { SettingsViewModel(get()) }
+    single { ChordDrillSettingsViewModel(get()) }
+    single { ScaleDrillSettingsViewModel(get()) }
 }
 
-class
-MusicTrainingApplication : Application() {
+    @InternalCoroutinesApi
+class MusicTrainingApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         startKoin {

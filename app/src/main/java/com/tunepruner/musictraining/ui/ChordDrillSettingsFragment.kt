@@ -23,7 +23,7 @@ import com.tunepruner.musictraining.model.music.drill.items.SpacingRequirement
 import com.tunepruner.musictraining.model.music.drill.items.TimeConstraint
 import com.tunepruner.musictraining.model.music.drill.items.allIntervals
 import com.tunepruner.musictraining.repositories.SettingsRepository
-import com.tunepruner.musictraining.viewmodel.SettingsViewModel
+import com.tunepruner.musictraining.viewmodel.ChordDrillSettingsViewModel
 import kotlinx.android.synthetic.main.add_interval_requirements_layout.view.*
 import kotlinx.android.synthetic.main.algorithm_for_prompts_layout.view.*
 import kotlinx.android.synthetic.main.choose_mode_layout.*
@@ -51,7 +51,7 @@ private const val ARG_PARAM2 = "param2"
 @InternalCoroutinesApi
 class ChordDrillSettingsFragment : Fragment() {
     @InternalCoroutinesApi
-    private val settingsViewModel: SettingsViewModel by viewModel()
+    private val settingsViewModel: ChordDrillSettingsViewModel by viewModel()
     private val settings: SettingsRepository by KoinJavaComponent.inject(SettingsRepository::class.java)
     private var _binding: FragmentChordDrillSettingsBinding? = null
     private val binding: FragmentChordDrillSettingsBinding get() = _binding!!
