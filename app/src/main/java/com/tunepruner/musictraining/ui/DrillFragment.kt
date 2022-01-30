@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.musictraining.R
 import com.example.musictraining.databinding.FragmentDrillBinding
 import com.tunepruner.musictraining.model.PlayState
-import com.tunepruner.musictraining.model.music.drill.Settings
+import com.tunepruner.musictraining.model.music.drill.ChordDrill
 import com.tunepruner.musictraining.repositories.DrillSettingsRepository
 import com.tunepruner.musictraining.viewmodel.ChordViewModel
 import com.tunepruner.musictraining.viewmodel.MetronomeViewModel
@@ -90,7 +90,7 @@ class DrillFragment : Fragment() {
             }
         }
 
-        metronomeViewModel.currentSettings.observe(viewLifecycleOwner) {
+        metronomeViewModel.currentChordDrill.observe(viewLifecycleOwner) {
             updateSettingsDisplay(it)
         }
 
@@ -203,18 +203,18 @@ class DrillFragment : Fragment() {
         _binding = null
     }
 
-    private fun updateSettingsDisplay(settings: Settings) {
+    private fun updateSettingsDisplay(chordDrill: ChordDrill) {
         binding.tempoSelector.progress =
-            ((settings.tempo.toDouble() / MAX_TEMPO) * 100).roundToInt()
+            ((chordDrill.tempo.toDouble() / MAX_TEMPO) * 100).roundToInt()
         binding.chordDistanceSelector.progress =
-            ((settings.chordDistance.toDouble() / MAX_DISTANCE) * 100).roundToInt()
+            ((chordDrill.chordDistance.toDouble() / MAX_DISTANCE) * 100).roundToInt()
         binding.beatsPerChordSelector.progress =
-            ((settings.beatsPerChord.toDouble() / MAX_BEATS_PER_CHORD) * 100).roundToInt()
-        binding.chordCheckBox.isChecked = settings.chordVisible
-        binding.modeCheckBox.isChecked = settings.modeVisible
-        binding.keySigCheckBox.isChecked = settings.keySigVisible
-        binding.cueLineCheckBox.isChecked = settings.cueLineVisible
-        binding.currentBeatCheckbox.isChecked = settings.currentBeatVisible
-        binding.soundCheckBox.isChecked = settings.soundOn
+            ((chordDrill.beatsPerChord.toDouble() / MAX_BEATS_PER_CHORD) * 100).roundToInt()
+        binding.chordCheckBox.isChecked = chordDrill.chordVisible
+        binding.modeCheckBox.isChecked = chordDrill.modeVisible
+        binding.keySigCheckBox.isChecked = chordDrill.keySigVisible
+        binding.cueLineCheckBox.isChecked = chordDrill.cueLineVisible
+        binding.currentBeatCheckbox.isChecked = chordDrill.currentBeatVisible
+        binding.soundCheckBox.isChecked = chordDrill.soundOn
     }
 }

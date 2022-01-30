@@ -60,7 +60,7 @@
     <fragment
             android:id="@+id/chord_drill_settings_fragment"
             android:name="com.tunepruner.musictraining.ui.ChordDrillSettingsFragment"
-            android:label="Chord drill settings fragment"
+            android:label="Chord drill chordDrill fragment"
             tools:layout="@layout/fragment_chord_drill_settings">
         <action
                 android:id="@+id/action_chord_drill_settings_to_drill"
@@ -74,7 +74,7 @@
     <fragment
             android:id="@+id/scale_drill_settings_fragment"
             android:name="com.tunepruner.musictraining.ui.ScaleDrillSettingsFragment"
-            android:label="Scale drill settings fragment"
+            android:label="Scale drill chordDrill fragment"
             tools:layout="@layout/fragment_scale_drill_settings">
         <action
                 android:id="@+id/action_scale_drill_settings_to_drill"

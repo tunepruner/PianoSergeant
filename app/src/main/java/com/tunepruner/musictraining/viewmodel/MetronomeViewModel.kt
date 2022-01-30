@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tunepruner.musictraining.model.PlayState
-import com.tunepruner.musictraining.model.music.drill.Settings
+import com.tunepruner.musictraining.model.music.drill.ChordDrill
 import com.tunepruner.musictraining.repositories.DrillSettingsRepository
 import com.tunepruner.musictraining.ui.MIN_TEMPO
 import com.tunepruner.musictraining.util.MetronomeClicker
@@ -26,9 +26,9 @@ class MetronomeViewModel(
     private val clicker: MetronomeClicker,
 ) : ViewModel() {
 
-    private var _currentSettings: MutableLiveData<Settings> =
-        MutableLiveData<Settings>(drillSettingsRepository.current.value)
-    var currentSettings: LiveData<Settings> = _currentSettings
+    private var _currentChordDrill: MutableLiveData<ChordDrill> =
+        MutableLiveData<ChordDrill>(drillSettingsRepository.current.value)
+    var currentChordDrill: LiveData<ChordDrill> = _currentChordDrill
 
     private val _playState: MutableLiveData<PlayState> =
         MutableLiveData<PlayState>(PlayState.STOPPED)
@@ -46,7 +46,7 @@ class MetronomeViewModel(
     init {
         viewModelScope.launch {
             drillSettingsRepository.current.collect {
-                _currentSettings.value = it
+                _currentChordDrill.value = it
             }
         }
     }
@@ -79,7 +79,7 @@ class MetronomeViewModel(
                     incrementBeat(barStartTime)
                 },
                 viewModelScope.launch {
-                    _currentSettings.value?.let {
+                    _currentChordDrill.value?.let {
                         while (true) {
                             moveBarForward(barStartTime)
                         }
@@ -100,7 +100,7 @@ class MetronomeViewModel(
     private suspend fun incrementBeat(barStartTime: Date) {
         _publishedBeatNumber.value = (_publishedBeatNumber.value ?: 0) + 1
 
-        if (_currentSettings.value?.soundOn != false) {
+        if (_currentChordDrill.value?.soundOn != false) {
             if (_publishedBeatNumber.value == 1) {
                 clicker.playLoudSound()
             } else {
@@ -127,7 +127,7 @@ class MetronomeViewModel(
     private suspend fun moveBarForward(timeStarted: Date) {
         delay(10)
         val barDuration: Long =
-            _currentSettings.value?.barDuration
+            _currentChordDrill.value?.barDuration
                 ?: drillSettingsRepository.current.value.barDurationFromTempo(MIN_TEMPO)
         //TODO somewhere around here, weird progress bar problem
         val preCalc = ((Date().time - timeStarted.time).toDouble() / barDuration) * 100
