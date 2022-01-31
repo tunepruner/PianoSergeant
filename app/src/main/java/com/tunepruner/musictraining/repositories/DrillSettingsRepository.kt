@@ -7,9 +7,11 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.room.Room
 import com.google.gson.GsonBuilder
-//import com.tunepruner.musictraining.data.ChordDrillDatabase
+import com.tunepruner.musictraining.data.TestingDatabase
+//import com.tunepruner.musictraining.data.TestingDatabase
 import com.tunepruner.musictraining.model.constants.SETTINGS
 import com.tunepruner.musictraining.model.music.drill.ChordDrill
+import com.tunepruner.musictraining.model.music.drill.TestingDrill
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,12 +25,15 @@ import kotlinx.coroutines.launch
 const val LOG_TAG = "12345"
 
 @ExperimentalCoroutinesApi
-class DrillSettingsRepository(/*context: Context,*/ val dataStore: DataStore<Preferences>) {
+class DrillSettingsRepository(context: Context, val dataStore: DataStore<Preferences>) {
 
-//    val db = Room.databaseBuilder(
-//        context,
-//        ChordDrillDatabase::class.java, "chord_drills"
-//    ).build()
+    val db = Room.databaseBuilder(
+        context,
+        TestingDatabase::class.java, "testingdrill"
+    ).build()
+
+    val testingDao = db.testingDao()
+
 
     var savedSettingsFlow: Flow<String> = dataStore.data.map { preferences ->
         preferences[SETTINGS] ?: ""
@@ -40,17 +45,19 @@ class DrillSettingsRepository(/*context: Context,*/ val dataStore: DataStore<Pre
         CoroutineScope(Dispatchers.IO).launch {
             dataStore.edit {
                 it[SETTINGS] = GsonBuilder().create().toJson(current.value)
-                Log.i(LOG_TAG, "persist: ${GsonBuilder().create().toJson(current.value)}")
             }
         }
     }
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
+            testingDao.insertAll(TestingDrill("first try"))
+            val users: List<TestingDrill> = testingDao.getAll()
+            Log.i(LOG_TAG, "users = $users")
+
             savedSettingsFlow.collect {
                 _current.value =
                     GsonBuilder().create().fromJson(it, ChordDrill::class.java) ?: ChordDrill(1)/*TODO same here*/
-                Log.i(LOG_TAG, "current value = ${current.value}")
             }
         }
     }

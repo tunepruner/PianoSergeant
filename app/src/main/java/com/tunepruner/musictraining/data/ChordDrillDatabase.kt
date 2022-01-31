@@ -5,6 +5,6 @@
 //import com.tunepruner.musictraining.model.music.drill.ChordDrill
 //
 //@Database(entities = [ChordDrill::class], version = 1)
-//abstract  class ChordDrillDatabase : RoomDatabase() {
+//abstract  class TestingDatabase : RoomDatabase() {
 //    abstract fun chordDrillDao(): ChordDrillDao
 //}

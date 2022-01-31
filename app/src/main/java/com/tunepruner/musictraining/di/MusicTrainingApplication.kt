@@ -23,7 +23,7 @@ val miscModule = module {
 }
 
 val repositoryModule = module {
-    single { DrillSettingsRepository(androidContext().dataStore) }
+    single { DrillSettingsRepository(androidContext(), androidContext().dataStore) }
 }
 
 val soundModule = module {

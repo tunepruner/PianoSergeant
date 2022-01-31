@@ -170,7 +170,6 @@ class ChordDrillSettingsFragment : Fragment() {
                                 current_value.text = settings.intervalLessThanValue.uiName
                             }
                         } else if (settings.intervalRequirements == IntervalRequirements.GREATER_THAN) {
-                            Log.i(LOG_TAG, "index of: ${settings.intervalGreaterThanValue}")
                             val currentIndex: Int =
                                 allIntervals.indexOf(settings.intervalGreaterThanValue)
                             if (currentIndex > 1) {
@@ -243,7 +242,6 @@ class ChordDrillSettingsFragment : Fragment() {
                             }
                         )
                         setOnCheckedChangeListener { _, button ->
-                            Log.i(LOG_TAG, "clicked: ")
                             settings.noteDoublingRequirement =
                                 when (button) {
                                     R.id.specific_amount_button -> NoteDoublingRequirement.SPECIFIC_AMOUNT

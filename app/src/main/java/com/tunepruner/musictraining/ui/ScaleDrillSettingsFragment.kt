@@ -160,7 +160,6 @@ class ScaleDrillSettingsFragment : Fragment() {
                                 current_value.text = settings.intervalLessThanValue.uiName
                             }
                         } else if (settings.intervalRequirements == IntervalRequirements.GREATER_THAN) {
-                            Log.i(LOG_TAG, "index of: ${settings.intervalGreaterThanValue}")
                             val currentIndex: Int =
                                 allIntervals.indexOf(settings.intervalGreaterThanValue)
                             if (currentIndex > 1) {
