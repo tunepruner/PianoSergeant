@@ -25,6 +25,8 @@ const val LOG_TAG = "12345"
 
 @ExperimentalCoroutinesApi
 class DrillSettingsRepository(context: Context, val dataStore: DataStore<Preferences>) {
+    private var _drillsFlow = MutableStateFlow<List<ChordDrill>>(ArrayList())
+    var drillsFlow: StateFlow<List<ChordDrill>> = _drillsFlow
 
     val db = Room.databaseBuilder(
         context,
@@ -37,20 +39,24 @@ class DrillSettingsRepository(context: Context, val dataStore: DataStore<Prefere
     var savedSettingsFlow: Flow<String> = dataStore.data.map { preferences ->
         preferences[SETTINGS] ?: ""
     }
-    private val _current: MutableStateFlow<ChordDrill> = MutableStateFlow(ChordDrill("first drill"))/*TODO this number needs to be generated dynamically somehow*/
+    private val _current: MutableStateFlow<ChordDrill> =
+        MutableStateFlow(ChordDrill("first drill"))/*TODO this number needs to be generated dynamically somehow*/
     val current: StateFlow<ChordDrill> = _current
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
             savedSettingsFlow.collect {
                 _current.value =
-                    GsonBuilder().create().fromJson(it, ChordDrill::class.java) ?: ChordDrill("first drill")/*TODO same here*/
+                    GsonBuilder().create().fromJson(it, ChordDrill::class.java)
+                        ?: ChordDrill("first drill")/*TODO same here*/
             }
         }
     }
 
-    fun getAllChordDrills(): List<ChordDrill>{
-        return dao.getAll()
+    fun getAllChordDrills() {
+        CoroutineScope(Dispatchers.IO).launch {
+            _drillsFlow.value = dao.getAll()
+        }
     }
 
     fun saveDrill(name: String) {

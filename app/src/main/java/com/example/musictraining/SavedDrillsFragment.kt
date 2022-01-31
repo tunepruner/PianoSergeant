@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.musictraining.databinding.FragmentSavedDrillsBinding
 import com.tunepruner.musictraining.model.music.drill.ChordDrill
 import com.tunepruner.musictraining.repositories.LOG_TAG
@@ -38,10 +39,17 @@ class SavedDrillsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = SavedDrillsAdapter(arrayOf(ChordDrill("testing")))
+        val adapter = SavedDrillsAdapter(ArrayList())
+        binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
         binding.recyclerView.adapter = adapter
+
         viewModel.allDrills.observe(viewLifecycleOwner) {
-            adapter.updateData(ArrayList(it))
+            binding.recyclerView.adapter = SavedDrillsAdapter(ArrayList(it))
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getAllChordDrills()
     }
 }
