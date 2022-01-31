@@ -1,10 +1,13 @@
-//package com.tunepruner.musictraining.data
-//
-//import androidx.room.Database
-//import androidx.room.RoomDatabase
-//import com.tunepruner.musictraining.model.music.drill.ChordDrill
-//
-//@Database(entities = [ChordDrill::class], version = 1)
-//abstract  class TestingDatabase : RoomDatabase() {
-//    abstract fun chordDrillDao(): ChordDrillDao
-//}
+package com.tunepruner.musictraining.data
+
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.tunepruner.musictraining.model.music.drill.ChordDrill
+import com.tunepruner.musictraining.model.music.drill.Converters
+
+@Database(entities = [ChordDrill::class], version = 2)
+@TypeConverters(Converters::class)
+abstract  class ChordDrillDatabase : RoomDatabase() {
+    abstract fun dao(): ChordDrillDao
+}

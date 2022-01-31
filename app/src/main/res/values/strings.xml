@@ -103,4 +103,7 @@
     <string name="save_drill">Save drill</string>
     <string name="re_configure">Re-configure drill</string>
     <string name="chord_settings">Configure chord drill</string>
+    <string name="name">Name</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
 </resources>

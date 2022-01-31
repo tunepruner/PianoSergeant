@@ -1,7 +1,6 @@
 package com.tunepruner.musictraining.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,7 +51,9 @@ private const val ARG_PARAM2 = "param2"
 class ChordDrillSettingsFragment : Fragment() {
     @InternalCoroutinesApi
     private val settingsViewModel: ChordDrillSettingsViewModel by viewModel()
-    private val drillSettings: DrillSettingsRepository by KoinJavaComponent.inject(DrillSettingsRepository::class.java)
+    private val drillSettings: DrillSettingsRepository by KoinJavaComponent.inject(
+        DrillSettingsRepository::class.java
+    )
     private var _binding: FragmentChordDrillSettingsBinding? = null
     private val binding: FragmentChordDrillSettingsBinding get() = _binding!!
 
@@ -84,9 +85,40 @@ class ChordDrillSettingsFragment : Fragment() {
 
     @InternalCoroutinesApi
     private fun initializeViews() {
-        binding.startDrillButton.setOnClickListener {
-            findNavController().navigate(R.id.action_chord_drill_settings_to_drill)
+
+        settingsViewModel.isAddingName.observe(viewLifecycleOwner) {
+            with(binding.startDrillButton) {
+                text = if (it) {
+                    setOnClickListener {
+                        settingsViewModel.stopAddingName()
+                    }
+                    context?.getText(R.string.cancel)
+                } else {
+                    setOnClickListener {
+                        findNavController().navigate(R.id.action_chord_drill_settings_to_drill)
+                    }
+                    context?.getText(R.string.start_drill)
+                }
+            }
+
+            with(binding.saveDrillButton) {
+                text = if (it) {
+                    setOnClickListener {
+                        settingsViewModel.stopAddingName()
+                        settingsViewModel.saveDrill(binding.nameEditText.text.toString())
+                    }
+                    context?.getText(R.string.save)
+                } else {
+                    setOnClickListener {
+                        settingsViewModel.promptIfNeedsName()
+                    }
+                    binding.nameEditText.visibility = View.GONE
+                    context?.getText(R.string.save_drill)
+                }
+            }
+            binding.nameEditText.visibility = if (it) View.VISIBLE else View.GONE
         }
+
         drillSettings.current.value.let { settings ->
             with(binding) {
                 with(time_constraint_radio_group) {

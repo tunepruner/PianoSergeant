@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../layout/custom_preview.xml" value="0.1671875" />
         <entry key="app/src/main/res/drawable-anydpi/down_button.xml" value="0.14046052631578948" />
         <entry key="app/src/main/res/drawable-anydpi/metronome.xml" value="0.14046052631578948" />
         <entry key="app/src/main/res/drawable-anydpi/up_button.xml" value="0.14046052631578948" />
@@ -30,6 +31,7 @@
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.1586582048957389" />
         <entry key="app/src/main/res/layout/note_doubling_requirement_layout.xml" value="0.1417763157894737" />
         <entry key="app/src/main/res/layout/number_selector.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/recycler_view_row.xml" value="0.15437158469945356" />
         <entry key="app/src/main/res/layout/register_requirement_layout.xml" value="0.14046052631578948" />
         <entry key="app/src/main/res/layout/ripple.xml" value="0.15437158469945356" />
         <entry key="app/src/main/res/layout/select_chord_qualities_layout.xml" value="0.14046052631578948" />

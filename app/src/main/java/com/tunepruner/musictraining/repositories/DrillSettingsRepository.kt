@@ -7,11 +7,10 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.room.Room
 import com.google.gson.GsonBuilder
-import com.tunepruner.musictraining.data.TestingDatabase
-//import com.tunepruner.musictraining.data.TestingDatabase
+import com.tunepruner.musictraining.data.ChordDrillDatabase
+//import com.tunepruner.musictraining.data.ChordDrillDatabase
 import com.tunepruner.musictraining.model.constants.SETTINGS
 import com.tunepruner.musictraining.model.music.drill.ChordDrill
-import com.tunepruner.musictraining.model.music.drill.TestingDrill
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,17 +28,34 @@ class DrillSettingsRepository(context: Context, val dataStore: DataStore<Prefere
 
     val db = Room.databaseBuilder(
         context,
-        TestingDatabase::class.java, "testingdrill"
+        ChordDrillDatabase::class.java, "chord_drills"
     ).build()
 
-    val testingDao = db.testingDao()
+    val dao = db.dao()
 
 
     var savedSettingsFlow: Flow<String> = dataStore.data.map { preferences ->
         preferences[SETTINGS] ?: ""
     }
-    private val _current: MutableStateFlow<ChordDrill> = MutableStateFlow(ChordDrill(1))/*TODO this number needs to be generated dynamically somehow*/
+    private val _current: MutableStateFlow<ChordDrill> = MutableStateFlow(ChordDrill("first drill"))/*TODO this number needs to be generated dynamically somehow*/
     val current: StateFlow<ChordDrill> = _current
+
+    init {
+        CoroutineScope(Dispatchers.IO).launch {
+            savedSettingsFlow.collect {
+                _current.value =
+                    GsonBuilder().create().fromJson(it, ChordDrill::class.java) ?: ChordDrill("first drill")/*TODO same here*/
+            }
+        }
+    }
+
+    fun getAllChordDrills(): List<ChordDrill>{
+        return dao.getAll()
+    }
+
+    fun saveDrill(name: String) {
+        dao.insertAll(ChordDrill(name))
+    }
 
     fun persist() {
         CoroutineScope(Dispatchers.IO).launch {
@@ -49,16 +65,4 @@ class DrillSettingsRepository(context: Context, val dataStore: DataStore<Prefere
         }
     }
 
-    init {
-        CoroutineScope(Dispatchers.IO).launch {
-            testingDao.insertAll(TestingDrill("first try"))
-            val users: List<TestingDrill> = testingDao.getAll()
-            Log.i(LOG_TAG, "users = $users")
-
-            savedSettingsFlow.collect {
-                _current.value =
-                    GsonBuilder().create().fromJson(it, ChordDrill::class.java) ?: ChordDrill(1)/*TODO same here*/
-            }
-        }
-    }
 }
