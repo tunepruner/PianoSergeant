@@ -3,8 +3,8 @@ package com.tunepruner.musictraining.di
 import android.app.Application
 import com.tunepruner.musictraining.model.constants.dataStore
 import com.tunepruner.musictraining.model.music.AttemptProcessor
-import com.tunepruner.musictraining.repositories.IncomingMidiSource
 import com.tunepruner.musictraining.repositories.DrillSettingsRepository
+import com.tunepruner.musictraining.repositories.IncomingMidiSource
 import com.tunepruner.musictraining.util.MetronomeClicker
 import com.tunepruner.musictraining.viewmodel.ChordDrillSettingsViewModel
 import com.tunepruner.musictraining.viewmodel.ChordViewModel

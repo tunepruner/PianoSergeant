@@ -49,14 +49,23 @@
             <EditText
                     android:id="@+id/name_edit_text"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="50dp"
                     android:layout_marginLeft="50dp"
                     android:layout_marginRight="50dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:inputType="textPersonName"
                     android:hint="@string/name"
-                    android:ems="10"
-                    android:layout_weight="1" />
+                    android:ems="10" />
+
+            <TextView
+                    android:id="@+id/name_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp"
+                    android:textColor="#FFFFFF"
+                    android:text="Testing"
+                    android:visibility="visible"/>
 
         </LinearLayout>
 

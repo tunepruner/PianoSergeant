@@ -97,9 +97,13 @@ class ChordDrillSettingsFragment : Fragment() {
                 }
             }
             binding.nameEditText.visibility = if (it) View.VISIBLE else View.GONE
+            binding.nameTextView.visibility = if (it) View.GONE else View.VISIBLE
         }
 
         drillSettings.current.value.let { settings ->
+            binding.nameEditText.setText(settings.id)
+            binding.nameTextView.text = settings.id
+
             with(binding) {
                 with(time_constraint_radio_group) {
                     settingsViewModel.timeConstraint.observe(viewLifecycleOwner) {

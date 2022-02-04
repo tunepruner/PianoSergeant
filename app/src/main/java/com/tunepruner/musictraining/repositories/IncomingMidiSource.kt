@@ -10,11 +10,7 @@ import android.media.midi.MidiReceiver
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import com.google.gson.GsonBuilder
 import com.tunepruner.musictraining.midi.MidiFramer
 import com.tunepruner.musictraining.midi.MidiParser

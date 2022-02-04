@@ -3,19 +3,13 @@ package com.example.musictraining
 import OnClickListener
 import SavedDrillsAdapter
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.musictraining.databinding.FragmentSavedDrillsBinding
-import com.tunepruner.musictraining.model.music.drill.ChordDrill
-import com.tunepruner.musictraining.repositories.LOG_TAG
-import com.tunepruner.musictraining.ui.ChordDrillSettingsFragmentDirections
 import com.tunepruner.musictraining.viewmodel.DrillListViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

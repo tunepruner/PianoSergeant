@@ -1,14 +1,12 @@
 package com.tunepruner.musictraining.repositories
 
+//import com.tunepruner.musictraining.data.ChordDrillDatabase
 import android.content.Context
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
 import androidx.room.Room
 import com.google.gson.GsonBuilder
 import com.tunepruner.musictraining.data.ChordDrillDatabase
-//import com.tunepruner.musictraining.data.ChordDrillDatabase
 import com.tunepruner.musictraining.model.constants.SETTINGS
 import com.tunepruner.musictraining.model.music.drill.ChordDrill
 import kotlinx.coroutines.CoroutineScope
@@ -34,7 +32,6 @@ class DrillSettingsRepository(context: Context, val dataStore: DataStore<Prefere
     ).build()
 
     val dao = db.dao()
-
 
     var savedSettingsFlow: Flow<String> = dataStore.data.map { preferences ->
         preferences[SETTINGS] ?: ""
@@ -68,11 +65,11 @@ class DrillSettingsRepository(context: Context, val dataStore: DataStore<Prefere
     }
 
     fun persist() {
-        CoroutineScope(Dispatchers.IO).launch {
-            dataStore.edit {
-                it[SETTINGS] = GsonBuilder().create().toJson(current.value)
-            }
-        }
+//        CoroutineScope(Dispatchers.IO).launch {
+//            dataStore.edit {
+//                it[SETTINGS] = GsonBuilder().create().toJson(current.value)
+//            }
+//        }
     }
 
     fun loadDrill(name: String?) {
