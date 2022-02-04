@@ -71,7 +71,9 @@ class ChordDrillSettingsViewModel(private val drillSettingsRepo: DrillSettingsRe
     }
 
     fun loadDrill(id: String?) {
-        drillSettingsRepo.loadDrill(id)
+        id?.let {
+            drillSettingsRepo.loadDrill(it)
+        }
     }
 }
 

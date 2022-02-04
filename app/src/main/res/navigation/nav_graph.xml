@@ -72,7 +72,8 @@
         <argument
                 android:name="id"
                 app:argType="string"
-                app:nullable="true" />
+                app:nullable="true"
+                android:defaultValue='""' />
     </fragment>
 
     <fragment
@@ -89,7 +90,8 @@
                 app:popEnterAnim="@android:anim/fade_in" />
         <argument
                 android:name="id"
-                app:argType="string" />
+                app:argType="string"
+                android:defaultValue='""' />
     </fragment>
     <fragment
             android:id="@+id/savedDrillsFragment"
