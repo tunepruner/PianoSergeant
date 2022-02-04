@@ -1,4 +1,3 @@
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -6,9 +5,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.musictraining.R
 import com.tunepruner.musictraining.model.music.drill.ChordDrill
-import com.tunepruner.musictraining.repositories.LOG_TAG
 
-class SavedDrillsAdapter(private val drillList: ArrayList<ChordDrill>) :
+class SavedDrillsAdapter(
+    private val drillList: ArrayList<ChordDrill>,
+    private val clickListener: OnClickListener
+) :
     RecyclerView.Adapter<SavedDrillsAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -25,6 +26,9 @@ class SavedDrillsAdapter(private val drillList: ArrayList<ChordDrill>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         //set values
         holder.ssid.text = drillList[position].id
+        holder.itemView.setOnClickListener {
+            clickListener.onClick(it, holder.ssid.text.toString())
+        }
     }
 
     override fun getItemCount(): Int {
@@ -39,3 +43,6 @@ class SavedDrillsAdapter(private val drillList: ArrayList<ChordDrill>) :
     }
 }
 
+interface OnClickListener{
+    fun onClick(view: View, text: String)
+}

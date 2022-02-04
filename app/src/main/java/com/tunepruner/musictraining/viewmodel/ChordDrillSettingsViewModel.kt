@@ -3,7 +3,9 @@ package com.tunepruner.musictraining.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.tunepruner.musictraining.model.music.drill.ChordDrill
 import com.tunepruner.musictraining.model.music.drill.items.TimeConstraint
 import com.tunepruner.musictraining.repositories.DrillSettingsRepository
 import kotlinx.coroutines.CoroutineScope
@@ -20,7 +22,7 @@ class ChordDrillSettingsViewModel(private val drillSettingsRepo: DrillSettingsRe
     private var _isAddingName = MutableLiveData<Boolean>()
     val isAddingName: LiveData<Boolean> = _isAddingName
 
-    val settings = drillSettingsRepo.current.value
+    val currentDrill: LiveData<ChordDrill> = drillSettingsRepo.current.asLiveData()
 
     private var _timeConstraint = MutableLiveData<TimeConstraint>()
     var timeConstraint: LiveData<TimeConstraint> = _timeConstraint
@@ -37,14 +39,14 @@ class ChordDrillSettingsViewModel(private val drillSettingsRepo: DrillSettingsRe
 
     fun enableMetronome() {
         updateSettings {
-            settings.timeConstraint = TimeConstraint.METRONOME
+            currentDrill.value?.timeConstraint = TimeConstraint.METRONOME
             _timeConstraint.value = TimeConstraint.METRONOME
         }
     }
 
     fun enableRapidFire() {
         updateSettings {
-            settings.timeConstraint = TimeConstraint.RAPID_FIRE
+            currentDrill.value?.timeConstraint = TimeConstraint.RAPID_FIRE
             _timeConstraint.value = TimeConstraint.RAPID_FIRE
         }
     }
@@ -59,13 +61,17 @@ class ChordDrillSettingsViewModel(private val drillSettingsRepo: DrillSettingsRe
 
     fun saveDrill(name: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            drillSettingsRepo.saveDrill(name)
+            drillSettingsRepo.saveDrill()
         }
     }
 
     private fun updateSettings(action: () -> Unit) {
         action.invoke()
         drillSettingsRepo.persist()
+    }
+
+    fun loadDrill(id: String?) {
+        drillSettingsRepo.loadDrill(id)
     }
 }
 

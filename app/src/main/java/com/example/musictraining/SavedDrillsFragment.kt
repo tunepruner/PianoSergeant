@@ -1,16 +1,21 @@
 package com.example.musictraining
 
+import OnClickListener
 import SavedDrillsAdapter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.musictraining.databinding.FragmentSavedDrillsBinding
 import com.tunepruner.musictraining.model.music.drill.ChordDrill
 import com.tunepruner.musictraining.repositories.LOG_TAG
+import com.tunepruner.musictraining.ui.ChordDrillSettingsFragmentDirections
 import com.tunepruner.musictraining.viewmodel.DrillListViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -39,12 +44,18 @@ class SavedDrillsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = SavedDrillsAdapter(ArrayList())
+        val adapter = null
         binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
         binding.recyclerView.adapter = adapter
 
         viewModel.allDrills.observe(viewLifecycleOwner) {
-            binding.recyclerView.adapter = SavedDrillsAdapter(ArrayList(it))
+            binding.recyclerView.adapter = 
+                SavedDrillsAdapter(ArrayList(it), object : OnClickListener {
+                    override fun onClick(view: View, text: String) {
+                        val action = SavedDrillsFragmentDirections.actionSavedDrillsFragmentToChordDrillSettingsFragment(text)
+                        findNavController().navigate(action)
+                    }
+                })
         }
     }
 

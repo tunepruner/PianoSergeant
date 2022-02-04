@@ -69,6 +69,10 @@
                 app:exitAnim="@android:anim/fade_out"
                 app:popExitAnim="@android:anim/fade_out"
                 app:popEnterAnim="@android:anim/fade_in" />
+        <argument
+                android:name="id"
+                app:argType="string"
+                app:nullable="true" />
     </fragment>
 
     <fragment
@@ -83,6 +87,9 @@
                 app:exitAnim="@android:anim/fade_out"
                 app:popExitAnim="@android:anim/fade_out"
                 app:popEnterAnim="@android:anim/fade_in" />
+        <argument
+                android:name="id"
+                app:argType="string" />
     </fragment>
     <fragment
             android:id="@+id/savedDrillsFragment"
@@ -96,6 +103,20 @@
                 app:exitAnim="@android:anim/fade_out"
                 app:popExitAnim="@android:anim/fade_out"
                 app:popEnterAnim="@android:anim/fade_in" />
+        <action
+                android:id="@+id/action_savedDrillsFragment_to_chord_drill_settings_fragment"
+                app:destination="@id/chord_drill_settings_fragment"
+                app:enterAnim="@android:anim/fade_in"
+                app:popEnterAnim="@android:anim/fade_in"
+                app:exitAnim="@android:anim/fade_out"
+                app:popExitAnim="@android:anim/fade_out" />
+        <action
+                android:id="@+id/action_savedDrillsFragment_to_scale_drill_settings_fragment"
+                app:destination="@id/scale_drill_settings_fragment"
+                app:enterAnim="@android:anim/fade_in"
+                app:exitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/fade_in"
+                app:popExitAnim="@android:anim/fade_out" />
     </fragment>
 
 

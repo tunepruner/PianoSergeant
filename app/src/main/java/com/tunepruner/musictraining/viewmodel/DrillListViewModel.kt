@@ -15,5 +15,4 @@ class DrillListViewModel(val repo: DrillSettingsRepository) : ViewModel() {
     fun getAllChordDrills() {
         repo.getAllChordDrills()
     }
-
 }

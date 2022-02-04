@@ -40,7 +40,7 @@ class DrillSettingsRepository(context: Context, val dataStore: DataStore<Prefere
         preferences[SETTINGS] ?: ""
     }
     private val _current: MutableStateFlow<ChordDrill> =
-        MutableStateFlow(ChordDrill("first drill"))/*TODO this number needs to be generated dynamically somehow*/
+        MutableStateFlow(ChordDrill(""))
     val current: StateFlow<ChordDrill> = _current
 
     init {
@@ -48,7 +48,7 @@ class DrillSettingsRepository(context: Context, val dataStore: DataStore<Prefere
             savedSettingsFlow.collect {
                 _current.value =
                     GsonBuilder().create().fromJson(it, ChordDrill::class.java)
-                        ?: ChordDrill("first drill")/*TODO same here*/
+                        ?: ChordDrill(" ")
             }
         }
     }
@@ -59,8 +59,12 @@ class DrillSettingsRepository(context: Context, val dataStore: DataStore<Prefere
         }
     }
 
-    fun saveDrill(name: String) {
-        dao.insertAll(ChordDrill(name))
+    fun saveDrill() {
+        current.value.apply {
+            if (this.id.isNotBlank()) {
+                dao.insertAll(this)
+            }
+        }
     }
 
     fun persist() {
@@ -68,6 +72,14 @@ class DrillSettingsRepository(context: Context, val dataStore: DataStore<Prefere
             dataStore.edit {
                 it[SETTINGS] = GsonBuilder().create().toJson(current.value)
             }
+        }
+    }
+
+    fun loadDrill(name: String?) {
+        CoroutineScope(Dispatchers.IO).launch {
+            _current.value = name?.let {
+                dao.getChordDrill(name)
+            } ?: ChordDrill("")
         }
     }
 
