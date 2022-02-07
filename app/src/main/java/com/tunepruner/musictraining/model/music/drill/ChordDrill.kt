@@ -1,33 +1,14 @@
 package com.tunepruner.musictraining.model.music.drill//package com.tunepruner.musictraining.repositories
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.TypeConverter
-import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
-import com.google.gson.reflect.TypeToken
-import com.tunepruner.musictraining.calculateLevelFromPercentage
-import com.tunepruner.musictraining.model.music.drill.items.AlgorithmSetting
 import com.tunepruner.musictraining.model.music.drill.items.ChordQuality
 import com.tunepruner.musictraining.model.music.drill.items.Interval
 import com.tunepruner.musictraining.model.music.drill.items.IntervalRequirements
 import com.tunepruner.musictraining.model.music.drill.items.Inversion
-import com.tunepruner.musictraining.model.music.drill.items.Key
-import com.tunepruner.musictraining.model.music.drill.items.Mode
 import com.tunepruner.musictraining.model.music.drill.items.NoteDoublingRequirement
-import com.tunepruner.musictraining.model.music.drill.items.PatternSubSetting
 import com.tunepruner.musictraining.model.music.drill.items.RegisterRequirement
 import com.tunepruner.musictraining.model.music.drill.items.SpacingRequirement
-import com.tunepruner.musictraining.model.music.drill.items.TimeConstraint
-import com.tunepruner.musictraining.ui.MAX_BEATS_PER_CHORD
-import com.tunepruner.musictraining.ui.MAX_DISTANCE
-import com.tunepruner.musictraining.ui.MAX_TEMPO
-import com.tunepruner.musictraining.ui.MIN_BEATS_PER_CHORD
-import com.tunepruner.musictraining.ui.MIN_DISTANCE
-import com.tunepruner.musictraining.ui.MIN_TEMPO
-import java.lang.reflect.Type
-import java.util.*
 
 @Entity
 class ChordDrill (
