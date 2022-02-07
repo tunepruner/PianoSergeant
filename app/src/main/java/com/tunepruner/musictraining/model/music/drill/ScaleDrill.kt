@@ -22,19 +22,6 @@ import com.tunepruner.musictraining.ui.MIN_DISTANCE
 import com.tunepruner.musictraining.ui.MIN_TEMPO
 
 data class ScaleDrill(
-    var tempo: Int = 120,
-    var chordDistance: Int = 3,
-    var beatsPerChord: Int = 4,
-    var chordVisible: Boolean = true,
-    var modeVisible: Boolean = true,
-    var keySigVisible: Boolean = true,
-    var cueLineVisible: Boolean = true,
-    var currentBeatVisible: Boolean = true,
-    var soundOn: Boolean = true,
-    @SerializedName("time_constraint")
-    var timeConstraint: TimeConstraint = TimeConstraint.METRONOME,
-    @SerializedName("mode")
-    var mode: Mode = Mode.CHORD,
     var notesPerBeat: Int = 2,
     var intervalRequirements: IntervalRequirements = IntervalRequirements.NONE,
     @SerializedName("interval_less_than_value")
@@ -72,65 +59,4 @@ data class ScaleDrill(
     var noteDoublingAmount: Int = 0,
     var spacingRequirement: SpacingRequirement = SpacingRequirement.NONE,
     var registerRequirement: RegisterRequirement = RegisterRequirement.NONE,
-    var keys: MutableSet<Key> = mutableSetOf(
-        Key.A_MAJOR,
-        Key.Bb_MAJOR,
-        Key.B_MAJOR,
-        Key.C_MAJOR,
-        Key.Db_MAJOR,
-        Key.D_MAJOR,
-        Key.Eb_MAJOR,
-        Key.E_MAJOR,
-        Key.F_MAJOR,
-        Key.Fsharp_MAJOR,
-        Key.G_MAJOR,
-        Key.Ab_MAJOR,
-        Key.A_MINOR,
-        Key.Bb_MINOR,
-        Key.B_MINOR,
-        Key.C_MINOR,
-        Key.Db_MINOR,
-        Key.D_MINOR,
-        Key.Eb_MINOR,
-        Key.E_MINOR,
-        Key.F_MINOR,
-        Key.Fsharp_MINOR,
-        Key.G_MINOR,
-        Key.Ab_MINOR,
-    ),
-    var algorithmForPrompts: AlgorithmSetting = AlgorithmSetting.RANDOM,
-    var patternSubSetting: PatternSubSetting = PatternSubSetting.CHROMATIC,
-) {
-    //    val change = MutableStateFlow(Unit)
-    val beatDuration: Long
-        get() {
-            return beatDurationFromTempo(tempo)
-        }
-    val barDuration: Long
-        get() {
-            return beatsPerChord * beatDurationFromTempo(tempo)
-        }
-
-    fun beatDurationFromTempo(tempo: Int): Long {
-        val millisInAMinute = 60L * 1000
-        return millisInAMinute / tempo
-    }
-
-    fun barDurationFromTempo(tempo: Int): Long {
-        return beatDurationFromTempo(tempo) * beatsPerChord
-    }
-
-    fun setTempoFromPercentage(percentage: Int) {
-        tempo = percentage.calculateLevelFromPercentage(MAX_TEMPO, MIN_TEMPO)
-    }
-
-    fun setBeatsPerChordFromPercentage(percentage: Int) {
-        beatsPerChord =
-            percentage.calculateLevelFromPercentage(MAX_BEATS_PER_CHORD, MIN_BEATS_PER_CHORD)
-    }
-
-    fun setChordDistanceFromPercentage(percentage: Int) {
-        chordDistance = percentage.calculateLevelFromPercentage(MAX_DISTANCE, MIN_DISTANCE)
-    }
-}
-
+)
