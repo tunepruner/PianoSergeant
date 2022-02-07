@@ -43,7 +43,9 @@ private const val ARG_PARAM2 = "param2"
 @InternalCoroutinesApi
 class ScaleDrillSettingsFragment : Fragment() {
     private val settingsViewModel: ScaleDrillSettingsViewModel by viewModel()
-    private val drillSettings: DrillSettingsRepository by KoinJavaComponent.inject(DrillSettingsRepository::class.java)
+    private val drillSettings: DrillSettingsRepository by KoinJavaComponent.inject(
+        DrillSettingsRepository::class.java
+    )
     private var _binding: FragmentScaleDrillSettingsBinding? = null
     private val binding: FragmentScaleDrillSettingsBinding get() = _binding!!
 
@@ -77,171 +79,177 @@ class ScaleDrillSettingsFragment : Fragment() {
         binding.startDrillButton.setOnClickListener {
             findNavController().navigate(R.id.action_scale_drill_settings_to_drill)
         }
-        drillSettings.current.value.let { settings ->
-            with(binding) {
-                with(time_constraint_radio_group) {
-                    settingsViewModel.timeConstraint.observe(viewLifecycleOwner) {
-                        check(
-                            when (it) {
-                                TimeConstraint.RAPID_FIRE -> R.id.rapid_fire_radio_button
-                                TimeConstraint.METRONOME -> R.id.metronome_radio_button
+        drillSettings.current.value.let { drill ->
+            drill.scaleDrill?.let { scaleDrill ->
+                with(binding) {
+                    with(time_constraint_radio_group) {
+                        settingsViewModel.timeConstraint.observe(viewLifecycleOwner) {
+                            check(
+                                when (it) {
+                                    TimeConstraint.RAPID_FIRE -> R.id.rapid_fire_radio_button
+                                    else -> R.id.metronome_radio_button
+                                }
+                            )
+                        }
+                        setOnCheckedChangeListener { _, button ->
+                            when (button) {
+                                R.id.metronome_radio_button -> settingsViewModel.enableMetronome()
+                                R.id.rapid_fire_radio_button -> settingsViewModel.enableRapidFire()
+                            }
+                        }
+                    }
+                    with(add_interval_requirements_layout) {
+                        //Initialize the radio button state and related ui states
+                        radio_group.check(
+                            when (scaleDrill.intervalRequirements) {
+                                IntervalRequirements.NONE -> {
+                                    current_value.text = "-"
+                                    R.id.none_button
+                                }
+                                IntervalRequirements.LESS_THAN -> {
+                                    current_value.text = scaleDrill.intervalLessThanValue.uiName
+                                    R.id.less_than_button
+                                }
+                                IntervalRequirements.GREATER_THAN -> {
+                                    current_value.text = scaleDrill.intervalGreaterThanValue.uiName
+                                    R.id.greater_than_button
+                                }
                             }
                         )
-                    }
-                    setOnCheckedChangeListener { _, button ->
-                        when (button) {
-                            R.id.metronome_radio_button -> settingsViewModel.enableMetronome()
-                            R.id.rapid_fire_radio_button -> settingsViewModel.enableRapidFire()
-                        }
-                    }
-                }
-                with(add_interval_requirements_layout) {
-                    //Initialize the radio button state and related ui states
-                    radio_group.check(
-                        when (settings.intervalRequirements) {
-                            IntervalRequirements.NONE -> {
-                                current_value.text = "-"
-                                R.id.none_button
-                            }
-                            IntervalRequirements.LESS_THAN -> {
-                                current_value.text = settings.intervalLessThanValue.uiName
-                                R.id.less_than_button
-                            }
-                            IntervalRequirements.GREATER_THAN -> {
-                                current_value.text = settings.intervalGreaterThanValue.uiName
-                                R.id.greater_than_button
-                            }
-                        }
-                    )
 
-                    radio_group.setOnCheckedChangeListener { _, button ->
-                        when (button) {
-                            R.id.none_button -> {
-                                settings.intervalRequirements = IntervalRequirements.NONE
-                                current_value.text = "-"
+                        radio_group.setOnCheckedChangeListener { _, button ->
+                            when (button) {
+                                R.id.none_button -> {
+                                    scaleDrill.intervalRequirements = IntervalRequirements.NONE
+                                    current_value.text = "-"
+                                }
+                                R.id.less_than_button -> {
+                                    scaleDrill.intervalRequirements = IntervalRequirements.LESS_THAN
+                                    current_value.text = scaleDrill.intervalLessThanValue.uiName
+                                }
+                                R.id.greater_than_button -> {
+                                    scaleDrill.intervalRequirements =
+                                        IntervalRequirements.GREATER_THAN
+                                    current_value.text = scaleDrill.intervalGreaterThanValue.uiName
+                                }
                             }
-                            R.id.less_than_button -> {
-                                settings.intervalRequirements = IntervalRequirements.LESS_THAN
-                                current_value.text = settings.intervalLessThanValue.uiName
-                            }
-                            R.id.greater_than_button -> {
-                                settings.intervalRequirements =
-                                    IntervalRequirements.GREATER_THAN
-                                current_value.text = settings.intervalGreaterThanValue.uiName
-                            }
+                            persistSettings()
                         }
-                        persistSettings()
-                    }
-                    up_button.setOnClickListener {
-                        if (settings.intervalRequirements == IntervalRequirements.LESS_THAN) {
-                            val currentIndex: Int =
-                                allIntervals.indexOf(settings.intervalLessThanValue)
-                            if (currentIndex < allIntervals.size - 1) {
-                                settings.intervalLessThanValue = allIntervals[currentIndex + 1]
-                                current_value.text = settings.intervalLessThanValue.uiName
+                        up_button.setOnClickListener {
+                            if (scaleDrill.intervalRequirements == IntervalRequirements.LESS_THAN) {
+                                val currentIndex: Int =
+                                    allIntervals.indexOf(scaleDrill.intervalLessThanValue)
+                                if (currentIndex < allIntervals.size - 1) {
+                                    scaleDrill.intervalLessThanValue =
+                                        allIntervals[currentIndex + 1]
+                                    current_value.text = scaleDrill.intervalLessThanValue.uiName
+                                }
+                            } else if (scaleDrill.intervalRequirements == IntervalRequirements.GREATER_THAN) {
+                                val currentIndex: Int =
+                                    allIntervals.indexOf(scaleDrill.intervalGreaterThanValue)
+                                if (currentIndex < allIntervals.size - 1) {
+                                    scaleDrill.intervalGreaterThanValue =
+                                        allIntervals[currentIndex + 1]
+                                    current_value.text = scaleDrill.intervalGreaterThanValue.uiName
+                                }
                             }
-                        } else if (settings.intervalRequirements == IntervalRequirements.GREATER_THAN) {
-                            val currentIndex: Int =
-                                allIntervals.indexOf(settings.intervalGreaterThanValue)
-                            if (currentIndex < allIntervals.size - 1) {
-                                settings.intervalGreaterThanValue = allIntervals[currentIndex + 1]
-                                current_value.text = settings.intervalGreaterThanValue.uiName
-                            }
+                            persistSettings()
                         }
-                        persistSettings()
-                    }
-                    down_button.setOnClickListener {
-                        if (settings.intervalRequirements == IntervalRequirements.LESS_THAN) {
-                            val currentIndex: Int =
-                                allIntervals.indexOf(settings.intervalLessThanValue)
-                            if (currentIndex > 1) {
-                                settings.intervalLessThanValue = allIntervals[currentIndex - 1]
-                                current_value.text = settings.intervalLessThanValue.uiName
-                            }
-                        } else if (settings.intervalRequirements == IntervalRequirements.GREATER_THAN) {
-                            val currentIndex: Int =
-                                allIntervals.indexOf(settings.intervalGreaterThanValue)
-                            if (currentIndex > 1) {
-                                settings.intervalGreaterThanValue = allIntervals[(currentIndex - 1)]
-                                current_value.text = settings.intervalGreaterThanValue.uiName
-                            }
-                        }
-                        persistSettings()
-                    }
-                }
-
-                with(selectKeysLayout) {
-                    val keysMap = mapOf(
-                        Key.A_MAJOR to aMajor,
-                        Key.Bb_MAJOR to bbMajor,
-                        Key.B_MAJOR to bMajor,
-                        Key.C_MAJOR to cMajor,
-                        Key.Db_MAJOR to dbMajor,
-                        Key.D_MAJOR to dMajor,
-                        Key.Eb_MAJOR to ebMajor,
-                        Key.E_MAJOR to eMajor,
-                        Key.F_MAJOR to fMajor,
-                        Key.Fsharp_MAJOR to fsMajor,
-                        Key.G_MAJOR to gMajor,
-                        Key.Ab_MAJOR to abMajor,
-                        Key.A_MINOR to aMinor,
-                        Key.Bb_MINOR to bbMinor,
-                        Key.B_MINOR to bMinor,
-                        Key.C_MINOR to cMinor,
-                        Key.Db_MINOR to dbMinor,
-                        Key.D_MINOR to dMinor,
-                        Key.Eb_MINOR to ebMinor,
-                        Key.E_MINOR to eMinor,
-                        Key.F_MINOR to fMinor,
-                        Key.Fsharp_MINOR to fsMinor,
-                        Key.G_MINOR to gMinor,
-                        Key.Ab_MINOR to abMinor,
-                    )
-
-                    for (element in keysMap) {
-                        element.value.isChecked = settings.keys.contains(element.key)
-                        element.value.setOnCheckedChangeListener { compoundButton, b ->
-                            if (compoundButton.isChecked) {
-                                settings.keys.add(element.key)
-                            } else {
-                                settings.keys.remove(element.key)
+                        down_button.setOnClickListener {
+                            if (scaleDrill.intervalRequirements == IntervalRequirements.LESS_THAN) {
+                                val currentIndex: Int =
+                                    allIntervals.indexOf(scaleDrill.intervalLessThanValue)
+                                if (currentIndex > 1) {
+                                    scaleDrill.intervalLessThanValue =
+                                        allIntervals[currentIndex - 1]
+                                    current_value.text = scaleDrill.intervalLessThanValue.uiName
+                                }
+                            } else if (scaleDrill.intervalRequirements == IntervalRequirements.GREATER_THAN) {
+                                val currentIndex: Int =
+                                    allIntervals.indexOf(scaleDrill.intervalGreaterThanValue)
+                                if (currentIndex > 1) {
+                                    scaleDrill.intervalGreaterThanValue =
+                                        allIntervals[(currentIndex - 1)]
+                                    current_value.text = scaleDrill.intervalGreaterThanValue.uiName
+                                }
                             }
                             persistSettings()
                         }
                     }
-                }
 
-                with(algorithm_for_prompts_layout.algorithm_radio_group) {
-                    check(
-                        when (settings.algorithmForPrompts) {
-                            AlgorithmSetting.RANDOM -> R.id.random_button
-                            AlgorithmSetting.PATTERN -> R.id.pattern_button
+                    with(selectKeysLayout) {
+                        val keysMap = mapOf(
+                            Key.A_MAJOR to aMajor,
+                            Key.Bb_MAJOR to bbMajor,
+                            Key.B_MAJOR to bMajor,
+                            Key.C_MAJOR to cMajor,
+                            Key.Db_MAJOR to dbMajor,
+                            Key.D_MAJOR to dMajor,
+                            Key.Eb_MAJOR to ebMajor,
+                            Key.E_MAJOR to eMajor,
+                            Key.F_MAJOR to fMajor,
+                            Key.Fsharp_MAJOR to fsMajor,
+                            Key.G_MAJOR to gMajor,
+                            Key.Ab_MAJOR to abMajor,
+                            Key.A_MINOR to aMinor,
+                            Key.Bb_MINOR to bbMinor,
+                            Key.B_MINOR to bMinor,
+                            Key.C_MINOR to cMinor,
+                            Key.Db_MINOR to dbMinor,
+                            Key.D_MINOR to dMinor,
+                            Key.Eb_MINOR to ebMinor,
+                            Key.E_MINOR to eMinor,
+                            Key.F_MINOR to fMinor,
+                            Key.Fsharp_MINOR to fsMinor,
+                            Key.G_MINOR to gMinor,
+                            Key.Ab_MINOR to abMinor,
+                        )
+
+                        for (element in keysMap) {
+                            element.value.isChecked = drill.keys.contains(element.key)
+                            element.value.setOnCheckedChangeListener { compoundButton, _ ->
+                                if (compoundButton.isChecked) {
+                                    drill.keys.add(element.key)
+                                } else {
+                                    drill.keys.remove(element.key)
+                                }
+                                persistSettings()
+                            }
                         }
-                    )
-                    setOnCheckedChangeListener { _, button ->
-                        settings.algorithmForPrompts = when (button) {
-                            R.id.pattern_button -> AlgorithmSetting.PATTERN
-                            else -> AlgorithmSetting.RANDOM
-                        }
-                        persistSettings()
                     }
-                }
 
-                with(algorithm_for_prompts_layout.pattern_radio_group) {
-                    check(
-                        when (settings.patternSubSetting) {
-                            PatternSubSetting.CHROMATIC -> R.id.chromatically_button
-                            PatternSubSetting.IN_FIFTHS -> R.id.fifths_button
-                            PatternSubSetting.IN_FOURTHS -> R.id.fourths_button
+                    with(algorithm_for_prompts_layout.algorithm_radio_group) {
+                        check(
+                            when (drill.algorithmForPrompts) {
+                                AlgorithmSetting.PATTERN -> R.id.pattern_button
+                                else -> R.id.random_button
+                            }
+                        )
+                        setOnCheckedChangeListener { _, button ->
+                            drill.algorithmForPrompts = when (button) {
+                                R.id.pattern_button -> AlgorithmSetting.PATTERN
+                                else -> AlgorithmSetting.RANDOM
+                            }
+                            persistSettings()
                         }
-                    )
-                    setOnCheckedChangeListener { _, button ->
-                        settings.patternSubSetting = when (button) {
-                            R.id.fifths_button -> PatternSubSetting.IN_FIFTHS
-                            R.id.fourths_button -> PatternSubSetting.IN_FOURTHS
-                            else -> PatternSubSetting.CHROMATIC
+                    }
+
+                    with(algorithm_for_prompts_layout.pattern_radio_group) {
+                        check(
+                            when (drill.patternSubSetting) {
+                                PatternSubSetting.IN_FIFTHS -> R.id.fifths_button
+                                PatternSubSetting.IN_FOURTHS -> R.id.fourths_button
+                                else -> R.id.chromatically_button
+                            }
+                        )
+                        setOnCheckedChangeListener { _, button ->
+                            drill.patternSubSetting = when (button) {
+                                R.id.fifths_button -> PatternSubSetting.IN_FIFTHS
+                                R.id.fourths_button -> PatternSubSetting.IN_FOURTHS
+                                else -> PatternSubSetting.CHROMATIC
+                            }
+                            persistSettings()
                         }
-                        persistSettings()
                     }
                 }
             }

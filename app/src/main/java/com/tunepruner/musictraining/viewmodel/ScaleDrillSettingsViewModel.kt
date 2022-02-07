@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
 class ScaleDrillSettingsViewModel(private val drillSettingsRepo: DrillSettingsRepository) : ViewModel() {
-    val settings = drillSettingsRepo.current.value
+    private val settings = drillSettingsRepo.current.value
 
     private var _timeConstraint = MutableLiveData<TimeConstraint>()
     var timeConstraint: LiveData<TimeConstraint> = _timeConstraint

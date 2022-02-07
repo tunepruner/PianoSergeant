@@ -1,6 +1,7 @@
 package com.tunepruner.musictraining.model.music.drill
 
 import androidx.room.ColumnInfo
+import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import com.tunepruner.musictraining.calculateLevelFromPercentage
@@ -16,8 +17,12 @@ import com.tunepruner.musictraining.ui.MIN_BEATS_PER_CHORD
 import com.tunepruner.musictraining.ui.MIN_DISTANCE
 import com.tunepruner.musictraining.ui.MIN_TEMPO
 
-open class Drill(
-    @PrimaryKey open val id: String,
+@Entity(tableName = "drills")
+class Drill(
+    @PrimaryKey val id: String,
+    @ColumnInfo(name = "chord_drill") var chordDrill: ChordDrill? = null,
+    @ColumnInfo(name = "scale_drill") var scaleDrill: ScaleDrill? = null,
+
     @ColumnInfo(name = "tempo") var tempo: Int = 120,
     @ColumnInfo(name = "chord_distance") var chordDistance: Int = 3,
     @ColumnInfo(name = "beats_per_chord") var beatsPerChord: Int = 4,

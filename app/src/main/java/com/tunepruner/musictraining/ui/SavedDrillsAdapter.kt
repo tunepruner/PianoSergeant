@@ -5,9 +5,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.musictraining.R
 import com.tunepruner.musictraining.model.music.drill.ChordDrill
+import com.tunepruner.musictraining.model.music.drill.Drill
 
 class SavedDrillsAdapter(
-    private val drillList: ArrayList<ChordDrill>,
+    private val drillList: ArrayList<Drill>,
     private val clickListener: OnClickListener
 ) :
     RecyclerView.Adapter<SavedDrillsAdapter.ViewHolder>() {
@@ -36,7 +37,7 @@ class SavedDrillsAdapter(
     }
 
     // update your data
-    fun updateData(result: ArrayList<ChordDrill>) {
+    fun updateData(result: ArrayList<Drill>) {
         drillList.clear()
         drillList.addAll(result)
         notifyDataSetChanged()

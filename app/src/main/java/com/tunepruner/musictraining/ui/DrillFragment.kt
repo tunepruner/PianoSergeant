@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.musictraining.R
 import com.example.musictraining.databinding.FragmentDrillBinding
 import com.tunepruner.musictraining.model.PlayState
-import com.tunepruner.musictraining.model.music.drill.ChordDrill
+import com.tunepruner.musictraining.model.music.drill.Drill
 import com.tunepruner.musictraining.repositories.DrillSettingsRepository
 import com.tunepruner.musictraining.viewmodel.ChordViewModel
 import com.tunepruner.musictraining.viewmodel.MetronomeViewModel
@@ -203,7 +203,7 @@ class DrillFragment : Fragment() {
         _binding = null
     }
 
-    private fun updateSettingsDisplay(chordDrill: ChordDrill) {
+    private fun updateSettingsDisplay(chordDrill: Drill) {
         binding.tempoSelector.progress =
             ((chordDrill.tempo.toDouble() / MAX_TEMPO) * 100).roundToInt()
         binding.chordDistanceSelector.progress =

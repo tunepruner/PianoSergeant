@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tunepruner.musictraining.model.PlayState
-import com.tunepruner.musictraining.model.music.drill.ChordDrill
+import com.tunepruner.musictraining.model.music.drill.Drill
 import com.tunepruner.musictraining.repositories.DrillSettingsRepository
 import com.tunepruner.musictraining.ui.MIN_TEMPO
 import com.tunepruner.musictraining.util.MetronomeClicker
@@ -26,9 +26,9 @@ class MetronomeViewModel(
     private val clicker: MetronomeClicker,
 ) : ViewModel() {
 
-    private var _currentChordDrill: MutableLiveData<ChordDrill> =
-        MutableLiveData<ChordDrill>(drillSettingsRepository.current.value)
-    var currentChordDrill: LiveData<ChordDrill> = _currentChordDrill
+    private var _currentChordDrill: MutableLiveData<Drill> =
+        MutableLiveData<Drill>(drillSettingsRepository.current.value)
+    var currentChordDrill: LiveData<Drill> = _currentChordDrill
 
     private val _playState: MutableLiveData<PlayState> =
         MutableLiveData<PlayState>(PlayState.STOPPED)

@@ -1,6 +1,7 @@
 package com.tunepruner.musictraining.model.music.drill//package com.tunepruner.musictraining.repositories
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import com.tunepruner.musictraining.model.music.drill.items.ChordQuality
 import com.tunepruner.musictraining.model.music.drill.items.Interval
@@ -10,9 +11,11 @@ import com.tunepruner.musictraining.model.music.drill.items.NoteDoublingRequirem
 import com.tunepruner.musictraining.model.music.drill.items.RegisterRequirement
 import com.tunepruner.musictraining.model.music.drill.items.SpacingRequirement
 
+const val DEFAULT_NOTE_DOUBLING_AMOUNT = 0
+
 @Entity
 class ChordDrill (
-    id: String,
+    @PrimaryKey val id: String,
     var notesPerBeat: Int = 2,
     var intervalRequirements: IntervalRequirements = IntervalRequirements.NONE,
     @SerializedName("interval_less_than_value")
@@ -47,7 +50,7 @@ class ChordDrill (
     @SerializedName("note_doubling_requirement")
     var noteDoublingRequirement: NoteDoublingRequirement = NoteDoublingRequirement.NONE,
     @SerializedName("note_doubling_amount")
-    var noteDoublingAmount: Int = 0,
+    var noteDoublingAmount: Int = DEFAULT_NOTE_DOUBLING_AMOUNT,
     var spacingRequirement: SpacingRequirement = SpacingRequirement.NONE,
     var registerRequirement: RegisterRequirement = RegisterRequirement.NONE,
-) : Drill(id = id)
+)

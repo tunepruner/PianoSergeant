@@ -6,7 +6,7 @@ import com.tunepruner.musictraining.model.music.AttemptProcessor
 import com.tunepruner.musictraining.repositories.DrillSettingsRepository
 import com.tunepruner.musictraining.repositories.IncomingMidiSource
 import com.tunepruner.musictraining.util.MetronomeClicker
-import com.tunepruner.musictraining.viewmodel.ChordDrillSettingsViewModel
+import com.tunepruner.musictraining.viewmodel.DrillSettingsViewModel
 import com.tunepruner.musictraining.viewmodel.ChordViewModel
 import com.tunepruner.musictraining.viewmodel.DrillListViewModel
 import com.tunepruner.musictraining.viewmodel.MetronomeViewModel
@@ -38,7 +38,7 @@ val viewModelModule = module {
     single { MetronomeViewModel(get(), get()) }
     single { ChordViewModel(get()) }
     single { NoteInputViewModel(get(), androidContext()) }
-    single { ChordDrillSettingsViewModel(get()) }
+    single { DrillSettingsViewModel(get()) }
     single { ScaleDrillSettingsViewModel(get()) }
     single { DrillListViewModel(get()) }
 }

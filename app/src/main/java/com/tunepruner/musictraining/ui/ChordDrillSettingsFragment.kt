@@ -23,7 +23,7 @@ import com.tunepruner.musictraining.model.music.drill.items.SpacingRequirement
 import com.tunepruner.musictraining.model.music.drill.items.TimeConstraint
 import com.tunepruner.musictraining.model.music.drill.items.allIntervals
 import com.tunepruner.musictraining.repositories.DrillSettingsRepository
-import com.tunepruner.musictraining.viewmodel.ChordDrillSettingsViewModel
+import com.tunepruner.musictraining.viewmodel.DrillSettingsViewModel
 import kotlinx.android.synthetic.main.add_interval_requirements_layout.view.*
 import kotlinx.android.synthetic.main.algorithm_for_prompts_layout.view.*
 import kotlinx.android.synthetic.main.choose_mode_layout.*
@@ -40,8 +40,8 @@ import org.koin.java.KoinJavaComponent
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
 class ChordDrillSettingsFragment : Fragment() {
-    val args: ChordDrillSettingsFragmentArgs by navArgs()
-    private val settingsViewModel: ChordDrillSettingsViewModel by viewModel()
+    private val args: ChordDrillSettingsFragmentArgs by navArgs()
+    private val settingsViewModel: DrillSettingsViewModel by viewModel()
     private val drillSettings: DrillSettingsRepository by KoinJavaComponent.inject(
         DrillSettingsRepository::class.java
     )
@@ -100,307 +100,316 @@ class ChordDrillSettingsFragment : Fragment() {
             binding.nameTextView.visibility = if (it) View.GONE else View.VISIBLE
         }
 
-        drillSettings.current.value.let { settings ->
-            binding.nameEditText.setText(settings.id)
-            binding.nameTextView.text = settings.id
+        drillSettings.current.value.let { drill ->
+            drill.chordDrill?.let { chordDrill ->
+                binding.nameEditText.setText(chordDrill.id)
+                binding.nameTextView.text = chordDrill.id
 
-            with(binding) {
-                with(time_constraint_radio_group) {
-                    settingsViewModel.timeConstraint.observe(viewLifecycleOwner) {
-                        check(
-                            when (it) {
-                                TimeConstraint.RAPID_FIRE -> R.id.rapid_fire_radio_button
-                                TimeConstraint.METRONOME -> R.id.metronome_radio_button
+                with(binding) {
+                    with(time_constraint_radio_group) {
+                        settingsViewModel.timeConstraint.observe(viewLifecycleOwner) {
+                            check(
+                                when (it) {
+                                    TimeConstraint.RAPID_FIRE -> R.id.rapid_fire_radio_button
+                                    else -> R.id.metronome_radio_button
+                                }
+                            )
+                        }
+                        setOnCheckedChangeListener { _, button ->
+                            when (button) {
+                                R.id.metronome_radio_button -> settingsViewModel.enableMetronome()
+                                R.id.rapid_fire_radio_button -> settingsViewModel.enableRapidFire()
+                            }
+                        }
+                    }
+
+                    with(add_interval_requirements_layout) {
+                        //Initialize the radio button state and related ui states
+                        radio_group.check(
+                            when (chordDrill.intervalRequirements) {
+                                IntervalRequirements.LESS_THAN -> {
+                                    current_value.text = chordDrill.intervalLessThanValue.uiName
+                                    R.id.less_than_button
+                                }
+                                IntervalRequirements.GREATER_THAN -> {
+                                    current_value.text = chordDrill.intervalGreaterThanValue.uiName
+                                    R.id.greater_than_button
+                                }
+                                else -> {
+                                    current_value.text = "-"
+                                    R.id.none_button
+                                }
                             }
                         )
-                    }
-                    setOnCheckedChangeListener { _, button ->
-                        when (button) {
-                            R.id.metronome_radio_button -> settingsViewModel.enableMetronome()
-                            R.id.rapid_fire_radio_button -> settingsViewModel.enableRapidFire()
-                        }
-                    }
-                }
 
-                with(add_interval_requirements_layout) {
-                    //Initialize the radio button state and related ui states
-                    radio_group.check(
-                        when (settings.intervalRequirements) {
-                            IntervalRequirements.NONE -> {
-                                current_value.text = "-"
-                                R.id.none_button
+                        radio_group.setOnCheckedChangeListener { _, button ->
+                            when (button) {
+                                R.id.none_button -> {
+                                    chordDrill.intervalRequirements = IntervalRequirements.NONE
+                                    current_value.text = "-"
+                                }
+                                R.id.less_than_button -> {
+                                    chordDrill.intervalRequirements = IntervalRequirements.LESS_THAN
+                                    current_value.text = chordDrill.intervalLessThanValue.uiName
+                                }
+                                R.id.greater_than_button -> {
+                                    chordDrill.intervalRequirements =
+                                        IntervalRequirements.GREATER_THAN
+                                    current_value.text = chordDrill.intervalGreaterThanValue.uiName
+                                }
                             }
-                            IntervalRequirements.LESS_THAN -> {
-                                current_value.text = settings.intervalLessThanValue.uiName
-                                R.id.less_than_button
-                            }
-                            IntervalRequirements.GREATER_THAN -> {
-                                current_value.text = settings.intervalGreaterThanValue.uiName
-                                R.id.greater_than_button
-                            }
+                            persistSettings()
                         }
-                    )
-
-                    radio_group.setOnCheckedChangeListener { _, button ->
-                        when (button) {
-                            R.id.none_button -> {
-                                settings.intervalRequirements = IntervalRequirements.NONE
-                                current_value.text = "-"
+                        up_button.setOnClickListener {
+                            if (chordDrill.intervalRequirements == IntervalRequirements.LESS_THAN) {
+                                val currentIndex: Int =
+                                    allIntervals.indexOf(chordDrill.intervalLessThanValue)
+                                if (currentIndex < allIntervals.size - 1) {
+                                    chordDrill.intervalLessThanValue =
+                                        allIntervals[currentIndex + 1]
+                                    current_value.text = chordDrill.intervalLessThanValue.uiName
+                                }
+                            } else if (chordDrill.intervalRequirements == IntervalRequirements.GREATER_THAN) {
+                                val currentIndex: Int =
+                                    allIntervals.indexOf(chordDrill.intervalGreaterThanValue)
+                                if (currentIndex < allIntervals.size - 1) {
+                                    chordDrill.intervalGreaterThanValue =
+                                        allIntervals[currentIndex + 1]
+                                    current_value.text = chordDrill.intervalGreaterThanValue.uiName
+                                }
                             }
-                            R.id.less_than_button -> {
-                                settings.intervalRequirements = IntervalRequirements.LESS_THAN
-                                current_value.text = settings.intervalLessThanValue.uiName
-                            }
-                            R.id.greater_than_button -> {
-                                settings.intervalRequirements =
-                                    IntervalRequirements.GREATER_THAN
-                                current_value.text = settings.intervalGreaterThanValue.uiName
-                            }
+                            persistSettings()
                         }
-                        persistSettings()
-                    }
-                    up_button.setOnClickListener {
-                        if (settings.intervalRequirements == IntervalRequirements.LESS_THAN) {
-                            val currentIndex: Int =
-                                allIntervals.indexOf(settings.intervalLessThanValue)
-                            if (currentIndex < allIntervals.size - 1) {
-                                settings.intervalLessThanValue = allIntervals[currentIndex + 1]
-                                current_value.text = settings.intervalLessThanValue.uiName
-                            }
-                        } else if (settings.intervalRequirements == IntervalRequirements.GREATER_THAN) {
-                            val currentIndex: Int =
-                                allIntervals.indexOf(settings.intervalGreaterThanValue)
-                            if (currentIndex < allIntervals.size - 1) {
-                                settings.intervalGreaterThanValue = allIntervals[currentIndex + 1]
-                                current_value.text = settings.intervalGreaterThanValue.uiName
-                            }
-                        }
-                        persistSettings()
-                    }
-                    down_button.setOnClickListener {
-                        if (settings.intervalRequirements == IntervalRequirements.LESS_THAN) {
-                            val currentIndex: Int =
-                                allIntervals.indexOf(settings.intervalLessThanValue)
-                            if (currentIndex > 1) {
-                                settings.intervalLessThanValue = allIntervals[currentIndex - 1]
-                                current_value.text = settings.intervalLessThanValue.uiName
-                            }
-                        } else if (settings.intervalRequirements == IntervalRequirements.GREATER_THAN) {
-                            val currentIndex: Int =
-                                allIntervals.indexOf(settings.intervalGreaterThanValue)
-                            if (currentIndex > 1) {
-                                settings.intervalGreaterThanValue = allIntervals[(currentIndex - 1)]
-                                current_value.text = settings.intervalGreaterThanValue.uiName
-                            }
-                        }
-                        persistSettings()
-                    }
-                }
-                with(selectInversionsLayout) {
-                    val inversionsMap = mapOf(
-                        Inversion.ROOT_POSITION to rootPositionChip,
-                        Inversion.FIRST_INVERSION to firstInverisonChip,
-                        Inversion.SECOND_INVERSION to secondInversionChip,
-                        Inversion.THIRD_INVERSION to thirdInversionChip,
-                    )
-                    for (element in inversionsMap) {
-                        element.value.isChecked = settings.inversions.contains(element.key)
-                        element.value.setOnCheckedChangeListener { compoundButton, b ->
-                            if (compoundButton.isChecked) {
-                                settings.inversions.add(element.key)
-                            } else {
-                                settings.inversions.remove(element.key)
+                        down_button.setOnClickListener {
+                            if (chordDrill.intervalRequirements == IntervalRequirements.LESS_THAN) {
+                                val currentIndex: Int =
+                                    allIntervals.indexOf(chordDrill.intervalLessThanValue)
+                                if (currentIndex > 1) {
+                                    chordDrill.intervalLessThanValue =
+                                        allIntervals[currentIndex - 1]
+                                    current_value.text = chordDrill.intervalLessThanValue.uiName
+                                }
+                            } else if (chordDrill.intervalRequirements == IntervalRequirements.GREATER_THAN) {
+                                val currentIndex: Int =
+                                    allIntervals.indexOf(chordDrill.intervalGreaterThanValue)
+                                if (currentIndex > 1) {
+                                    chordDrill.intervalGreaterThanValue =
+                                        allIntervals[(currentIndex - 1)]
+                                    current_value.text = chordDrill.intervalGreaterThanValue.uiName
+                                }
                             }
                             persistSettings()
                         }
                     }
-                }
-
-
-                with(selectChordQualitiesLayout) {
-                    val chordQualitiesMap = mapOf(
-                        ChordQuality.MAJOR_TRIAD to majorTriad,
-                        ChordQuality.MINOR_TRIAD to minorTriad,
-                        ChordQuality.DIMINISHED_TRIAD to diminishedTriad,
-                        ChordQuality.AUGMENTED_TRIAD to augmentedTriad,
-                        ChordQuality.SUS_2_TRIAD to sus2Triad,
-                        ChordQuality.SUS_4_TRIAD to sus4Triad,
-                        ChordQuality.MAJOR_SEVENTH to majorSeventh,
-                        ChordQuality.DOMINANT_SEVENTH to dominantSeventh,
-                        ChordQuality.MINOR_SEVENTH to minorSeventh,
-                        ChordQuality.MINOR_MAJOR_SEVENTH to minorMajorSeventh,
-                        ChordQuality.HALF_DIMINISHED_SEVENTH to halfDiminishedSeventh,
-                        ChordQuality.FULL_DIMINISHED_SEVENTH to fullDiminishedSeventh,
-                        ChordQuality.AUGMENTED_SEVENTH to augmentedSeventh,
-                        ChordQuality.AUGMENTED_MAJOR_SEVENTH to augmentedMajorSeventh,
-                        ChordQuality.DOMINANT_SEVENTH_SUS_4 to dominantSeventhSus4,
-                    )
-
-                    for (element in chordQualitiesMap) {
-                        element.value.isChecked = settings.chordQualities.contains(element.key)
-                        element.value.setOnCheckedChangeListener { compoundButton, b ->
-                            if (compoundButton.isChecked) {
-                                settings.chordQualities.add(element.key)
-                            } else {
-                                settings.chordQualities.remove(element.key)
+                    with(selectInversionsLayout) {
+                        val inversionsMap = mapOf(
+                            Inversion.ROOT_POSITION to rootPositionChip,
+                            Inversion.FIRST_INVERSION to firstInverisonChip,
+                            Inversion.SECOND_INVERSION to secondInversionChip,
+                            Inversion.THIRD_INVERSION to thirdInversionChip,
+                        )
+                        for (element in inversionsMap) {
+                            element.value.isChecked =
+                                chordDrill.inversions.contains(element.key) == true
+                            element.value.setOnCheckedChangeListener { compoundButton, _ ->
+                                if (compoundButton.isChecked) {
+                                    chordDrill.inversions.add(element.key)
+                                } else {
+                                    chordDrill.inversions.remove(element.key)
+                                }
+                                persistSettings()
                             }
-                            persistSettings()
                         }
                     }
-                }
 
-                with(note_doubling_requirement_layout) {
-                    radio_group.apply {
+
+                    with(selectChordQualitiesLayout) {
+                        val chordQualitiesMap = mapOf(
+                            ChordQuality.MAJOR_TRIAD to majorTriad,
+                            ChordQuality.MINOR_TRIAD to minorTriad,
+                            ChordQuality.DIMINISHED_TRIAD to diminishedTriad,
+                            ChordQuality.AUGMENTED_TRIAD to augmentedTriad,
+                            ChordQuality.SUS_2_TRIAD to sus2Triad,
+                            ChordQuality.SUS_4_TRIAD to sus4Triad,
+                            ChordQuality.MAJOR_SEVENTH to majorSeventh,
+                            ChordQuality.DOMINANT_SEVENTH to dominantSeventh,
+                            ChordQuality.MINOR_SEVENTH to minorSeventh,
+                            ChordQuality.MINOR_MAJOR_SEVENTH to minorMajorSeventh,
+                            ChordQuality.HALF_DIMINISHED_SEVENTH to halfDiminishedSeventh,
+                            ChordQuality.FULL_DIMINISHED_SEVENTH to fullDiminishedSeventh,
+                            ChordQuality.AUGMENTED_SEVENTH to augmentedSeventh,
+                            ChordQuality.AUGMENTED_MAJOR_SEVENTH to augmentedMajorSeventh,
+                            ChordQuality.DOMINANT_SEVENTH_SUS_4 to dominantSeventhSus4,
+                        )
+
+                        for (element in chordQualitiesMap) {
+                            element.value.isChecked =
+                                chordDrill.chordQualities.contains(element.key) == true
+                            element.value.setOnCheckedChangeListener { compoundButton, _ ->
+                                if (compoundButton.isChecked) {
+                                    chordDrill.chordQualities.add(element.key)
+                                } else {
+                                    chordDrill.chordQualities.remove(element.key)
+                                }
+                                persistSettings()
+                            }
+                        }
+                    }
+
+                    with(note_doubling_requirement_layout) {
+                        radio_group.apply {
+                            check(
+                                when (chordDrill.noteDoublingRequirement) {
+                                    NoteDoublingRequirement.SPECIFIC_AMOUNT -> R.id.specific_amount_button
+                                    else -> R.id.scale_mode_radio_button
+                                }
+                            )
+                            setOnCheckedChangeListener { _, button ->
+                                chordDrill.noteDoublingRequirement =
+                                    when (button) {
+                                        R.id.specific_amount_button -> NoteDoublingRequirement.SPECIFIC_AMOUNT
+                                        else -> NoteDoublingRequirement.NONE
+                                    }
+                                persistSettings()
+                            }
+                        }
+
+                        current_value.text = chordDrill.noteDoublingAmount.toString()
+
+                        up_button.setOnClickListener {
+                            if (chordDrill.noteDoublingRequirement == NoteDoublingRequirement.SPECIFIC_AMOUNT) {
+                                if (chordDrill.noteDoublingAmount < MAX_DOUBLING_AMOUNT) {
+                                    chordDrill.noteDoublingAmount
+                                }
+                                current_value.text = chordDrill.noteDoublingAmount.toString()
+                                persistSettings()
+                            }
+                        }
+                        down_button.setOnClickListener {
+                            if (chordDrill.noteDoublingRequirement == NoteDoublingRequirement.SPECIFIC_AMOUNT) {
+                                if (chordDrill.noteDoublingAmount > MIN_DOUBLING_AMOUNT) {
+                                    chordDrill.noteDoublingAmount--
+                                }
+                                current_value.text = chordDrill.noteDoublingAmount.toString()
+                                persistSettings()
+                            }
+                        }
+                    }
+
+                    with(voicing_spacing_requirement_layout.radio_group) {
                         check(
-                            when (settings.noteDoublingRequirement) {
-                                NoteDoublingRequirement.NONE -> R.id.scale_mode_radio_button
-                                NoteDoublingRequirement.SPECIFIC_AMOUNT -> R.id.specific_amount_button
+                            when (chordDrill.spacingRequirement) {
+                                SpacingRequirement.OPEN_VOICING -> R.id.closed_voicing
+                                SpacingRequirement.CLOSED_VOICING -> R.id.open_voicing
+                                else -> R.id.none
                             }
                         )
                         setOnCheckedChangeListener { _, button ->
-                            settings.noteDoublingRequirement =
-                                when (button) {
-                                    R.id.specific_amount_button -> NoteDoublingRequirement.SPECIFIC_AMOUNT
-                                    else -> NoteDoublingRequirement.NONE
+                            chordDrill.spacingRequirement = when (button) {
+                                R.id.closed_voicing -> SpacingRequirement.CLOSED_VOICING
+                                R.id.open_voicing -> SpacingRequirement.OPEN_VOICING
+                                else -> SpacingRequirement.NONE
+                            }
+                            persistSettings()
+                        }
+                    }
+
+                    with(register_requirement_layout.radio_group) {
+                        check(
+                            when (chordDrill.registerRequirement) {
+                                RegisterRequirement.REQUIRE_VOICE_LEADING -> R.id.voice_leading
+                                RegisterRequirement.REQUIRE_COMMON_TOP_NOTE -> R.id.common_top_note
+                                RegisterRequirement.REQUIRE_COMMON_BOTTOM_NOTE -> R.id.common_bottom_note
+                                RegisterRequirement.REQUIRE_LEAP_GREATER_THAN_5TH -> R.id.leap_greater_than
+                                else -> R.id.none
+                            }
+                        )
+                        setOnCheckedChangeListener { _, button ->
+                            chordDrill.registerRequirement = when (button) {
+                                R.id.voice_leading -> RegisterRequirement.REQUIRE_VOICE_LEADING
+                                R.id.common_top_note -> RegisterRequirement.REQUIRE_COMMON_TOP_NOTE
+                                R.id.common_bottom_note -> RegisterRequirement.REQUIRE_COMMON_BOTTOM_NOTE
+                                R.id.leap_greater_than -> RegisterRequirement.REQUIRE_LEAP_GREATER_THAN_5TH
+                                else -> RegisterRequirement.NONE
+                            }
+                            persistSettings()
+                        }
+                    }
+
+                    with(selectKeysLayout) {
+                        val keysMap = mapOf(
+                            Key.A_MAJOR to aMajor,
+                            Key.Bb_MAJOR to bbMajor,
+                            Key.B_MAJOR to bMajor,
+                            Key.C_MAJOR to cMajor,
+                            Key.Db_MAJOR to dbMajor,
+                            Key.D_MAJOR to dMajor,
+                            Key.Eb_MAJOR to ebMajor,
+                            Key.E_MAJOR to eMajor,
+                            Key.F_MAJOR to fMajor,
+                            Key.Fsharp_MAJOR to fsMajor,
+                            Key.G_MAJOR to gMajor,
+                            Key.Ab_MAJOR to abMajor,
+                            Key.A_MINOR to aMinor,
+                            Key.Bb_MINOR to bbMinor,
+                            Key.B_MINOR to bMinor,
+                            Key.C_MINOR to cMinor,
+                            Key.Db_MINOR to dbMinor,
+                            Key.D_MINOR to dMinor,
+                            Key.Eb_MINOR to ebMinor,
+                            Key.E_MINOR to eMinor,
+                            Key.F_MINOR to fMinor,
+                            Key.Fsharp_MINOR to fsMinor,
+                            Key.G_MINOR to gMinor,
+                            Key.Ab_MINOR to abMinor,
+                        )
+
+                        for (element in keysMap) {
+                            element.value.isChecked =
+                                settingsViewModel.currentDrill.value?.keys?.contains(element.key) == true
+                            element.value.setOnCheckedChangeListener { compoundButton, _ ->
+                                if (compoundButton.isChecked) {
+                                    settingsViewModel.currentDrill.value?.keys?.add(element.key)
+                                } else {
+                                    settingsViewModel.currentDrill.value?.keys?.remove(element.key)
                                 }
-                            persistSettings()
-                        }
-                    }
-
-                    current_value.text = settings.noteDoublingAmount.toString()
-
-                    up_button.setOnClickListener {
-                        if (settings.noteDoublingRequirement == NoteDoublingRequirement.SPECIFIC_AMOUNT) {
-                            if (settings.noteDoublingAmount < MAX_DOUBLING_AMOUNT) {
-                                settings.noteDoublingAmount++
+                                persistSettings()
                             }
-                            current_value.text = settings.noteDoublingAmount.toString()
-                            persistSettings()
                         }
                     }
-                    down_button.setOnClickListener {
-                        if (settings.noteDoublingRequirement == NoteDoublingRequirement.SPECIFIC_AMOUNT) {
-                            if (settings.noteDoublingAmount > MIN_DOUBLING_AMOUNT) {
-                                settings.noteDoublingAmount--
+
+                    with(algorithm_for_prompts_layout.algorithm_radio_group) {
+                        check(
+                            when (drill.algorithmForPrompts) {
+                                AlgorithmSetting.RANDOM -> R.id.random_button
+                                AlgorithmSetting.PATTERN -> R.id.pattern_button
                             }
-                            current_value.text = settings.noteDoublingAmount.toString()
-                            persistSettings()
-                        }
-                    }
-                }
-
-                with(voicing_spacing_requirement_layout.radio_group) {
-                    check(
-                        when (settings.spacingRequirement) {
-                            SpacingRequirement.NONE -> R.id.none
-                            SpacingRequirement.OPEN_VOICING -> R.id.closed_voicing
-                            SpacingRequirement.CLOSED_VOICING -> R.id.open_voicing
-                        }
-                    )
-                    setOnCheckedChangeListener { _, button ->
-                        settings.spacingRequirement = when (button) {
-                            R.id.closed_voicing -> SpacingRequirement.CLOSED_VOICING
-                            R.id.open_voicing -> SpacingRequirement.OPEN_VOICING
-                            else -> SpacingRequirement.NONE
-                        }
-                        persistSettings()
-                    }
-                }
-
-                with(register_requirement_layout.radio_group) {
-                    check(
-                        when (settings.registerRequirement) {
-                            RegisterRequirement.NONE -> R.id.none
-                            RegisterRequirement.REQUIRE_VOICE_LEADING -> R.id.voice_leading
-                            RegisterRequirement.REQUIRE_COMMON_TOP_NOTE -> R.id.common_top_note
-                            RegisterRequirement.REQUIRE_COMMON_BOTTOM_NOTE -> R.id.common_bottom_note
-                            RegisterRequirement.REQUIRE_LEAP_GREATER_THAN_5TH -> R.id.leap_greater_than
-                        }
-                    )
-                    setOnCheckedChangeListener { _, button ->
-                        settings.registerRequirement = when (button) {
-                            R.id.voice_leading -> RegisterRequirement.REQUIRE_VOICE_LEADING
-                            R.id.common_top_note -> RegisterRequirement.REQUIRE_COMMON_TOP_NOTE
-                            R.id.common_bottom_note -> RegisterRequirement.REQUIRE_COMMON_BOTTOM_NOTE
-                            R.id.leap_greater_than -> RegisterRequirement.REQUIRE_LEAP_GREATER_THAN_5TH
-                            else -> RegisterRequirement.NONE
-                        }
-                        persistSettings()
-                    }
-                }
-
-                with(selectKeysLayout) {
-                    val keysMap = mapOf(
-                        Key.A_MAJOR to aMajor,
-                        Key.Bb_MAJOR to bbMajor,
-                        Key.B_MAJOR to bMajor,
-                        Key.C_MAJOR to cMajor,
-                        Key.Db_MAJOR to dbMajor,
-                        Key.D_MAJOR to dMajor,
-                        Key.Eb_MAJOR to ebMajor,
-                        Key.E_MAJOR to eMajor,
-                        Key.F_MAJOR to fMajor,
-                        Key.Fsharp_MAJOR to fsMajor,
-                        Key.G_MAJOR to gMajor,
-                        Key.Ab_MAJOR to abMajor,
-                        Key.A_MINOR to aMinor,
-                        Key.Bb_MINOR to bbMinor,
-                        Key.B_MINOR to bMinor,
-                        Key.C_MINOR to cMinor,
-                        Key.Db_MINOR to dbMinor,
-                        Key.D_MINOR to dMinor,
-                        Key.Eb_MINOR to ebMinor,
-                        Key.E_MINOR to eMinor,
-                        Key.F_MINOR to fMinor,
-                        Key.Fsharp_MINOR to fsMinor,
-                        Key.G_MINOR to gMinor,
-                        Key.Ab_MINOR to abMinor,
-                    )
-
-                    for (element in keysMap) {
-                        element.value.isChecked = settings.keys.contains(element.key)
-                        element.value.setOnCheckedChangeListener { compoundButton, b ->
-                            if (compoundButton.isChecked) {
-                                settings.keys.add(element.key)
-                            } else {
-                                settings.keys.remove(element.key)
+                        )
+                        setOnCheckedChangeListener { _, button ->
+                            drill.algorithmForPrompts = when (button) {
+                                R.id.pattern_button -> AlgorithmSetting.PATTERN
+                                else -> AlgorithmSetting.RANDOM
                             }
                             persistSettings()
                         }
                     }
-                }
 
-                with(algorithm_for_prompts_layout.algorithm_radio_group) {
-                    check(
-                        when (settings.algorithmForPrompts) {
-                            AlgorithmSetting.RANDOM -> R.id.random_button
-                            AlgorithmSetting.PATTERN -> R.id.pattern_button
+                    with(algorithm_for_prompts_layout.pattern_radio_group) {
+                        check(
+                            when (drill.patternSubSetting) {
+                                PatternSubSetting.CHROMATIC -> R.id.chromatically_button
+                                PatternSubSetting.IN_FIFTHS -> R.id.fifths_button
+                                PatternSubSetting.IN_FOURTHS -> R.id.fourths_button
+                            }
+                        )
+                        setOnCheckedChangeListener { _, button ->
+                            drill.patternSubSetting = when (button) {
+                                R.id.fifths_button -> PatternSubSetting.IN_FIFTHS
+                                R.id.fourths_button -> PatternSubSetting.IN_FOURTHS
+                                else -> PatternSubSetting.CHROMATIC
+                            }
+                            persistSettings()
                         }
-                    )
-                    setOnCheckedChangeListener { _, button ->
-                        settings.algorithmForPrompts = when (button) {
-                            R.id.pattern_button -> AlgorithmSetting.PATTERN
-                            else -> AlgorithmSetting.RANDOM
-                        }
-                        persistSettings()
-                    }
-                }
-
-                with(algorithm_for_prompts_layout.pattern_radio_group) {
-                    check(
-                        when (settings.patternSubSetting) {
-                            PatternSubSetting.CHROMATIC -> R.id.chromatically_button
-                            PatternSubSetting.IN_FIFTHS -> R.id.fifths_button
-                            PatternSubSetting.IN_FOURTHS -> R.id.fourths_button
-                        }
-                    )
-                    setOnCheckedChangeListener { _, button ->
-                        settings.patternSubSetting = when (button) {
-                            R.id.fifths_button -> PatternSubSetting.IN_FIFTHS
-                            R.id.fourths_button -> PatternSubSetting.IN_FOURTHS
-                            else -> PatternSubSetting.CHROMATIC
-                        }
-                        persistSettings()
                     }
                 }
             }

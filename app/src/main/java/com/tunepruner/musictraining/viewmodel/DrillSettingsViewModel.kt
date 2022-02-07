@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.tunepruner.musictraining.model.music.drill.ChordDrill
+import com.tunepruner.musictraining.model.music.drill.Drill
 import com.tunepruner.musictraining.model.music.drill.items.TimeConstraint
 import com.tunepruner.musictraining.repositories.DrillSettingsRepository
 import kotlinx.coroutines.CoroutineScope
@@ -17,12 +17,12 @@ import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
-class ChordDrillSettingsViewModel(private val drillSettingsRepo: DrillSettingsRepository) :
+class DrillSettingsViewModel(private val drillSettingsRepo: DrillSettingsRepository) :
     ViewModel() {
     private var _isAddingName = MutableLiveData<Boolean>()
     val isAddingName: LiveData<Boolean> = _isAddingName
 
-    val currentDrill: LiveData<ChordDrill> = drillSettingsRepo.current.asLiveData()
+    val currentDrill: LiveData<Drill> = drillSettingsRepo.current.asLiveData()
 
     private var _timeConstraint = MutableLiveData<TimeConstraint>()
     var timeConstraint: LiveData<TimeConstraint> = _timeConstraint

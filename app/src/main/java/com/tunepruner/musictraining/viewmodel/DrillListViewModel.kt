@@ -4,13 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.tunepruner.musictraining.model.music.drill.ChordDrill
+import com.tunepruner.musictraining.model.music.drill.Drill
 import com.tunepruner.musictraining.repositories.DrillSettingsRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 class DrillListViewModel(val repo: DrillSettingsRepository) : ViewModel() {
     private var _allDrills = repo.drillsFlow.asLiveData()
-    val allDrills: LiveData<List<ChordDrill>> = _allDrills
+    val allDrills: LiveData<List<Drill>> = _allDrills
 
     fun getAllChordDrills() {
         repo.getAllChordDrills()
