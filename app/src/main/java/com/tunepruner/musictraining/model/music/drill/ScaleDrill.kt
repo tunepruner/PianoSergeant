@@ -6,7 +6,6 @@ import com.tunepruner.musictraining.model.music.drill.items.Interval
 import com.tunepruner.musictraining.model.music.drill.items.IntervalRequirements
 
 class ScaleDrill(
-    @PrimaryKey val id: String,
     var notesPerBeat: Int = 2,
     var intervalRequirements: IntervalRequirements = IntervalRequirements.NONE,
     @SerializedName("interval_less_than_value")

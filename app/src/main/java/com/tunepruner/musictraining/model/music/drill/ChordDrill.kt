@@ -15,7 +15,6 @@ const val DEFAULT_NOTE_DOUBLING_AMOUNT = 0
 
 @Entity
 class ChordDrill (
-    @PrimaryKey val id: String,
     var notesPerBeat: Int = 2,
     var intervalRequirements: IntervalRequirements = IntervalRequirements.NONE,
     @SerializedName("interval_less_than_value")

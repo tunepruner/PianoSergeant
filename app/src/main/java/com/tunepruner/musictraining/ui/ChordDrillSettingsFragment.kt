@@ -1,6 +1,7 @@
 package com.tunepruner.musictraining.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,42 +10,23 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.musictraining.R
 import com.example.musictraining.databinding.FragmentChordDrillSettingsBinding
-import com.tunepruner.musictraining.model.music.drill.items.AlgorithmSetting
-import com.tunepruner.musictraining.model.music.drill.items.ChordQuality
-import com.tunepruner.musictraining.model.music.drill.items.IntervalRequirements
-import com.tunepruner.musictraining.model.music.drill.items.Inversion
-import com.tunepruner.musictraining.model.music.drill.items.Key
-import com.tunepruner.musictraining.model.music.drill.items.MAX_DOUBLING_AMOUNT
-import com.tunepruner.musictraining.model.music.drill.items.MIN_DOUBLING_AMOUNT
-import com.tunepruner.musictraining.model.music.drill.items.NoteDoublingRequirement
-import com.tunepruner.musictraining.model.music.drill.items.PatternSubSetting
-import com.tunepruner.musictraining.model.music.drill.items.RegisterRequirement
-import com.tunepruner.musictraining.model.music.drill.items.SpacingRequirement
-import com.tunepruner.musictraining.model.music.drill.items.TimeConstraint
-import com.tunepruner.musictraining.model.music.drill.items.allIntervals
-import com.tunepruner.musictraining.repositories.DrillSettingsRepository
+import com.tunepruner.musictraining.model.music.drill.items.*
 import com.tunepruner.musictraining.viewmodel.DrillSettingsViewModel
 import kotlinx.android.synthetic.main.add_interval_requirements_layout.view.*
 import kotlinx.android.synthetic.main.algorithm_for_prompts_layout.view.*
-import kotlinx.android.synthetic.main.choose_mode_layout.*
 import kotlinx.android.synthetic.main.constrain_permitted_voicings_layout.*
 import kotlinx.android.synthetic.main.fragment_chord_drill_settings.*
 import kotlinx.android.synthetic.main.number_selector.view.*
-import kotlinx.android.synthetic.main.select_inversions_layout.*
 import kotlinx.android.synthetic.main.time_constraint_layout.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.java.KoinJavaComponent
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
 class ChordDrillSettingsFragment : Fragment() {
     private val args: ChordDrillSettingsFragmentArgs by navArgs()
     private val settingsViewModel: DrillSettingsViewModel by viewModel()
-    private val drillSettings: DrillSettingsRepository by KoinJavaComponent.inject(
-        DrillSettingsRepository::class.java
-    )
     private var _binding: FragmentChordDrillSettingsBinding? = null
     private val binding: FragmentChordDrillSettingsBinding get() = _binding!!
 
@@ -66,9 +48,9 @@ class ChordDrillSettingsFragment : Fragment() {
     @InternalCoroutinesApi
     private fun initializeViews() {
 
-        settingsViewModel.isAddingName.observe(viewLifecycleOwner) {
+        settingsViewModel.isAddingName.observe(viewLifecycleOwner) { isAddingName ->
             with(binding.startDrillButton) {
-                text = if (it) {
+                text = if (isAddingName) {
                     setOnClickListener {
                         settingsViewModel.stopAddingName()
                     }
@@ -82,10 +64,12 @@ class ChordDrillSettingsFragment : Fragment() {
             }
 
             with(binding.saveDrillButton) {
-                text = if (it) {
+                text = if (isAddingName) {
                     setOnClickListener {
+                        val name = binding.nameEditText.text.toString()
                         settingsViewModel.stopAddingName()
-                        settingsViewModel.saveDrill(binding.nameEditText.text.toString())
+                        settingsViewModel.saveDrill(name)
+                        binding.nameTextView.text = name
                     }
                     context?.getText(R.string.save)
                 } else {
@@ -96,31 +80,18 @@ class ChordDrillSettingsFragment : Fragment() {
                     context?.getText(R.string.save_drill)
                 }
             }
-            binding.nameEditText.visibility = if (it) View.VISIBLE else View.GONE
-            binding.nameTextView.visibility = if (it) View.GONE else View.VISIBLE
+            binding.nameEditText.visibility = if (isAddingName) View.VISIBLE else View.GONE
+            binding.nameTextView.visibility = if (isAddingName) View.GONE else View.VISIBLE
         }
 
-        drillSettings.current.value.let { drill ->
-            drill.chordDrill?.let { chordDrill ->
-                binding.nameEditText.setText(chordDrill.id)
-                binding.nameTextView.text = chordDrill.id
+        settingsViewModel.currentDrill.observe(viewLifecycleOwner) { drill ->
+            binding.nameTextView.text = drill.toString()
+            drill?.chordDrill?.let { chordDrill ->
+                binding.nameEditText.setText(drill.id)
+                binding.nameTextView.text = drill.id
 
                 with(binding) {
                     with(time_constraint_radio_group) {
-                        settingsViewModel.timeConstraint.observe(viewLifecycleOwner) {
-                            check(
-                                when (it) {
-                                    TimeConstraint.RAPID_FIRE -> R.id.rapid_fire_radio_button
-                                    else -> R.id.metronome_radio_button
-                                }
-                            )
-                        }
-                        setOnCheckedChangeListener { _, button ->
-                            when (button) {
-                                R.id.metronome_radio_button -> settingsViewModel.enableMetronome()
-                                R.id.rapid_fire_radio_button -> settingsViewModel.enableRapidFire()
-                            }
-                        }
                     }
 
                     with(add_interval_requirements_layout) {
@@ -158,7 +129,6 @@ class ChordDrillSettingsFragment : Fragment() {
                                     current_value.text = chordDrill.intervalGreaterThanValue.uiName
                                 }
                             }
-                            persistSettings()
                         }
                         up_button.setOnClickListener {
                             if (chordDrill.intervalRequirements == IntervalRequirements.LESS_THAN) {
@@ -178,7 +148,6 @@ class ChordDrillSettingsFragment : Fragment() {
                                     current_value.text = chordDrill.intervalGreaterThanValue.uiName
                                 }
                             }
-                            persistSettings()
                         }
                         down_button.setOnClickListener {
                             if (chordDrill.intervalRequirements == IntervalRequirements.LESS_THAN) {
@@ -198,7 +167,6 @@ class ChordDrillSettingsFragment : Fragment() {
                                     current_value.text = chordDrill.intervalGreaterThanValue.uiName
                                 }
                             }
-                            persistSettings()
                         }
                     }
                     with(selectInversionsLayout) {
@@ -217,7 +185,6 @@ class ChordDrillSettingsFragment : Fragment() {
                                 } else {
                                     chordDrill.inversions.remove(element.key)
                                 }
-                                persistSettings()
                             }
                         }
                     }
@@ -251,7 +218,6 @@ class ChordDrillSettingsFragment : Fragment() {
                                 } else {
                                     chordDrill.chordQualities.remove(element.key)
                                 }
-                                persistSettings()
                             }
                         }
                     }
@@ -270,7 +236,6 @@ class ChordDrillSettingsFragment : Fragment() {
                                         R.id.specific_amount_button -> NoteDoublingRequirement.SPECIFIC_AMOUNT
                                         else -> NoteDoublingRequirement.NONE
                                     }
-                                persistSettings()
                             }
                         }
 
@@ -282,7 +247,6 @@ class ChordDrillSettingsFragment : Fragment() {
                                     chordDrill.noteDoublingAmount
                                 }
                                 current_value.text = chordDrill.noteDoublingAmount.toString()
-                                persistSettings()
                             }
                         }
                         down_button.setOnClickListener {
@@ -291,7 +255,6 @@ class ChordDrillSettingsFragment : Fragment() {
                                     chordDrill.noteDoublingAmount--
                                 }
                                 current_value.text = chordDrill.noteDoublingAmount.toString()
-                                persistSettings()
                             }
                         }
                     }
@@ -310,7 +273,6 @@ class ChordDrillSettingsFragment : Fragment() {
                                 R.id.open_voicing -> SpacingRequirement.OPEN_VOICING
                                 else -> SpacingRequirement.NONE
                             }
-                            persistSettings()
                         }
                     }
 
@@ -332,7 +294,6 @@ class ChordDrillSettingsFragment : Fragment() {
                                 R.id.leap_greater_than -> RegisterRequirement.REQUIRE_LEAP_GREATER_THAN_5TH
                                 else -> RegisterRequirement.NONE
                             }
-                            persistSettings()
                         }
                     }
 
@@ -363,19 +324,18 @@ class ChordDrillSettingsFragment : Fragment() {
                             Key.G_MINOR to gMinor,
                             Key.Ab_MINOR to abMinor,
                         )
-
-                        for (element in keysMap) {
-                            element.value.isChecked =
-                                settingsViewModel.currentDrill.value?.keys?.contains(element.key) == true
-                            element.value.setOnCheckedChangeListener { compoundButton, _ ->
-                                if (compoundButton.isChecked) {
-                                    settingsViewModel.currentDrill.value?.keys?.add(element.key)
-                                } else {
-                                    settingsViewModel.currentDrill.value?.keys?.remove(element.key)
-                                }
-                                persistSettings()
-                            }
-                        }
+//
+//                        for (element in keysMap) {
+//                            element.value.isChecked =
+//                                settingsViewModel.currentDrill.value?.keys?.contains(element.key) == true
+//                            element.value.setOnCheckedChangeListener { compoundButton, _ ->
+//                                if (compoundButton.isChecked) {
+//                                    settingsViewModel.currentDrill.value?.keys?.add(element.key)
+//                                } else {
+//                                    settingsViewModel.currentDrill.value?.keys?.remove(element.key)
+//                                }
+//                            }
+//                        }
                     }
 
                     with(algorithm_for_prompts_layout.algorithm_radio_group) {
@@ -390,7 +350,6 @@ class ChordDrillSettingsFragment : Fragment() {
                                 R.id.pattern_button -> AlgorithmSetting.PATTERN
                                 else -> AlgorithmSetting.RANDOM
                             }
-                            persistSettings()
                         }
                     }
 
@@ -408,15 +367,10 @@ class ChordDrillSettingsFragment : Fragment() {
                                 R.id.fourths_button -> PatternSubSetting.IN_FOURTHS
                                 else -> PatternSubSetting.CHROMATIC
                             }
-                            persistSettings()
                         }
                     }
                 }
             }
         }
-    }
-
-    private fun persistSettings() {
-        this@ChordDrillSettingsFragment.drillSettings.persist()
     }
 }

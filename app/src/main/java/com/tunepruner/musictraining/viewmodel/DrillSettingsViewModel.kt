@@ -1,5 +1,6 @@
 package com.tunepruner.musictraining.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.tunepruner.musictraining.model.music.drill.Drill
 import com.tunepruner.musictraining.model.music.drill.items.TimeConstraint
 import com.tunepruner.musictraining.repositories.DrillSettingsRepository
+import com.tunepruner.musictraining.repositories.LOG_TAG
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -22,33 +24,27 @@ class DrillSettingsViewModel(private val drillSettingsRepo: DrillSettingsReposit
     private var _isAddingName = MutableLiveData<Boolean>()
     val isAddingName: LiveData<Boolean> = _isAddingName
 
-    val currentDrill: LiveData<Drill> = drillSettingsRepo.current.asLiveData()
+    var currentDrill: LiveData<Drill> = drillSettingsRepo.current.asLiveData()
 
-    private var _timeConstraint = MutableLiveData<TimeConstraint>()
-    var timeConstraint: LiveData<TimeConstraint> = _timeConstraint
+//    private var _timeConstraint = MutableLiveData<TimeConstraint>()
+//    var timeConstraint: LiveData<TimeConstraint> = _timeConstraint
 
     init {
         _isAddingName.value = false
-
-        viewModelScope.launch {
-            drillSettingsRepo.current.collect {
-                _timeConstraint.value = it.timeConstraint
-            }
-        }
     }
 
     fun enableMetronome() {
-        updateSettings {
-            currentDrill.value?.timeConstraint = TimeConstraint.METRONOME
-            _timeConstraint.value = TimeConstraint.METRONOME
-        }
+//        updateSettings {
+//            currentDrill.value?.timeConstraint = TimeConstraint.METRONOME
+//            _timeConstraint.value = TimeConstraint.METRONOME
+//        }
     }
 
     fun enableRapidFire() {
-        updateSettings {
-            currentDrill.value?.timeConstraint = TimeConstraint.RAPID_FIRE
-            _timeConstraint.value = TimeConstraint.RAPID_FIRE
-        }
+//        updateSettings {
+//            currentDrill.value?.timeConstraint = TimeConstraint.RAPID_FIRE
+//            _timeConstraint.value = TimeConstraint.RAPID_FIRE
+//        }
     }
 
     fun promptIfNeedsName() {
@@ -61,19 +57,16 @@ class DrillSettingsViewModel(private val drillSettingsRepo: DrillSettingsReposit
 
     fun saveDrill(name: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            drillSettingsRepo.saveDrill()
+            drillSettingsRepo.saveDrill(name)
         }
     }
 
     private fun updateSettings(action: () -> Unit) {
         action.invoke()
-        drillSettingsRepo.persist()
     }
 
     fun loadDrill(id: String?) {
-        id?.let {
-            drillSettingsRepo.loadDrill(it)
-        }
+        drillSettingsRepo.loadDrill(id)
     }
 }
 

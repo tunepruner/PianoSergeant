@@ -1,9 +1,6 @@
 package com.tunepruner.musictraining.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.tunepruner.musictraining.model.music.drill.items.TimeConstraint
 import com.tunepruner.musictraining.repositories.DrillSettingsRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -14,7 +11,7 @@ import kotlinx.coroutines.launch
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
 class ScaleDrillSettingsViewModel(private val drillSettingsRepo: DrillSettingsRepository) : ViewModel() {
-    private val settings = drillSettingsRepo.current.value
+    val settings = drillSettingsRepo.current.asLiveData()
 
     private var _timeConstraint = MutableLiveData<TimeConstraint>()
     var timeConstraint: LiveData<TimeConstraint> = _timeConstraint
@@ -29,21 +26,20 @@ class ScaleDrillSettingsViewModel(private val drillSettingsRepo: DrillSettingsRe
 
     fun enableMetronome() {
         updateSettings {
-            settings.timeConstraint = TimeConstraint.METRONOME
+            settings.value?.timeConstraint = TimeConstraint.METRONOME
             _timeConstraint.value = TimeConstraint.METRONOME
         }
     }
 
     fun enableRapidFire() {
         updateSettings {
-            settings.timeConstraint = TimeConstraint.RAPID_FIRE
+            settings.value?.timeConstraint = TimeConstraint.RAPID_FIRE
             _timeConstraint.value = TimeConstraint.RAPID_FIRE
         }
     }
 
     private fun updateSettings(action: () -> Unit) {
         action.invoke()
-        drillSettingsRepo.persist()
     }
 }
 

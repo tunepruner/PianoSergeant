@@ -1,0 +1,24 @@
+Index: app/src/main/java/com/tunepruner/musictraining/model/music/drill/ChordDrill.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/tunepruner/musictraining/model/music/drill/ChordDrill.kt b/app/src/main/java/com/tunepruner/musictraining/model/music/drill/ChordDrill.kt
+--- a/app/src/main/java/com/tunepruner/musictraining/model/music/drill/ChordDrill.kt	(date 1644200894058)
++++ b/app/src/main/java/com/tunepruner/musictraining/model/music/drill/ChordDrill.kt	(date 1644200894058)
+@@ -1,6 +1,7 @@
+ package com.tunepruner.musictraining.model.music.drill//package com.tunepruner.musictraining.repositories
+ 
+ import androidx.room.Entity
++import androidx.room.PrimaryKey
+ import com.google.gson.annotations.SerializedName
+ import com.tunepruner.musictraining.model.music.drill.items.ChordQuality
+ import com.tunepruner.musictraining.model.music.drill.items.Interval
+@@ -12,6 +13,7 @@
+ 
+ @Entity
+ class ChordDrill (
++    @PrimaryKey val id: String,
+     var notesPerBeat: Int = 2,
+     var intervalRequirements: IntervalRequirements = IntervalRequirements.NONE,
+     @SerializedName("interval_less_than_value")

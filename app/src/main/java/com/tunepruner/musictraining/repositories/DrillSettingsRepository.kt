@@ -2,21 +2,20 @@ package com.tunepruner.musictraining.repositories
 
 //import com.tunepruner.musictraining.data.DrillDatabase
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.lifecycle.MutableLiveData
 import androidx.room.Room
 import com.google.gson.GsonBuilder
 import com.tunepruner.musictraining.data.DrillDatabase
 import com.tunepruner.musictraining.model.constants.SETTINGS
+import com.tunepruner.musictraining.model.music.drill.ChordDrill
 import com.tunepruner.musictraining.model.music.drill.Drill
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 const val LOG_TAG = "12345"
@@ -26,29 +25,14 @@ class DrillSettingsRepository(context: Context, val dataStore: DataStore<Prefere
     private var _drillsFlow = MutableStateFlow<List<Drill>>(ArrayList())
     var drillsFlow: StateFlow<List<Drill>> = _drillsFlow
 
-    val db = Room.databaseBuilder(
+    private val db = Room.databaseBuilder(
         context,
         DrillDatabase::class.java, "drills"
     ).build()
+    private val dao = db.dao()
 
-    val dao = db.dao()
-
-    var savedSettingsFlow: Flow<String> = dataStore.data.map { preferences ->
-        preferences[SETTINGS] ?: ""
-    }
-    private val _current: MutableStateFlow<Drill> =
-        MutableStateFlow(Drill(""))
+    private var _current = MutableStateFlow(Drill(""))
     val current: StateFlow<Drill> = _current
-
-    init {
-        CoroutineScope(Dispatchers.IO).launch {
-            savedSettingsFlow.collect {
-                _current.value =
-                    GsonBuilder().create().fromJson(it, Drill::class.java)
-                        ?: Drill(" ")
-            }
-        }
-    }
 
     fun getAllChordDrills() {
         CoroutineScope(Dispatchers.IO).launch {
@@ -56,27 +40,27 @@ class DrillSettingsRepository(context: Context, val dataStore: DataStore<Prefere
         }
     }
 
-    fun saveDrill() {
-        current.value.apply {
-            if (this.id.isNotBlank()) {
+    fun saveDrill(name: String) {
+        _current.value.apply {
+            if (name.isNotBlank()) {
+                this.id = name
                 dao.insertAll(this)
+                _current.value = this
             }
         }
-    }
 
-    fun persist() {
-//        CoroutineScope(Dispatchers.IO).launch {
-//            dataStore.edit {
-//                it[SETTINGS] = GsonBuilder().create().toJson(current.value)
-//            }
-//        }
     }
 
     fun loadDrill(name: String?) {
         CoroutineScope(Dispatchers.IO).launch {
-            _current.value = name?.let {
-                dao.getChordDrill(name)
-            } ?: Drill("")
+            name?.let {
+                dao.getChordDrill(name).let {
+                    _current.value = it
+                }
+                return@launch
+            }
+
+            _current.value = Drill("", ChordDrill())
         }
     }
 

@@ -73,7 +73,7 @@
                 android:name="id"
                 app:argType="string"
                 app:nullable="true"
-                android:defaultValue='""' />
+            android:defaultValue="@null" />
     </fragment>
 
     <fragment
@@ -91,7 +91,8 @@
         <argument
                 android:name="id"
                 app:argType="string"
-                android:defaultValue='""' />
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
             android:id="@+id/savedDrillsFragment"

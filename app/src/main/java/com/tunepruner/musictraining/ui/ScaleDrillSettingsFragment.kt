@@ -8,26 +8,16 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.musictraining.R
 import com.example.musictraining.databinding.FragmentScaleDrillSettingsBinding
-import com.tunepruner.musictraining.model.music.drill.items.AlgorithmSetting
-import com.tunepruner.musictraining.model.music.drill.items.IntervalRequirements
-import com.tunepruner.musictraining.model.music.drill.items.Key
-import com.tunepruner.musictraining.model.music.drill.items.PatternSubSetting
-import com.tunepruner.musictraining.model.music.drill.items.TimeConstraint
-import com.tunepruner.musictraining.model.music.drill.items.allIntervals
-import com.tunepruner.musictraining.repositories.DrillSettingsRepository
+import com.tunepruner.musictraining.model.music.drill.items.*
 import com.tunepruner.musictraining.viewmodel.ScaleDrillSettingsViewModel
 import kotlinx.android.synthetic.main.add_interval_requirements_layout.view.*
 import kotlinx.android.synthetic.main.algorithm_for_prompts_layout.view.*
-import kotlinx.android.synthetic.main.choose_mode_layout.*
-import kotlinx.android.synthetic.main.constrain_permitted_voicings_layout.*
 import kotlinx.android.synthetic.main.fragment_chord_drill_settings.*
 import kotlinx.android.synthetic.main.number_selector.view.*
-import kotlinx.android.synthetic.main.select_inversions_layout.*
 import kotlinx.android.synthetic.main.time_constraint_layout.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.java.KoinJavaComponent
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -43,9 +33,6 @@ private const val ARG_PARAM2 = "param2"
 @InternalCoroutinesApi
 class ScaleDrillSettingsFragment : Fragment() {
     private val settingsViewModel: ScaleDrillSettingsViewModel by viewModel()
-    private val drillSettings: DrillSettingsRepository by KoinJavaComponent.inject(
-        DrillSettingsRepository::class.java
-    )
     private var _binding: FragmentScaleDrillSettingsBinding? = null
     private val binding: FragmentScaleDrillSettingsBinding get() = _binding!!
 
@@ -79,8 +66,8 @@ class ScaleDrillSettingsFragment : Fragment() {
         binding.startDrillButton.setOnClickListener {
             findNavController().navigate(R.id.action_scale_drill_settings_to_drill)
         }
-        drillSettings.current.value.let { drill ->
-            drill.scaleDrill?.let { scaleDrill ->
+        settingsViewModel.settings.observe(viewLifecycleOwner) { drill ->
+            drill?.scaleDrill?.let { scaleDrill ->
                 with(binding) {
                     with(time_constraint_radio_group) {
                         settingsViewModel.timeConstraint.observe(viewLifecycleOwner) {
@@ -133,7 +120,6 @@ class ScaleDrillSettingsFragment : Fragment() {
                                     current_value.text = scaleDrill.intervalGreaterThanValue.uiName
                                 }
                             }
-                            persistSettings()
                         }
                         up_button.setOnClickListener {
                             if (scaleDrill.intervalRequirements == IntervalRequirements.LESS_THAN) {
@@ -153,7 +139,6 @@ class ScaleDrillSettingsFragment : Fragment() {
                                     current_value.text = scaleDrill.intervalGreaterThanValue.uiName
                                 }
                             }
-                            persistSettings()
                         }
                         down_button.setOnClickListener {
                             if (scaleDrill.intervalRequirements == IntervalRequirements.LESS_THAN) {
@@ -173,7 +158,6 @@ class ScaleDrillSettingsFragment : Fragment() {
                                     current_value.text = scaleDrill.intervalGreaterThanValue.uiName
                                 }
                             }
-                            persistSettings()
                         }
                     }
 
@@ -213,7 +197,6 @@ class ScaleDrillSettingsFragment : Fragment() {
                                 } else {
                                     drill.keys.remove(element.key)
                                 }
-                                persistSettings()
                             }
                         }
                     }
@@ -230,7 +213,6 @@ class ScaleDrillSettingsFragment : Fragment() {
                                 R.id.pattern_button -> AlgorithmSetting.PATTERN
                                 else -> AlgorithmSetting.RANDOM
                             }
-                            persistSettings()
                         }
                     }
 
@@ -248,16 +230,11 @@ class ScaleDrillSettingsFragment : Fragment() {
                                 R.id.fourths_button -> PatternSubSetting.IN_FOURTHS
                                 else -> PatternSubSetting.CHROMATIC
                             }
-                            persistSettings()
                         }
                     }
                 }
             }
         }
-    }
-
-    private fun persistSettings() {
-        this@ScaleDrillSettingsFragment.drillSettings.persist()
     }
 
     companion object {

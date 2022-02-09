@@ -19,7 +19,7 @@ import com.tunepruner.musictraining.ui.MIN_TEMPO
 
 @Entity(tableName = "drills")
 class Drill(
-    @PrimaryKey val id: String,
+    @PrimaryKey var id: String,
     @ColumnInfo(name = "chord_drill") var chordDrill: ChordDrill? = null,
     @ColumnInfo(name = "scale_drill") var scaleDrill: ScaleDrill? = null,
 
