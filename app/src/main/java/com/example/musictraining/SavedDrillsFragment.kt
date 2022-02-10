@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.musictraining.databinding.FragmentSavedDrillsBinding
+import com.tunepruner.musictraining.model.music.drill.Drill
+import com.tunepruner.musictraining.model.music.drill.DrillType
 import com.tunepruner.musictraining.viewmodel.DrillListViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -43,11 +45,24 @@ class SavedDrillsFragment : Fragment() {
         binding.recyclerView.adapter = adapter
 
         viewModel.allDrills.observe(viewLifecycleOwner) {
-            binding.recyclerView.adapter = 
+            binding.recyclerView.adapter =
                 SavedDrillsAdapter(ArrayList(it), object : OnClickListener {
-                    override fun onClick(view: View, text: String) {
-                        val action = SavedDrillsFragmentDirections.actionSavedDrillsFragmentToChordDrillSettingsFragment(text)
-                        findNavController().navigate(action)
+                    override fun onClick(view: View, drill: Drill) {
+                        if (drill.drillType() == DrillType.CHORD) {
+                            val action =
+                                SavedDrillsFragmentDirections
+                                    .actionSavedDrillsFragmentToChordDrillSettingsFragment(
+                                        drill.id
+                                    )
+                            findNavController().navigate(action)
+                        } else {
+                            val action =
+                                SavedDrillsFragmentDirections
+                                    .actionSavedDrillsFragmentToScaleDrillSettingsFragment(
+                                        drill.id
+                                    )
+                            findNavController().navigate(action)
+                        }
                     }
                 })
         }

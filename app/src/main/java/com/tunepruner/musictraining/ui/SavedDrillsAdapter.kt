@@ -28,7 +28,7 @@ class SavedDrillsAdapter(
         //set values
         holder.ssid.text = drillList[position].id
         holder.itemView.setOnClickListener {
-            clickListener.onClick(it, holder.ssid.text.toString())
+            clickListener.onClick(it, drillList[position])
         }
     }
 
@@ -45,5 +45,5 @@ class SavedDrillsAdapter(
 }
 
 interface OnClickListener{
-    fun onClick(view: View, text: String)
+    fun onClick(view: View, drill: Drill)
 }

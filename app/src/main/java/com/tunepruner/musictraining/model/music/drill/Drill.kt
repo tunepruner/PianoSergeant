@@ -75,6 +75,10 @@ class Drill(
             return beatsPerChord * beatDurationFromTempo(tempo)
         }
 
+    fun drillType(): DrillType {
+        return if (chordDrill != null) DrillType.CHORD else DrillType.SCALE
+    }
+
     fun beatDurationFromTempo(tempo: Int): Long {
         val millisInAMinute = 60L * 1000
         return millisInAMinute / tempo
@@ -96,4 +100,8 @@ class Drill(
     fun setChordDistanceFromPercentage(percentage: Int) {
         chordDistance = percentage.calculateLevelFromPercentage(MAX_DISTANCE, MIN_DISTANCE)
     }
+}
+
+enum class DrillType {
+    CHORD, SCALE
 }

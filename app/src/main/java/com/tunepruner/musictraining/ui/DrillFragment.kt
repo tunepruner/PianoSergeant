@@ -12,6 +12,7 @@ import com.example.musictraining.R
 import com.example.musictraining.databinding.FragmentDrillBinding
 import com.tunepruner.musictraining.model.PlayState
 import com.tunepruner.musictraining.model.music.drill.Drill
+import com.tunepruner.musictraining.model.music.drill.DrillType
 import com.tunepruner.musictraining.repositories.DrillSettingsRepository
 import com.tunepruner.musictraining.viewmodel.ChordViewModel
 import com.tunepruner.musictraining.viewmodel.MetronomeViewModel
@@ -109,7 +110,11 @@ class DrillFragment : Fragment() {
 
     private fun setUpHandlers() {
         binding.settingsButton.setOnClickListener {
-            findNavController().navigate(R.id.action_drill_to_chord_drill_settings)
+            if (drillSettings.current.value.drillType() == DrillType.CHORD) {
+                findNavController().navigate(R.id.action_drill_to_chord_drill_settings)
+            } else {
+                findNavController().navigate(R.id.action_drill_to_scale_drill_settings)
+            }
         }
 
         binding.playButton.setOnClickListener {
