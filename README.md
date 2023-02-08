@@ -1,5 +1,5 @@
 # PianoSergeant
-In development - PianoSergeant is a midi-capable musical drills app which allows the creation of rich, highly customizable piano drills.
+In development - PianoSergeant is a mobile app which has midi connectivity and allows the creation of rich, highly customizable chord and scale drills for the piano.
 
 <div style="display: flex; flex-direction: row;">
   <img src="https://user-images.githubusercontent.com/53797635/217617775-5e877d92-0249-4b3d-ae53-d82908f82984.gif" width="150" alt="Image 1">
